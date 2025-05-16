@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 public class databaseConnection {
     
-    private static final String URL = "jdbc:mysql://localhost:33060/hoteldb"; // your DB
+    private static final String URL = "jdbc:mysql://localhost:33060/hotel"; // your DB
     private static final String USER = "root"; // your DB user
     private static final String PASSWORD = "toor"; // your DB password
  

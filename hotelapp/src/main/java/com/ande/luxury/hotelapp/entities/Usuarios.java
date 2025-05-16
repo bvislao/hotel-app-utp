@@ -4,6 +4,7 @@
  */
 package com.ande.luxury.hotelapp.entities;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,8 +15,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Usuarios {
+    private Integer id;
     private String uuid;
-    
-    
-    
+    private String documentNumber;
+    private String fullName;
+    private String phone;
+    private String email;
+    private String password;
 }
