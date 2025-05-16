@@ -4,6 +4,8 @@
 
 package com.ande.luxury.hotelapp;
 
+import com.ande.luxury.hotelapp.views.Main;
+
 /**
  *
  * @author bryanvislaochavez
@@ -11,6 +13,10 @@ package com.ande.luxury.hotelapp;
 public class Hotelapp {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+         // Use SwingUtilities.invokeLater to run on the EDT
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            Main mainForm = new Main();
+            mainForm.setVisible(true); // This shows the window
+        });
     }
 }
