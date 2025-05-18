@@ -4,10 +4,20 @@
  */
 package com.ande.luxury.hotelapp.entities;
 
+import lombok.Data;
+
 /**
  *
  * @author HP
  */
+@Data
 public class Rol {
+    private Integer id;
+    private String uuid;
+    private String code;
+    private String description;
+    private Integer active;
+    private String Alexis;
     
 }
+//este es un comentario
