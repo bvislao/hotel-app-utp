@@ -4,7 +4,7 @@
 
 package com.ande.luxury.hotelapp;
 
-import com.ande.luxury.hotelapp.views.Main;
+import com.ande.luxury.hotelapp.views.Login;
 
 /**
  *
@@ -20,7 +20,7 @@ public class Hotelapp {
          
          */
         javax.swing.SwingUtilities.invokeLater(() -> {
-            Main mainForm = new Main();
+            Login mainForm = new Login();
             mainForm.setVisible(true); // This shows the window
         });
     }
