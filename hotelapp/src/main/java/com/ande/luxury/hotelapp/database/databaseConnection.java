@@ -4,6 +4,7 @@
  */
 package com.ande.luxury.hotelapp.database;
 
+import com.ande.luxury.hotelapp.utilsdb.Constants;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,11 +15,13 @@ import java.sql.SQLException;
  */
 public class databaseConnection {
     
-    private static final String URL = "jdbc:mysql://localhost:33060/hotel"; // your DB
-    private static final String USER = "root"; // your DB user
-    private static final String PASSWORD = "toor"; // your DB password
  
      public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+         try{
+            return DriverManager.getConnection(Constants.URL_DATABASE, Constants.USER_DATABASE, Constants.PASSWORD_DATABASE);     
+         }catch(SQLException ex){
+             throw new SQLException(ex);
+         }
+        
     }
 }

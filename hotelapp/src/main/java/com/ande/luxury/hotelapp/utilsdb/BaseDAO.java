@@ -18,20 +18,19 @@ import java.util.List;
  * @author bryanvislaochavez
  */
 public class BaseDAO<T> {
+
     private final String tableName;
     private final RowMapper<T> rowMapper;
-    
+
     public BaseDAO(String tableName, RowMapper<T> rowMapper) {
         this.tableName = tableName;
         this.rowMapper = rowMapper;
     }
-    
-     public List<T> findAll() {
+
+    public List<T> findAll() {
         List<T> result = new ArrayList<>();
         String sql = "SELECT * FROM " + tableName;
-        try (Connection conn = databaseConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn = databaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 result.add(rowMapper.map(rs));
@@ -43,10 +42,25 @@ public class BaseDAO<T> {
         return result;
     }
 
+    public T findUserByUsername(String username) {
+        String sql = "SELECT * FROM " + tableName + " WHERE document_number = ?";
+        try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rowMapper.map(rs);  // Assuming you have a RowMapper<T>
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public T findById(int id) {
         String sql = "SELECT * FROM " + tableName + " WHERE id = ?";
-        try (Connection conn = databaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -62,8 +76,7 @@ public class BaseDAO<T> {
 
     public void deleteById(int id) {
         String sql = "DELETE FROM " + tableName + " WHERE id = ?";
-        try (Connection conn = databaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             stmt.executeUpdate();
@@ -73,5 +86,4 @@ public class BaseDAO<T> {
         }
     }
 
-    
 }

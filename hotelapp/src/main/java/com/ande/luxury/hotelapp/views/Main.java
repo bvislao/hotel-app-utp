@@ -4,7 +4,10 @@
  */
 package com.ande.luxury.hotelapp.views;
 
-import com.ande.luxury.hotelapp.entities.Usuarios;
+import com.ande.luxury.hotelapp.entities.Usuario;
+import com.ande.luxury.hotelapp.services.UsuarioService;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -33,6 +36,8 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         btnLogin = new javax.swing.JButton();
+        txtUsuario = new javax.swing.JTextField();
+        txtPassword = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,21 +48,47 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        txtUsuario.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        txtUsuario.setToolTipText("Contraseña");
+        txtUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+
+        txtPassword.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        txtPassword.setToolTipText("Contraseña");
+        txtPassword.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txtPassword.setName(""); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(378, Short.MAX_VALUE)
-                .addComponent(btnLogin)
-                .addGap(103, 103, 103))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(191, 191, 191)
+                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(238, 238, 238)
+                        .addComponent(btnLogin)))
+                .addContainerGap(194, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(192, 192, 192)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(193, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(148, 148, 148)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(97, Short.MAX_VALUE)
+                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(83, 83, 83)
                 .addComponent(btnLogin)
-                .addContainerGap(149, Short.MAX_VALUE))
+                .addGap(77, 77, 77))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(154, Short.MAX_VALUE)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(126, 126, 126)))
         );
 
         pack();
@@ -65,7 +96,13 @@ public class Main extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-        Usuarios user = new Usuarios();
+        UsuarioService usuarioService = new UsuarioService();
+        Usuario usuario = usuarioService.validateCredentials(txtUsuario.getText(), txtPassword.getText());
+        if(usuario != null){
+            JOptionPane.showMessageDialog(null, "Autenticado correctamente");
+        }else{
+            JOptionPane.showMessageDialog(null, "El usuario y/o contraseña es incorrecto, verifique nuevamente");
+        }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
@@ -105,5 +142,7 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
+    private javax.swing.JTextField txtPassword;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }
