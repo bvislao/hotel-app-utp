@@ -17,7 +17,5 @@ public class Rol {
     private String code;
     private String description;
     private Integer active;
-    private String Alexis;
     
 }
-//este es un comentario
