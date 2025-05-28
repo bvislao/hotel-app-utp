@@ -5,9 +5,10 @@
 package com.ande.luxury.hotelapp.views;
 
 import com.ande.luxury.hotelapp.entities.Usuario;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import javax.swing.JFrame;
+import javax.swing.Timer;
 /**
  *
  * @author bryanvislaochavez
@@ -21,24 +22,27 @@ public class Main extends javax.swing.JFrame {
     
     public Main() {
         initComponents();
+        //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setTitle("Principal - Ande Luxury");
-         // Get screen size
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        // Set the maximum size of the JFrame to screen size
-        this.setMaximumSize(screenSize);
-        this.setSize(screenSize);
-        this.setResizable(false); // Optional: disables window resizing
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza la ventana
     }
     
      public Main(Usuario usuario) {
         initComponents();
+        //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setTitle("Principal - Ande Luxury");
-         // Get screen size
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        // Set the maximum size of the JFrame to screen size
-        this.setMaximumSize(screenSize);
-        this.setSize(screenSize);
-        this.setResizable(false); // Optional: disables window resizing
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza la ventana
+        
+        lblUser.setText(usuario.getFullName());
+        lblRol.setText("----------");
+        lblDate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+        lblTime.setText("Hora: --:--:--");
+         // Timer para actualizar la hora
+        Timer timer = new Timer(1000, e -> {
+            String hora = new SimpleDateFormat("HH:mm:ss").format(new Date());
+            lblTime.setText("Hora: " + hora);
+        });
+        timer.start();
     }
     
 
@@ -51,62 +55,114 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnUsuario = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        panelMain = new javax.swing.JDesktopPane();
+        jToolBar1 = new javax.swing.JToolBar();
+        pnlFooter = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lblUser = new javax.swing.JLabel();
+        lblRol = new javax.swing.JLabel();
+        lblDate = new javax.swing.JLabel();
+        lblTime = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        mnuInfo = new javax.swing.JMenu();
+        jmiInfoProject = new javax.swing.JMenuItem();
+        jmiSalir = new javax.swing.JMenuItem();
+        jmUsuarios = new javax.swing.JMenu();
+        jmiGestionarUsuarios = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.MOVE_CURSOR));
 
-        btnUsuario.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        btnUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/user-interface.png"))); // NOI18N
-        btnUsuario.setText("Usuarios");
-        btnUsuario.setToolTipText("");
-        btnUsuario.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        btnUsuario.addActionListener(new java.awt.event.ActionListener() {
+        panelMain.setLayout(new javax.swing.OverlayLayout(panelMain));
+
+        jToolBar1.setRollover(true);
+
+        pnlFooter.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setText("Rol:");
+        pnlFooter.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, -1, -1));
+
+        jLabel2.setText("Usuario:");
+        pnlFooter.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        jLabel3.setText("Fecha y Hora:");
+        pnlFooter.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 10, -1, -1));
+
+        lblUser.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        pnlFooter.add(lblUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, -1, -1));
+        pnlFooter.add(lblRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, -1, -1));
+
+        lblDate.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        pnlFooter.add(lblDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 10, -1, -1));
+
+        lblTime.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        pnlFooter.add(lblTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 10, -1, -1));
+
+        jToolBar1.add(pnlFooter);
+
+        mnuInfo.setText("Acerca de");
+
+        jmiInfoProject.setText("Acerca");
+        jmiInfoProject.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUsuarioActionPerformed(evt);
+                jmiInfoProjectActionPerformed(evt);
             }
         });
+        mnuInfo.add(jmiInfoProject);
 
-        jPanel1.setBackground(new java.awt.Color(102, 153, 0));
+        jmiSalir.setText("Salir");
+        jmiSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiSalirActionPerformed(evt);
+            }
+        });
+        mnuInfo.add(jmiSalir);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1007, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 745, Short.MAX_VALUE)
-        );
+        jMenuBar1.add(mnuInfo);
+
+        jmUsuarios.setText("Usuarios");
+
+        jmiGestionarUsuarios.setText("Gestionar Usuarios");
+        jmUsuarios.add(jmiGestionarUsuarios);
+
+        jMenuBar1.add(jmUsuarios);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelMain)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(25, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(panelMain, javax.swing.GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuarioActionPerformed
+    private void jmiSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSalirActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnUsuarioActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jmiSalirActionPerformed
+
+    private void jmiInfoProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiInfoProjectActionPerformed
+        // TODO add your handling code here:
+             About form = new About();
+       panelMain.add(form);
+        form.setVisible(true);
+    }//GEN-LAST:event_jmiInfoProjectActionPerformed
 
     /**
      * @param args the command line arguments
@@ -144,7 +200,21 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnUsuario;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JMenu jmUsuarios;
+    private javax.swing.JMenuItem jmiGestionarUsuarios;
+    private javax.swing.JMenuItem jmiInfoProject;
+    private javax.swing.JMenuItem jmiSalir;
+    private javax.swing.JLabel lblDate;
+    private javax.swing.JLabel lblRol;
+    private javax.swing.JLabel lblTime;
+    private javax.swing.JLabel lblUser;
+    private javax.swing.JMenu mnuInfo;
+    private javax.swing.JDesktopPane panelMain;
+    private javax.swing.JPanel pnlFooter;
     // End of variables declaration//GEN-END:variables
 }
