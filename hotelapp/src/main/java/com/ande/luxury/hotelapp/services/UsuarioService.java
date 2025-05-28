@@ -6,6 +6,8 @@ package com.ande.luxury.hotelapp.services;
 
 import com.ande.luxury.hotelapp.entities.Usuario;
 import com.ande.luxury.hotelapp.repository.UsuarioDAO;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -21,5 +23,11 @@ public class UsuarioService {
         }else{
             return null;
         }
+    }
+    public List<Usuario> listUsers(){
+        List<Usuario> usuariosList = new ArrayList<>();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        usuariosList = usuarioDAO.findAll();
+        return usuariosList;
     }
 }

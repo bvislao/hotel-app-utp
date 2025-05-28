@@ -125,6 +125,11 @@ public class Main extends javax.swing.JFrame {
         jmUsuarios.setText("Usuarios");
 
         jmiGestionarUsuarios.setText("Gestionar Usuarios");
+        jmiGestionarUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiGestionarUsuariosActionPerformed(evt);
+            }
+        });
         jmUsuarios.add(jmiGestionarUsuarios);
 
         jMenuBar1.add(jmUsuarios);
@@ -163,6 +168,14 @@ public class Main extends javax.swing.JFrame {
        panelMain.add(form);
         form.setVisible(true);
     }//GEN-LAST:event_jmiInfoProjectActionPerformed
+
+    private void jmiGestionarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiGestionarUsuariosActionPerformed
+        // TODO add your handling code here:
+        Usuarios_Gestion form = new Usuarios_Gestion();
+        panelMain.add(form);
+        form.setVisible(true);
+        
+    }//GEN-LAST:event_jmiGestionarUsuariosActionPerformed
 
     /**
      * @param args the command line arguments

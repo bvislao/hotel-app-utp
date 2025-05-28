@@ -6,7 +6,6 @@ package com.ande.luxury.hotelapp.views;
 
 import java.awt.Desktop;
 import java.net.URI;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -101,7 +100,7 @@ public class About extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         abrirEnlace("https://github.com/bvislao/hotel-app-utp");
     }//GEN-LAST:event_jButton1ActionPerformed
-private void abrirEnlace(String url) {
+    private void abrirEnlace(String url) {
         try {
             Desktop desktop = Desktop.getDesktop();
             if (Desktop.isDesktopSupported() && desktop.isSupported(Desktop.Action.BROWSE)) {
