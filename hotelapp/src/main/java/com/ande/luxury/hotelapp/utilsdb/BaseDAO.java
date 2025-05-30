@@ -73,6 +73,22 @@ public class BaseDAO<T> {
         }
         return null;
     }
+    
+    public T findByUuid(String uuid) {
+        String sql = "SELECT * FROM " + tableName + " WHERE uuid = ?";
+        try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, uuid);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rowMapper.map(rs);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public void deleteById(int id) {
         String sql = "DELETE FROM " + tableName + " WHERE id = ?";

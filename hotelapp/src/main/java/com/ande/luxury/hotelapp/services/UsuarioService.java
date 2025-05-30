@@ -4,8 +4,12 @@
  */
 package com.ande.luxury.hotelapp.services;
 
+import com.ande.luxury.hotelapp.entities.Rol;
 import com.ande.luxury.hotelapp.entities.Usuario;
+import com.ande.luxury.hotelapp.entities.UsuarioRol;
+import com.ande.luxury.hotelapp.repository.RolDAO;
 import com.ande.luxury.hotelapp.repository.UsuarioDAO;
+import com.ande.luxury.hotelapp.repository.UsuarioRolDAO;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +23,19 @@ public class UsuarioService {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         boolean result = usuarioDAO.validateAutenticate(user,password);
         if(result){
-            return usuarioDAO.findUserByUsername(user);
+            Usuario userData = usuarioDAO.findUserByUsername(user);
+            UsuarioRolDAO userRolDAO = new UsuarioRolDAO();
+            List<UsuarioRol> listRoles = userRolDAO.findRolesByUsuario(userData.getUuid());
+            if(!listRoles.isEmpty()){
+                RolDAO rolDAO = new RolDAO();
+                List<Rol> listRolesByUser = new ArrayList<>();
+                for(UsuarioRol userRoles : listRoles){
+                    Rol rol = rolDAO.findById(userRoles.getId());
+                    listRolesByUser.add(rol);
+                }
+                userData.setRoles(listRolesByUser);
+            }
+            return userData;
         }else{
             return null;
         }

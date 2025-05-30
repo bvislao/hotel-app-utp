@@ -32,9 +32,9 @@ public class Main extends javax.swing.JFrame {
         //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setTitle("Principal - Ande Luxury");
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza la ventana
-        
+        String rol = usuario.getRoles().getFirst().getDescription();
         lblUser.setText(usuario.getFullName());
-        lblRol.setText("----------");
+        lblRol.setText(rol);
         lblDate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
         lblTime.setText("Hora: --:--:--");
          // Timer para actualizar la hora

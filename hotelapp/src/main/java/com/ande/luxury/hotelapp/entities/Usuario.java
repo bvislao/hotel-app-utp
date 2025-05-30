@@ -4,13 +4,16 @@
  */
 package com.ande.luxury.hotelapp.entities;
 
-import lombok.Data;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
  * @author bryanvislaochavez
  */
-@Data
+@Getter
+@Setter
 public class Usuario extends Auditable {
     private Integer id;
     private String uuid;
@@ -20,6 +23,7 @@ public class Usuario extends Auditable {
     private String email;
     private String password;
     private Integer status;
+    private List<Rol> roles;
     
     public Usuario(Integer id,String uuid,String documentNumber,String fullName,String phone,String email,String password,Integer status){
         this.id = id;

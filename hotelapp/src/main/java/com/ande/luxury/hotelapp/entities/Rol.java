@@ -18,4 +18,12 @@ public class Rol {
     private String description;
     private Integer active;
     
+    public Rol(Integer id,String uuid,String code,String description,Integer active){
+        this.id = id;
+        this.uuid = uuid;
+        this.code = code;
+        this.description = description;
+        this.active = active;
+    }
+    
 }
