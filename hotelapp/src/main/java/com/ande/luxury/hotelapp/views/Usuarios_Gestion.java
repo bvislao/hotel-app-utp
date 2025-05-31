@@ -13,6 +13,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -20,6 +22,7 @@ import javax.swing.table.TableModel;
  */
 public class Usuarios_Gestion extends javax.swing.JInternalFrame {
 
+    private static final Logger logger = LoggerFactory.getLogger(Login.class);
     /**
      * Creates new form Usuarios_Gestion
      */
@@ -101,14 +104,15 @@ public class Usuarios_Gestion extends javax.swing.JInternalFrame {
 
     private void btnCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearUsuarioActionPerformed
         // TODO add your handling code here:
-
-
+        Usuarios_Crear form = new Usuarios_Crear();
+        form.setVisible(true);
     }//GEN-LAST:event_btnCrearUsuarioActionPerformed
 
     public void getDataInit() {
-        UsuarioService usuarioService = new UsuarioService();
+        try{
+            UsuarioService usuarioService = new UsuarioService();
         List<Usuario> listUsuarios = usuarioService.listUsers();
-        String[] columns = {"ID", "Numero Documento", "Nombre Completo", "Password", "Telefono", "Email", "Editar", "Eliminar"};
+        String[] columns = {"ID", "Numero Documento", "Nombre Completo","Rol", "Password", "Telefono", "Email", "Editar", "Eliminar"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
 
         for (Usuario user : listUsuarios) {
@@ -116,6 +120,7 @@ public class Usuarios_Gestion extends javax.swing.JInternalFrame {
                 user.getUuid(),
                 user.getDocumentNumber(),
                 user.getFullName(),
+                user.getRoles().getFirst().getDescription().toString().toUpperCase(),
                 user.getPassword(),
                 user.getPhone(),
                 user.getEmail(),
@@ -125,13 +130,18 @@ public class Usuarios_Gestion extends javax.swing.JInternalFrame {
         }
         jTableUsuarios.setModel(model);
 
-        jTableUsuarios.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer("Editar"));
-        jTableUsuarios.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox(), jTableUsuarios, "Editar", this));
+        jTableUsuarios.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer("Editar"));
+        jTableUsuarios.getColumnModel().getColumn(7).setCellEditor(new ButtonEditor(new JCheckBox(), jTableUsuarios, "Editar", this));
 
-        jTableUsuarios.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer("Eliminar"));
-        jTableUsuarios.getColumnModel().getColumn(7).setCellEditor(
+        jTableUsuarios.getColumnModel().getColumn(8).setCellRenderer(new ButtonRenderer("Eliminar"));
+        jTableUsuarios.getColumnModel().getColumn(8).setCellEditor(
                 new ButtonEditor(
                         new JCheckBox(), jTableUsuarios, "Eliminar", this));
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Ocurrio un error inesperado");
+            logger.error(ex.getMessage());
+        }
+        
     }
 
     public void editarFilaEnFormularioPadre(int row) {
