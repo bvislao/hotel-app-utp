@@ -7,12 +7,16 @@ package com.ande.luxury.hotelapp.views;
 import com.ande.luxury.hotelapp.entities.Usuario;
 import com.ande.luxury.hotelapp.services.UsuarioService;
 import javax.swing.JOptionPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author bryanvislaochavez
  */
 public class Login extends javax.swing.JFrame {
+
+     private static final Logger logger = LoggerFactory.getLogger(Login.class);
 
     /**
      * Creates new form Main
@@ -145,11 +149,13 @@ public class Login extends javax.swing.JFrame {
         String password = new String(passwordChars);
         Usuario usuario = usuarioService.validateCredentials(txtUsuario.getText().trim(),password.trim());
         if(usuario != null){
+            logger.info("Autenticación exitosa " + usuario.getDocumentNumber().toString() + " - " + usuario.getFullName());
             JOptionPane.showMessageDialog(null, "Autenticado correctamente");
             this.setVisible(false);
             Main mainForm = new Main(usuario);
             mainForm.setVisible(true);
         }else{
+            logger.error("El usuario y/o contraseña es incorrecto, verifique nuevamente");
             JOptionPane.showMessageDialog(null, "El usuario y/o contraseña es incorrecto, verifique nuevamente");
         }
     }//GEN-LAST:event_btnLoginActionPerformed

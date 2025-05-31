@@ -39,10 +39,8 @@ public class UsuarioRolDAO extends BaseDAO<UsuarioRol> {
     public List<UsuarioRol> findRolesByUsuario(String uuid){
         UsuarioDAO userDAO = new UsuarioDAO();
         List<UsuarioRol> listRoles = this.findAll();
-        List<UsuarioRol> responseList = null;
         Usuario usuario = userDAO.findByUuid(uuid);
         if(usuario!=null){
-            responseList = new ArrayList<>();
             return listRoles.stream().filter(x-> x.getUser_id().equals(usuario.getId())).toList();
         }
         return null;
