@@ -48,7 +48,7 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
         if(user == null) throw new Exception("Ocurrio un error al querer insertar.");
         return user;
     }
-    public boolean validateAutenticate(String username,String password){
+    public boolean validateAutenticate(String username,String password) throws Exception{
         Usuario user = this.findUserByUsername(username);
         if(user!=null){
             if(Seguridad.decrypt(password, user.getPassword())) return true; else return false;

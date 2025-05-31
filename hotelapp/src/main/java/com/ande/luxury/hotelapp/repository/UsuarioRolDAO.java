@@ -36,7 +36,7 @@ public class UsuarioRolDAO extends BaseDAO<UsuarioRol> {
         });
     }
     
-    public List<UsuarioRol> findRolesByUsuario(String uuid){
+    public List<UsuarioRol> findRolesByUsuario(String uuid) throws Exception{
         UsuarioDAO userDAO = new UsuarioDAO();
         List<UsuarioRol> listRoles = this.findAll();
         Usuario usuario = userDAO.findByUuid(uuid);

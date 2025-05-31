@@ -6,6 +6,10 @@ package com.ande.luxury.hotelapp.views;
 
 import com.ande.luxury.hotelapp.entities.Usuario;
 import com.ande.luxury.hotelapp.services.UsuarioService;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +20,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Login extends javax.swing.JFrame {
 
-     private static final Logger logger = LoggerFactory.getLogger(Login.class);
+    private static final Logger logger = LoggerFactory.getLogger(Login.class);
 
     /**
      * Creates new form Main
@@ -27,6 +31,9 @@ public class Login extends javax.swing.JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center on screen
         initComponents();
+        if (validateComponentsInitialized()) {
+            System.exit(0);
+        }
     }
 
     /**
@@ -140,6 +147,15 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public boolean validateComponentsInitialized() {
+        try (InputStream input = new FileInputStream("config.properties")) {
+            return false;
+        } catch (IOException e) {
+            logger.info("No se encuentra el archivo de configuración");
+            JOptionPane.showMessageDialog(null, "El archivo de configuración no se encuentra disponible. ");
+            return true;
+        }
+    }
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
         //validateFields();
@@ -147,27 +163,33 @@ public class Login extends javax.swing.JFrame {
         // Obtener contraseña
         char[] passwordChars = txtPassword.getPassword();
         String password = new String(passwordChars);
-        Usuario usuario = usuarioService.validateCredentials(txtUsuario.getText().trim(),password.trim());
-        if(usuario != null){
-            logger.info("Autenticación exitosa " + usuario.getDocumentNumber().toString() + " - " + usuario.getFullName());
-            JOptionPane.showMessageDialog(null, "Autenticado correctamente");
-            this.setVisible(false);
-            Main mainForm = new Main(usuario);
-            mainForm.setVisible(true);
-        }else{
-            logger.error("El usuario y/o contraseña es incorrecto, verifique nuevamente");
-            JOptionPane.showMessageDialog(null, "El usuario y/o contraseña es incorrecto, verifique nuevamente");
+        Usuario usuario;
+        try {
+            usuario = usuarioService.validateCredentials(txtUsuario.getText().trim(), password.trim());
+            if (usuario != null) {
+                logger.info("Autenticación exitosa " + usuario.getDocumentNumber().toString() + " - " + usuario.getFullName());
+                JOptionPane.showMessageDialog(null, "Autenticado correctamente");
+                this.setVisible(false);
+                Main mainForm = new Main(usuario);
+                mainForm.setVisible(true);
+            } else {
+                logger.error("El usuario y/o contraseña es incorrecto, verifique nuevamente");
+                JOptionPane.showMessageDialog(null, "El usuario y/o contraseña es incorrecto, verifique nuevamente");
+            }
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_btnLoginActionPerformed
 
-    public void validateFields(){
-        if(txtUsuario.getText().isBlank()){
+    public void validateFields() {
+        if (txtUsuario.getText().isBlank()) {
             jDialog1.setTitle("Error");
             jDialog1.setVisible(rootPaneCheckingEnabled);
             return;
         }
     }
-    
+
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnReservarActionPerformed

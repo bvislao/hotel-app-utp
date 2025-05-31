@@ -4,6 +4,8 @@
  */
 package com.ande.luxury.hotelapp.utilsdb;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -12,16 +14,27 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 public class Seguridad {
 
+    private static final Logger logger = LoggerFactory.getLogger(Seguridad.class);
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     // Hash (Encrypt)
 
     public static String encrypt(String plainText) {
-        return encoder.encode(plainText);
+        try {
+            return encoder.encode(plainText);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            return null;
+        }
     }
 
     // Verify (Match plain with encrypted)
     public static boolean decrypt(String plainText, String hashedValue) {
-        return encoder.matches(plainText, hashedValue);
+        try {
+            return encoder.matches(plainText, hashedValue);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            return false;
+        }
     }
 
 }

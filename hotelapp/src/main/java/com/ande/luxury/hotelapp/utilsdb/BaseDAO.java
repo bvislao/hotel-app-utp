@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -19,6 +21,8 @@ import java.util.List;
  */
 public class BaseDAO<T> {
 
+    private static final Logger logger = LoggerFactory.getLogger(BaseDAO.class);
+    
     private final String tableName;
     private final RowMapper<T> rowMapper;
 
@@ -27,7 +31,7 @@ public class BaseDAO<T> {
         this.rowMapper = rowMapper;
     }
 
-    public List<T> findAll() {
+    public List<T> findAll() throws Exception {
         List<T> result = new ArrayList<>();
         String sql = "SELECT * FROM " + tableName;
         try (Connection conn = databaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -37,12 +41,13 @@ public class BaseDAO<T> {
             }
 
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
         return result;
     }
 
-    public T findUserByUsername(String username) {
+    public T findUserByUsername(String username) throws Exception {
         String sql = "SELECT * FROM " + tableName + " WHERE document_number = ?";
         try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -53,12 +58,13 @@ public class BaseDAO<T> {
             }
 
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
         return null;
     }
 
-    public T findById(int id) {
+    public T findById(int id) throws Exception {
         String sql = "SELECT * FROM " + tableName + " WHERE id = ?";
         try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -69,12 +75,13 @@ public class BaseDAO<T> {
             }
 
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
         return null;
     }
     
-    public T findByUuid(String uuid) {
+    public T findByUuid(String uuid) throws Exception {
         String sql = "SELECT * FROM " + tableName + " WHERE uuid = ?";
         try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -85,12 +92,13 @@ public class BaseDAO<T> {
             }
 
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
         return null;
     }
 
-    public void deleteById(int id) {
+    public void deleteById(int id) throws Exception {
         String sql = "DELETE FROM " + tableName + " WHERE id = ?";
         try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -98,6 +106,7 @@ public class BaseDAO<T> {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
     }

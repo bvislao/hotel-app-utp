@@ -8,3 +8,9 @@
 2025-05-31 11:36:22 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Bryan Vislao Chavez
 2025-05-31 11:38:04 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Bryan Vislao Chavez
 2025-05-31 11:43:42 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Bryan Vislao Chavez
+2025-05-31 12:19:34 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - No se encuentra el archivo de configuración
+2025-05-31 12:21:07 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - No se encuentra el archivo de configuración
+2025-05-31 12:22:14 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - No se encuentra el archivo de configuración
+2025-05-31 12:23:06 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - No se encuentra el archivo de configuración
+2025-05-31 12:37:25 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
+2025-05-31 12:37:28 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Bryan Vislao Chavez

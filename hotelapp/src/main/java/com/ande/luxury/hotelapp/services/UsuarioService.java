@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class UsuarioService {
     
-    public Usuario validateCredentials(String user,String password){
+    public Usuario validateCredentials(String user,String password) throws Exception{
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         boolean result = usuarioDAO.validateAutenticate(user,password);
         if(result){
@@ -40,7 +40,7 @@ public class UsuarioService {
             return null;
         }
     }
-    public List<Usuario> listUsers(){
+    public List<Usuario> listUsers() throws Exception{
         List<Usuario> usuariosList = new ArrayList<>();
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         usuariosList = usuarioDAO.findAll();
