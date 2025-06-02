@@ -104,7 +104,9 @@ public class Usuarios_Gestion extends javax.swing.JInternalFrame {
 
     private void btnCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearUsuarioActionPerformed
         // TODO add your handling code here:
-        Usuarios_Crear form = new Usuarios_Crear();
+        //Usuario_Nuevo form = new Usuario_Nuevo();
+        //form.setVisible(true);
+        Usuarios_Crear form =new Usuarios_Crear();
         form.setVisible(true);
     }//GEN-LAST:event_btnCrearUsuarioActionPerformed
 
@@ -114,13 +116,17 @@ public class Usuarios_Gestion extends javax.swing.JInternalFrame {
         List<Usuario> listUsuarios = usuarioService.listUsers();
         String[] columns = {"ID", "Numero Documento", "Nombre Completo","Rol", "Password", "Telefono", "Email", "Editar", "Eliminar"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
-
+        
         for (Usuario user : listUsuarios) {
+            String roles = "";
+            if(user.getRoles() != null){
+                roles=user.getRoles().getFirst().getDescription().toUpperCase();
+            }
             Object[] row = new Object[]{
                 user.getUuid(),
                 user.getDocumentNumber(),
                 user.getFullName(),
-                user.getRoles().getFirst().getDescription().toString().toUpperCase(),
+                roles,
                 user.getPassword(),
                 user.getPhone(),
                 user.getEmail(),

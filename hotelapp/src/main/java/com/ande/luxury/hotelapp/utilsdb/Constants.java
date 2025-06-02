@@ -12,15 +12,10 @@ import java.util.UUID;
  */
 public class Constants {
 
-    public static final String URL_DATABASE = "jdbc:mysql://localhost:33060/hotel"; // your DB
-    public static final String USER_DATABASE = "root"; // your DB user
-    public static final String PASSWORD_DATABASE = "toor"; // your DB password
-
     public static String generateUuid() {
         UUID randomUUID = UUID.randomUUID();
         return randomUUID.toString();
     }
-
     /**
      * Estado del registro para las operaciones
      */

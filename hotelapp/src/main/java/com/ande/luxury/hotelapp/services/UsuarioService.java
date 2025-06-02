@@ -12,13 +12,39 @@ import com.ande.luxury.hotelapp.repository.UsuarioDAO;
 import com.ande.luxury.hotelapp.repository.UsuarioRolDAO;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author bryanvislaochavez
  */
 public class UsuarioService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
     
+   
+    public void createUser(Usuario objUser){
+        try{
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            Usuario usuarioRegistered = usuarioDAO.findUserByUsername(objUser.getDocumentNumber());
+            if(usuarioRegistered == null){
+                Usuario usuarioSave = usuarioDAO.saveUsuario(objUser);
+                if(usuarioSave != null){
+                    UsuarioRolDAO usuarioRolDAO = new UsuarioRolDAO();
+                    for(Rol rol : objUser.getRoles()){
+                        UsuarioRol userRolSaved = new UsuarioRol(usuarioSave.getId(),rol.getId());
+                        usuarioRolDAO.save(userRolSaved);
+                    }
+                }
+            }else{
+                throw new Exception("Usuario ya existe");
+            }
+            
+        }catch(Exception ex){
+            logger.error(ex.getMessage());
+        }
+    }
     public Usuario validateCredentials(String user,String password) throws Exception{
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         boolean result = usuarioDAO.validateAutenticate(user,password);
