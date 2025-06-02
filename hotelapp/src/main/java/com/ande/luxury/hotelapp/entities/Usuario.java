@@ -6,6 +6,7 @@ package com.ande.luxury.hotelapp.entities;
 
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -24,6 +25,10 @@ public class Usuario extends Auditable {
     private String password;
     private Integer status;
     private List<Rol> roles;
+    
+    public Usuario(){
+        
+    }
     
     public Usuario(Integer id,String uuid,String documentNumber,String fullName,String phone,String email,String password,Integer status){
         this.id = id;

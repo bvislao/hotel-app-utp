@@ -18,6 +18,7 @@ public class Main extends javax.swing.JFrame {
     /**
      * Creates new form Main
      */
+    public static String userLoguin;
     
     
     public Main() {
@@ -43,6 +44,7 @@ public class Main extends javax.swing.JFrame {
             lblTime.setText("Hora: " + hora);
         });
         timer.start();
+        userLoguin = usuario.getDocumentNumber();
     }
     
 
@@ -77,30 +79,54 @@ public class Main extends javax.swing.JFrame {
 
         panelMain.setLayout(new javax.swing.OverlayLayout(panelMain));
 
-        jToolBar1.setRollover(true);
-
-        pnlFooter.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnlFooter.setDoubleBuffered(false);
+        pnlFooter.setEnabled(false);
 
         jLabel1.setText("Rol:");
-        pnlFooter.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, -1, -1));
 
         jLabel2.setText("Usuario:");
-        pnlFooter.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         jLabel3.setText("Fecha y Hora:");
-        pnlFooter.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 10, -1, -1));
 
         lblUser.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        pnlFooter.add(lblUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, -1, -1));
-        pnlFooter.add(lblRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, -1, -1));
 
         lblDate.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        pnlFooter.add(lblDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 10, -1, -1));
 
         lblTime.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        pnlFooter.add(lblTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 10, -1, -1));
+
+        javax.swing.GroupLayout pnlFooterLayout = new javax.swing.GroupLayout(pnlFooter);
+        pnlFooter.setLayout(pnlFooterLayout);
+        pnlFooterLayout.setHorizontalGroup(
+            pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlFooterLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblUser)
+                .addGap(190, 190, 190)
+                .addComponent(jLabel1)
+                .addGap(27, 27, 27)
+                .addComponent(lblRol)
+                .addGap(630, 630, 630)
+                .addComponent(jLabel3)
+                .addGap(39, 39, 39)
+                .addComponent(lblDate))
+        );
+        pnlFooterLayout.setVerticalGroup(
+            pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlFooterLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(lblUser)
+                    .addComponent(jLabel1)
+                    .addComponent(lblRol)
+                    .addComponent(jLabel3)
+                    .addComponent(lblDate)))
+        );
 
         jToolBar1.add(pnlFooter);
+        pnlFooter.getAccessibleContext().setAccessibleParent(pnlFooter);
 
         mnuInfo.setText("Acerca de");
 

@@ -5,25 +5,30 @@
 package com.ande.luxury.hotelapp.entities;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
  * @author HP
  */
-@Data
-public class Rol {
+@Getter
+@Setter
+public class Rol extends Auditable  {
     private Integer id;
     private String uuid;
     private String code;
     private String description;
-    private Integer active;
+    
+    public Rol(Integer id){
+        this.id = id;
+    }
     
     public Rol(Integer id,String uuid,String code,String description,Integer active){
         this.id = id;
         this.uuid = uuid;
         this.code = code;
         this.description = description;
-        this.active = active;
     }
     
 }
