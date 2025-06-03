@@ -6,3 +6,13 @@
 2025-06-02 13:53:33 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Super Administrador
 2025-06-02 13:56:41 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Super Administrador
 2025-06-02 13:57:06 [AWT-EventQueue-0] ERROR c.a.l.h.services.UsuarioService - Usuario ya existe
+2025-06-02 14:14:40 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
+2025-06-02 14:14:46 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
+2025-06-02 14:14:51 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
+2025-06-02 14:15:01 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Super Administrador
+2025-06-02 14:15:44 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
+2025-06-02 14:20:50 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Super Administrador
+2025-06-02 14:21:09 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - Cannot invoke "com.ande.luxury.hotelapp.entities.Rol.getDescription()" because the return value of "java.util.List.getFirst()" is null
+2025-06-02 14:21:34 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
+2025-06-02 14:24:20 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Super Administrador
+2025-06-02 14:24:25 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - Cannot invoke "com.ande.luxury.hotelapp.entities.Rol.getDescription()" because the return value of "java.util.List.getFirst()" is null
