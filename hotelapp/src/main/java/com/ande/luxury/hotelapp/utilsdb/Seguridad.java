@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * @author bryanvislaochavez
  */
 public class Seguridad {
-    private static int strength = 4; // cost factor (log rounds)
+    private static int strength = 12; // cost factor (log rounds)
     private static final Logger logger = LoggerFactory.getLogger(Seguridad.class);
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(strength);
     // Hash (Encrypt)

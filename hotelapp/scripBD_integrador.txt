@@ -51,7 +51,7 @@ CREATE TABLE `hotel`.`users` (
                          `full_name` varchar(150),
                          `phone` varchar(15),
                          `email` varchar(100),
-                         `password` varchar(250),
+                         `password` TEXT,
                          `status_id` integer NOT NULL,
                          `active` integer,
                          `created_by` varchar(15),
