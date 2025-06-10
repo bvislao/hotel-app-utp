@@ -1,3 +1,6 @@
 /hotelapp/target/
 *.log
 /hotelapp/nbproject/
+/hotelapp/config.properties
+/hotelapp/logs/
+/hotelapp/nb-configuration.xml
