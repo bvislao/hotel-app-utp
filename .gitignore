@@ -1,3 +1,9 @@
 /hotelapp/target/
 *.log
 /hotelapp/nbproject/
+/hotelapp/config.properties
+/hotelapp/logs/
+/hotelapp/nb-configuration.xml
+.idea/
+.DS_Store
+/hotelapp/logs/app.log
