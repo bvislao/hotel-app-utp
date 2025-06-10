@@ -22,3 +22,11 @@
 2025-06-03 00:34:38 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
 2025-06-03 00:35:37 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
 2025-06-03 00:45:58 [main] ERROR c.a.l.hotelapp.utilsdb.Seguridad - rawPassword cannot be null
+2025-06-09 22:41:50 [main] ERROR c.a.l.hotelapp.utilsdb.Seguridad - rawPassword cannot be null
+2025-06-09 22:43:59 [AWT-EventQueue-0] ERROR c.a.l.h.database.databaseConnection - Ocurrio un error al conectar la base de datos ==> Unsupported protocol version: 11. Likely connecting to an X Protocol port. -- 08001
+2025-06-09 22:43:59 [AWT-EventQueue-0] ERROR c.a.luxury.hotelapp.utilsdb.BaseDAO - java.sql.SQLNonTransientConnectionException: Unsupported protocol version: 11. Likely connecting to an X Protocol port.
+2025-06-09 22:43:59 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
+2025-06-09 22:48:33 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
+2025-06-09 22:49:12 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
+2025-06-09 22:49:35 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa ROOT72854591 - Super Administrador
+2025-06-09 22:52:48 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
