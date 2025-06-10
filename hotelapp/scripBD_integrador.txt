@@ -149,12 +149,12 @@ VALUES (1, '55a744e6-49f5-4b24-9bb8-96379274cdbd', 'Activo', 1, 'admin', CURRENT
 
 INSERT  INTO `hotel`.`room_type` (`id`, `uuid`, `description`, `active`, `created_by`, `created_at`)
 VALUES (1, 'cc96e3cb-ebf6-4fa7-8496-47764590679c', 'Habitación individual', 1, 'admin', CURRENT_TIMESTAMP),
-       (2, 'f02be042-95f5-4ce3-b7cd-efa0406e2545', 'Habitación doble estándar (una cama doble)', 0, 'admin', CURRENT_TIMESTAMP),
-       (3, '26f2bf93-5f23-4380-a96e-b680fae07ba4', 'Habitación doble estándar (dos camas separadas)', 0, 'admin', CURRENT_TIMESTAMP),
-       (4, '00d78805-b95b-4e9d-92ef-908d58e9fa9b', 'Habitación doble deluxe', 0, 'admin', CURRENT_TIMESTAMP),
-       (5, '183b580d-2eea-4422-9a00-e4fe0d675185', 'Suite júnior', 0, 'admin', CURRENT_TIMESTAMP),
-       (6, '90aef3b6-9915-40c4-b69b-be5c9e380145', 'Suite ejecutiva', 0, 'admin', CURRENT_TIMESTAMP),
-       (7, '7c03ee78-b6d9-4c06-8c81-bba5e6cd14a0', 'Suite presidencial', 0, 'admin', CURRENT_TIMESTAMP);
+       (2, 'f02be042-95f5-4ce3-b7cd-efa0406e2545', 'Habitación doble estándar (una cama doble)', 1, 'admin', CURRENT_TIMESTAMP),
+       (3, '26f2bf93-5f23-4380-a96e-b680fae07ba4', 'Habitación doble estándar (dos camas separadas)', 1, 'admin', CURRENT_TIMESTAMP),
+       (4, '00d78805-b95b-4e9d-92ef-908d58e9fa9b', 'Habitación doble deluxe', 1, 'admin', CURRENT_TIMESTAMP),
+       (5, '183b580d-2eea-4422-9a00-e4fe0d675185', 'Suite júnior', 1, 'admin', CURRENT_TIMESTAMP),
+       (6, '90aef3b6-9915-40c4-b69b-be5c9e380145', 'Suite ejecutiva', 1, 'admin', CURRENT_TIMESTAMP),
+       (7, '7c03ee78-b6d9-4c06-8c81-bba5e6cd14a0', 'Suite presidencial', 1, 'admin', CURRENT_TIMESTAMP);
 
 
 
@@ -167,11 +167,13 @@ VALUES (1, '6bb31ba7-7ee3-41ca-be1f-662baad66c49','ROOT', 'Super Administrador',
 
 
 INSERT  INTO `hotel`.`users` (`id`, `uuid`, `document_number`, `full_name`, `phone`, `email`, `password`, `status_id`, `active`, `created_by`, `created_at`)
-VALUES (1,'b0f3a3d4-5c8e-4b7c-9f6d-5a2e0f3b8c1e','72854591','Super Administrador','99999999','99999999@gmail.com','$2a$04$xFLIJ/VvhNlssxdkVF2BceQhLa4ai5QJ2moqkBOgmyiP5r6/Cbj5S',1,1,'ADMIN',CURRENT_TIMESTAMP);
+VALUES (1,'b0f3a3d4-5c8e-4b7c-9f6d-5a2e0f3b8c1e','admin','Super Administrador','99999999','99999999@gmail.com','$2a$12$Fi3f.vLMBKM0YsUzy8npU.KQzFsqUogsl.y6eoYUP68YTTkm/wGE.',1,1,'ADMIN',CURRENT_TIMESTAMP),
+(2,'995b2f58-3185-4b1f-b389-7ea4515a203a','72854591','Bryan Vislao Chavez','99999999','99999999@gmail.com','$2a$12$Fi3f.vLMBKM0YsUzy8npU.KQzFsqUogsl.y6eoYUP68YTTkm/wGE.',1,1,'ADMIN',CURRENT_TIMESTAMP);
 
 
 INSERT  INTO `hotel`.`users_role` (`id`, `uuid`, `user_id`, `rol_id`, `active`, `created_by`, `created_at`)
-VALUES (1, 'b0f2a3d4-5c8e-4b7c-9f6d-5a2e0f3b8c1e', 1, 1, 1, 'admin', CURRENT_TIMESTAMP);
+VALUES (1, 'b0f2a3d4-5c8e-4b7c-9f6d-5a2e0f3b8c1e', 1, 1, 1, 'admin', CURRENT_TIMESTAMP),
+ (2, '6c8faba2-1935-458e-ac8c-53557f89e50d', 2, 3, 1, 'admin', CURRENT_TIMESTAMP);
 
 
 INSERT  INTO `hotel`.`hotel` (`id`, `uuid`, `category`, `address`, `location`, `status_id`, `active`, `created_by`, `created_at`)
