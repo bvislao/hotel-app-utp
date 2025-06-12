@@ -60,7 +60,7 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         panelMain = new javax.swing.JDesktopPane();
-        jToolBar1 = new javax.swing.JToolBar();
+        jSeparator1 = new javax.swing.JSeparator();
         pnlFooter = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -83,12 +83,19 @@ public class Main extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setAutoRequestFocus(false);
+        setBackground(new java.awt.Color(51, 255, 51));
         setCursor(new java.awt.Cursor(java.awt.Cursor.MOVE_CURSOR));
+        setResizable(false);
 
+        panelMain.setDragMode(javax.swing.JDesktopPane.OUTLINE_DRAG_MODE);
         panelMain.setLayout(new javax.swing.OverlayLayout(panelMain));
 
+        pnlFooter.setBackground(new java.awt.Color(51, 255, 51));
         pnlFooter.setDoubleBuffered(false);
         pnlFooter.setEnabled(false);
 
@@ -109,34 +116,36 @@ public class Main extends javax.swing.JFrame {
         pnlFooterLayout.setHorizontalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFooterLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
+                .addGap(4, 4, 4)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(lblUser)
                 .addGap(190, 190, 190)
                 .addComponent(jLabel1)
                 .addGap(27, 27, 27)
                 .addComponent(lblRol)
-                .addGap(630, 630, 630)
+                .addGap(551, 551, 551)
                 .addComponent(jLabel3)
-                .addGap(39, 39, 39)
-                .addComponent(lblDate))
+                .addGap(118, 118, 118)
+                .addComponent(lblDate)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlFooterLayout.setVerticalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFooterLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
                     .addComponent(lblUser)
-                    .addComponent(jLabel1)
+                    .addGroup(pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel2))
                     .addComponent(lblRol)
-                    .addComponent(jLabel3)
-                    .addComponent(lblDate)))
+                    .addComponent(lblDate))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jToolBar1.add(pnlFooter);
-        pnlFooter.getAccessibleContext().setAccessibleParent(pnlFooter);
+        jMenuBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         mnuInfo.setText("Acerca de");
 
@@ -201,25 +210,38 @@ public class Main extends javax.swing.JFrame {
 
         jMenuBar1.add(jmReservas);
 
+        jMenu1.setText("Parametros");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Clientes");
+        jMenuBar1.add(jMenu2);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelMain)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(1078, 1078, 1078)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(pnlFooter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(panelMain)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(panelMain, javax.swing.GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(panelMain, javax.swing.GroupLayout.PREFERRED_SIZE, 849, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pnlFooter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
+
+        pnlFooter.getAccessibleContext().setAccessibleParent(pnlFooter);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -233,8 +255,6 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         About form = new About();
         form.setClosable(true);          // Botón cerrar
-        // Configurar el comportamiento al cerrar
-        form.setDefaultCloseOperation(javax.swing.JInternalFrame.DISPOSE_ON_CLOSE);
         form.setVisible(true);
         panelMain.add(form);
         
@@ -292,11 +312,13 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JMenuItem jmGenTipoHabitacion;
     private javax.swing.JMenuItem jmGestHabitaciones;
     private javax.swing.JMenuItem jmHabitacionServicios;
