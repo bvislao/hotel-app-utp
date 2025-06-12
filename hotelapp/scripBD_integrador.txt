@@ -114,6 +114,7 @@ CREATE TABLE `hotel`.`bookings` (
   `user_id` int null,
   `childrens` int NOT NULL,
   `adults` int NOT NULL,
+  `document_number_guest` varchar(200) null,
   `full_name_guest` varchar(200) null,
   `email_guest` varchar(200) null,
   `country_code` char(5) null,
@@ -125,6 +126,82 @@ CREATE TABLE `hotel`.`bookings` (
                               `last_modified_by` varchar(15),
                               `last_modified_at` timestamp
 );
+
+
+CREATE TABLE `hotel`.`bookings_service_type`(
+  `id` integer AUTO_INCREMENT PRIMARY KEY,
+  `uuid` char(36) UNIQUE,
+  `name` varchar(200) null,
+  `price` decimal(15,4),
+  `active` integer,
+                              `created_by` varchar(15),
+                              `created_at` timestamp,
+                              `last_modified_by` varchar(15),
+                              `last_modified_at` timestamp
+);
+
+INSERT INTO `hotel`.`bookings_service_type` (`id`, `uuid`, `name`, `price`, `active`, `created_by`, `created_at`)
+VALUES
+(1, 'd1f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 'Desayuno', 10.00, 1, 'admin', CURRENT_TIMESTAMP),
+(2, 'e2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 'Almuerzo', 15.00, 1, 'admin', CURRENT_TIMESTAMP),
+(3, 'f3f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 'Cena', 20.00, 1, 'admin', CURRENT_TIMESTAMP),
+(4, 'g4f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 'Servicio de limpieza', 5.00, 1, 'admin', CURRENT_TIMESTAMP),
+(5, 'h5f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 'Transporte al aeropuerto', 30.00, 1, 'admin', CURRENT_TIMESTAMP);
+
+CREATE TABLE `hotel`.`bookings_service`(
+  `id` integer AUTO_INCREMENT PRIMARY KEY,
+  `uuid` char(36) UNIQUE,
+   `booking_id` int not null,
+   `bookings_service_type_id` int not null,
+   `count` int not null,
+   `price` decimal(15,4),
+   `price_total` decimal(15,4),
+    `active` integer,
+                              `created_by` varchar(15),
+                              `created_at` timestamp,
+                              `last_modified_by` varchar(15),
+                              `last_modified_at` timestamp
+);
+
+ALTER TABLE `hotel`.`bookings_service` ADD CONSTRAINT `fk_bookings_service_booking_id` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`);
+ALTER TABLE `hotel`.`bookings_service` ADD CONSTRAINT `fk_bookings_service_bookings_service_type_id` FOREIGN KEY (`booking_id`) REFERENCES `bookings_service_type` (`id`);
+
+
+
+CREATE TABLE `hotel`.`invoice` (
+ `id` integer AUTO_INCREMENT PRIMARY KEY,
+  `uuid` char(36) UNIQUE,
+   `document_invoice` varchar(200),
+  `booking_id` int not null,
+    `amount_total` decimal(15,4),
+    `active` integer,
+                              `created_by` varchar(15),
+                              `created_at` timestamp,
+                              `last_modified_by` varchar(15),
+                              `last_modified_at` timestamp
+  
+);
+
+ALTER TABLE `hotel`.`invoice` ADD CONSTRAINT `fk_invoice_booking_id` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`);
+
+CREATE TABLE `hotel`.`invoice_detail` (
+ `id` integer AUTO_INCREMENT PRIMARY KEY,
+  `uuid` char(36) UNIQUE,
+    `invoice_id` int not null,
+   `description` varchar(200),
+  `unit` int not null,
+    `amount_total` decimal(15,4),
+    `active` integer,
+                              `created_by` varchar(15),
+                              `created_at` timestamp,
+                              `last_modified_by` varchar(15),
+                              `last_modified_at` timestamp
+
+);
+
+ALTER TABLE `hotel`.`invoice_detail` ADD CONSTRAINT `fk_invoice_detail_invoice_id` FOREIGN KEY (`invoice_id`) REFERENCES `invoice` (`id`);
+
+
 
 ALTER TABLE `hotel`.`bookings` ADD CONSTRAINT `fk_bookings_hotel_room_id` FOREIGN KEY (`hotel_room_id`) REFERENCES `hotel_room` (`id`);
 
@@ -162,7 +239,7 @@ INSERT  INTO `hotel`.`rol` (`id`, `uuid`,`code`, `description`, `active`, `creat
 VALUES (1, '6bb31ba7-7ee3-41ca-be1f-662baad66c49','ROOT', 'Super Administrador', 1, 'admin', CURRENT_TIMESTAMP),
        (2, '55354268-ccb2-466c-9e91-6e9a4709d6d5','ADMIN', 'Administrador', 1, 'admin', CURRENT_TIMESTAMP),
        (3, 'e1b7ecb0-0854-4dd0-9482-8cce27757e23','RECEPCIONISTA', 'Recepcionista', 1, 'admin', CURRENT_TIMESTAMP),
-       (5, '6783f6b7-27c2-4fee-b0b9-58a38973b271', 'CLIENT','Cliente', 1, 'admin', CURRENT_TIMESTAMP);
+       (4, '6783f6b7-27c2-4fee-b0b9-58a38973b271', 'CLIENT','Cliente', 1, 'admin', CURRENT_TIMESTAMP);
 
 
 

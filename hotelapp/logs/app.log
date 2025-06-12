@@ -1,32 +1,8 @@
-2025-06-02 13:44:11 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Super Administrador
-2025-06-02 13:44:19 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - Cannot invoke "java.util.List.getFirst()" because the return value of "com.ande.luxury.hotelapp.entities.Usuario.getRoles()" is null
-2025-06-02 13:47:45 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Super Administrador
-2025-06-02 13:51:43 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Super Administrador
-2025-06-02 13:52:13 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - Cannot invoke "com.ande.luxury.hotelapp.entities.Rol.getDescription()" because the return value of "java.util.List.getFirst()" is null
-2025-06-02 13:53:33 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Super Administrador
-2025-06-02 13:56:41 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Super Administrador
-2025-06-02 13:57:06 [AWT-EventQueue-0] ERROR c.a.l.h.services.UsuarioService - Usuario ya existe
-2025-06-02 14:14:40 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-02 14:14:46 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-02 14:14:51 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-02 14:15:01 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Super Administrador
-2025-06-02 14:15:44 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-02 14:20:50 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Super Administrador
-2025-06-02 14:21:09 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - Cannot invoke "com.ande.luxury.hotelapp.entities.Rol.getDescription()" because the return value of "java.util.List.getFirst()" is null
-2025-06-02 14:21:34 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-02 14:24:20 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Super Administrador
-2025-06-02 14:24:25 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - Cannot invoke "com.ande.luxury.hotelapp.entities.Rol.getDescription()" because the return value of "java.util.List.getFirst()" is null
-2025-06-03 00:31:10 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Super Administrador
-2025-06-03 00:31:15 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - Cannot invoke "com.ande.luxury.hotelapp.entities.Rol.getDescription()" because the return value of "java.util.List.getFirst()" is null
-2025-06-03 00:33:40 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Super Administrador
-2025-06-03 00:34:38 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-03 00:35:37 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-03 00:45:58 [main] ERROR c.a.l.hotelapp.utilsdb.Seguridad - rawPassword cannot be null
-2025-06-09 22:41:50 [main] ERROR c.a.l.hotelapp.utilsdb.Seguridad - rawPassword cannot be null
-2025-06-09 22:43:59 [AWT-EventQueue-0] ERROR c.a.l.h.database.databaseConnection - Ocurrio un error al conectar la base de datos ==> Unsupported protocol version: 11. Likely connecting to an X Protocol port. -- 08001
-2025-06-09 22:43:59 [AWT-EventQueue-0] ERROR c.a.luxury.hotelapp.utilsdb.BaseDAO - java.sql.SQLNonTransientConnectionException: Unsupported protocol version: 11. Likely connecting to an X Protocol port.
-2025-06-09 22:43:59 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-09 22:48:33 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-09 22:49:12 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-09 22:49:35 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa ROOT72854591 - Super Administrador
-2025-06-09 22:52:48 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-12 00:00:21 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
+2025-06-12 00:00:28 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-12 00:06:19 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-12 00:07:36 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-12 00:09:27 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-12 00:10:31 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-12 00:11:54 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-12 00:16:23 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador

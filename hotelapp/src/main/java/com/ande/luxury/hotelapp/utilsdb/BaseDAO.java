@@ -33,7 +33,7 @@ public class BaseDAO<T> {
 
     public List<T> findAll() throws Exception {
         List<T> result = new ArrayList<>();
-        String sql = "SELECT * FROM " + tableName;
+        String sql = "SELECT * FROM " + tableName + " WHERE active = 1";
         try (Connection conn = databaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {

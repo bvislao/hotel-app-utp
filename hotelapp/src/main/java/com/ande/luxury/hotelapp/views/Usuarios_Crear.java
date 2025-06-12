@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -19,10 +20,18 @@ import javax.swing.JOptionPane;
  */
 public class Usuarios_Crear extends javax.swing.JFrame {
 
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Usuarios_Crear.class);
+    private Usuarios_Gestion formularioPadre;
+
     /**
      * Creates new form Usuarios_Crear
      */
     public Usuarios_Crear() {
+        initComponents();
+    }
+
+    public Usuarios_Crear(Usuarios_Gestion padre) {
+        this.formularioPadre = padre;
         initComponents();
     }
 
@@ -171,25 +180,21 @@ public class Usuarios_Crear extends javax.swing.JFrame {
             // TODO add your handling code here:
             validateRegister();
             String documentNumber = txtDocumentNumber.getText();
-            String password = jPassword.getPassword().toString();
+            String password = String.valueOf(jPassword.getPassword());
             String fullName = txtFullName.getText();
             String phone = txtTelefono.getText();
             String email = txtEmail.getText();
             Integer rolId = 0;
-            switch (cboPerfiles.getSelectedIndex()) {
-                case 1: // Administrador
-                    rolId = 2;
-                    break;
-                case 2: // Recepcionista
-                    rolId = 3;
-                    break;
-                case 3: // Cliente
-                    rolId = 4;
-                    break;
-                default:
-                    rolId = 4; break;
-
-            }
+            rolId = switch (cboPerfiles.getSelectedIndex()) {
+                case 1 ->
+                    2; // Administrador
+                case 2 ->
+                    3; // Recepcionista
+                case 3 ->
+                    4; // Cliente
+                default ->
+                    4; // Cliente
+            };
             Usuario userNuevov = new Usuario();
             userNuevov.setDocumentNumber(documentNumber);
             userNuevov.setPassword(password);
@@ -203,9 +208,15 @@ public class Usuarios_Crear extends javax.swing.JFrame {
             rol.add(rolAdd);
             userNuevov.setRoles(rol);
             UsuarioService usuarioService = new UsuarioService();
-            usuarioService.createUser(userNuevov);
-            JOptionPane.showMessageDialog(null, "Usuario Creado Correctamente");
-            this.dispose();
+            String message = usuarioService.createUser(userNuevov);
+
+            if (message.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Usuario creado exitosamente");
+                formularioPadre.refrescarTabla();
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, message);
+            }
 
         } catch (Exception ex) {
             Logger.getLogger(Usuarios_Crear.class.getName()).log(Level.SEVERE, null, ex);

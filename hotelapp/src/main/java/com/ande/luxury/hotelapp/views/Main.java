@@ -4,11 +4,14 @@
  */
 package com.ande.luxury.hotelapp.views;
 
+import com.ande.luxury.hotelapp.entities.Rol;
 import com.ande.luxury.hotelapp.entities.Usuario;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.Timer;
+
 /**
  *
  * @author bryanvislaochavez
@@ -20,7 +23,6 @@ public class Main extends javax.swing.JFrame {
      */
     public static String userLoguin;
     
-    
     public Main() {
         initComponents();
         //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -28,17 +30,18 @@ public class Main extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza la ventana
     }
     
-     public Main(Usuario usuario) {
+    public Main(Usuario usuario) {
         initComponents();
         //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setTitle("Principal - Ande Luxury");
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza la ventana
         String rol = usuario.getRoles().getFirst().getDescription();
+        setPermissionAccordingWithRolesByUser(usuario.getRoles());
         lblUser.setText(usuario.getFullName());
         lblRol.setText(rol);
         lblDate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
         lblTime.setText("Hora: --:--:--");
-         // Timer para actualizar la hora
+        // Timer para actualizar la hora
         Timer timer = new Timer(1000, e -> {
             String hora = new SimpleDateFormat("HH:mm:ss").format(new Date());
             lblTime.setText("Hora: " + hora);
@@ -46,7 +49,6 @@ public class Main extends javax.swing.JFrame {
         timer.start();
         userLoguin = usuario.getDocumentNumber();
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -73,6 +75,14 @@ public class Main extends javax.swing.JFrame {
         jmiSalir = new javax.swing.JMenuItem();
         jmUsuarios = new javax.swing.JMenu();
         jmiGestionarUsuarios = new javax.swing.JMenuItem();
+        jmHabitaciones = new javax.swing.JMenu();
+        jmHabitacionServicios = new javax.swing.JMenuItem();
+        jmGenTipoHabitacion = new javax.swing.JMenuItem();
+        jmGestHabitaciones = new javax.swing.JMenuItem();
+        jmReservas = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.MOVE_CURSOR));
@@ -160,6 +170,37 @@ public class Main extends javax.swing.JFrame {
 
         jMenuBar1.add(jmUsuarios);
 
+        jmHabitaciones.setText("Habitaciones");
+
+        jmHabitacionServicios.setText("Gestionar Servicios");
+        jmHabitacionServicios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmHabitacionServiciosActionPerformed(evt);
+            }
+        });
+        jmHabitaciones.add(jmHabitacionServicios);
+
+        jmGenTipoHabitacion.setText("Gestion Tipo de Habitaciones");
+        jmHabitaciones.add(jmGenTipoHabitacion);
+
+        jmGestHabitaciones.setText("Gestionar Habitaciones");
+        jmHabitaciones.add(jmGestHabitaciones);
+
+        jMenuBar1.add(jmHabitaciones);
+
+        jmReservas.setText("Reservas");
+
+        jMenuItem1.setText("Reservar Habitacion");
+        jmReservas.add(jMenuItem1);
+
+        jMenuItem2.setText("Servicio - Habitación");
+        jmReservas.add(jMenuItem2);
+
+        jMenuItem3.setText("Check-out - Habitación");
+        jmReservas.add(jMenuItem3);
+
+        jMenuBar1.add(jmReservas);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -190,18 +231,27 @@ public class Main extends javax.swing.JFrame {
 
     private void jmiInfoProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiInfoProjectActionPerformed
         // TODO add your handling code here:
-             About form = new About();
-       panelMain.add(form);
+        About form = new About();
+        form.setClosable(true);          // Botón cerrar
+        // Configurar el comportamiento al cerrar
+        form.setDefaultCloseOperation(javax.swing.JInternalFrame.DISPOSE_ON_CLOSE);
         form.setVisible(true);
+        panelMain.add(form);
+        
     }//GEN-LAST:event_jmiInfoProjectActionPerformed
 
     private void jmiGestionarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiGestionarUsuariosActionPerformed
         // TODO add your handling code here:
         Usuarios_Gestion form = new Usuarios_Gestion();
-        panelMain.add(form);
+           form.setClosable(true);          // Botón cerrar
+        // Configurar el comportamiento al cerrar
         form.setVisible(true);
-        
+        panelMain.add(form);        
     }//GEN-LAST:event_jmiGestionarUsuariosActionPerformed
+
+    private void jmHabitacionServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmHabitacionServiciosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jmHabitacionServiciosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -243,7 +293,15 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JMenuItem jmGenTipoHabitacion;
+    private javax.swing.JMenuItem jmGestHabitaciones;
+    private javax.swing.JMenuItem jmHabitacionServicios;
+    private javax.swing.JMenu jmHabitaciones;
+    private javax.swing.JMenu jmReservas;
     private javax.swing.JMenu jmUsuarios;
     private javax.swing.JMenuItem jmiGestionarUsuarios;
     private javax.swing.JMenuItem jmiInfoProject;
@@ -256,4 +314,18 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JDesktopPane panelMain;
     private javax.swing.JPanel pnlFooter;
     // End of variables declaration//GEN-END:variables
+
+    private void setPermissionAccordingWithRolesByUser(List<Rol> roles) {
+        boolean isRoot = roles.stream().filter(x -> x.getCode().equals("ROOT")).count() > 0;
+        if (!isRoot) {
+            jmUsuarios.setEnabled(false);
+            jmUsuarios.setVisible(false);
+            
+            boolean isAdmin = roles.stream().filter(x -> x.getCode().equals("ADMIN")).count() > 0;
+            // is admin
+            boolean isRecepcionista = roles.stream().filter(x -> x.getCode().equals("RECEPCIONISTA")).count() > 0;
+            boolean isClient = roles.stream().filter(x -> x.getCode().equals("CLIENT")).count() > 0;
+            
+        }
+    }
 }

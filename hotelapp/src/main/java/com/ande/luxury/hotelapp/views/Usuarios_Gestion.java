@@ -8,6 +8,7 @@ import com.ande.luxury.hotelapp.entities.Usuario;
 import com.ande.luxury.hotelapp.services.UsuarioService;
 import com.ande.luxury.hotelapp.utilsdb.ButtonEditor;
 import com.ande.luxury.hotelapp.utilsdb.ButtonRenderer;
+import java.awt.Dimension;
 import java.util.List;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
@@ -22,7 +23,8 @@ import org.slf4j.LoggerFactory;
  */
 public class Usuarios_Gestion extends javax.swing.JInternalFrame {
 
-    private static final Logger logger = LoggerFactory.getLogger(Login.class);
+    private static final Logger logger = LoggerFactory.getLogger(Usuarios_Gestion.class);
+
     /**
      * Creates new form Usuarios_Gestion
      */
@@ -102,52 +104,68 @@ public class Usuarios_Gestion extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void refrescarTabla() {
+        // Si usas DefaultTableModel
+        DefaultTableModel model = (DefaultTableModel) jTableUsuarios.getModel();
+        model.setRowCount(0); // Limpiar tabla
+
+        // Recargar datos desde la base de datos
+        getDataInit();
+
+        // Refrescar la vista
+        jTableUsuarios.revalidate();
+        jTableUsuarios.repaint();
+    }
+
+
     private void btnCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearUsuarioActionPerformed
         // TODO add your handling code here:
         //Usuario_Nuevo form = new Usuario_Nuevo();
         //form.setVisible(true);
-        Usuarios_Crear form =new Usuarios_Crear();
+        Usuarios_Crear form = new Usuarios_Crear(this);
         form.setVisible(true);
     }//GEN-LAST:event_btnCrearUsuarioActionPerformed
 
     public void getDataInit() {
-        try{
+        try {
             UsuarioService usuarioService = new UsuarioService();
-        List<Usuario> listUsuarios = usuarioService.listUsers();
-        String[] columns = {"ID", "Numero Documento", "Nombre Completo","Rol", "Password", "Telefono", "Email", "Editar", "Eliminar"};
-        DefaultTableModel model = new DefaultTableModel(columns, 0);
-        
-        for (Usuario user : listUsuarios) {
-            String roles = "";
-            if(user.getRoles() != null){
-                roles=user.getRoles().getFirst().getDescription().toUpperCase();
+            List<Usuario> listUsuarios = usuarioService.listUsers();
+            String[] columns = {"ID", "Numero Documento", "Nombre Completo", "Rol", "Password", "Telefono", "Email", "Editar", "Eliminar"};
+            DefaultTableModel model = new DefaultTableModel(columns, 0);
+
+            for (Usuario user : listUsuarios) {
+                String roles = "";
+                if (user.getRoles() != null) {
+                    if(!user.getRoles().isEmpty()){
+                        roles = user.getRoles().getFirst()  == null ? "" : user.getRoles().getFirst().getDescription().toUpperCase();
+                    }
+                }
+                Object[] row = new Object[]{
+                    user.getUuid(),
+                    user.getDocumentNumber(),
+                    user.getFullName(),
+                    roles,
+                    user.getPassword(),
+                    user.getPhone(),
+                    user.getEmail(),
+                    "Editar", "Eliminar"
+                };
+                model.addRow(row);
             }
-            Object[] row = new Object[]{
-                user.getUuid(),
-                user.getDocumentNumber(),
-                user.getFullName(),
-                roles,
-                user.getPassword(),
-                user.getPhone(),
-                user.getEmail(),
-                "Editar", "Eliminar"
-            };
-            model.addRow(row);
-        }
-        jTableUsuarios.setModel(model);
+            jTableUsuarios.setModel(model);
 
-        jTableUsuarios.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer("Editar"));
-        jTableUsuarios.getColumnModel().getColumn(7).setCellEditor(new ButtonEditor(new JCheckBox(), jTableUsuarios, "Editar", this));
+            jTableUsuarios.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer("Editar"));
+            jTableUsuarios.getColumnModel().getColumn(7).setCellEditor(new ButtonEditor(new JCheckBox(), jTableUsuarios, "Editar", this));
 
-        jTableUsuarios.getColumnModel().getColumn(8).setCellRenderer(new ButtonRenderer("Eliminar"));
-        jTableUsuarios.getColumnModel().getColumn(8).setCellEditor(
-                new ButtonEditor(
-                        new JCheckBox(), jTableUsuarios, "Eliminar", this));
-        }catch(Exception ex){
+            jTableUsuarios.getColumnModel().getColumn(8).setCellRenderer(new ButtonRenderer("Eliminar"));
+            jTableUsuarios.getColumnModel().getColumn(8).setCellEditor(
+                    new ButtonEditor(
+                            new JCheckBox(), jTableUsuarios, "Eliminar", this));
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ocurrio un error inesperado");
             logger.error(ex.getMessage());
         }
-        
+
     }
 
     public void editarFilaEnFormularioPadre(int row) {

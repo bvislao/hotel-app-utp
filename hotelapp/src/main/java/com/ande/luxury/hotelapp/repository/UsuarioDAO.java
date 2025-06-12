@@ -74,7 +74,8 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
 
         String uuid = Constants.generateUuid();
         usuario.setUuid(uuid); // Asigna el UUID generado al objeto
-        usuario.setPassword(Seguridad.encrypt(usuario.getPassword()));
+        String encryptPassword = Seguridad.encrypt(usuario.getPassword().trim());
+        usuario.setPassword(encryptPassword);
         usuario.setStatus(Constants.EntityStatus.ACTIVO.getValue());
         usuario.setActive(Constants.EntityActive.ACTIVO.getValue());
 

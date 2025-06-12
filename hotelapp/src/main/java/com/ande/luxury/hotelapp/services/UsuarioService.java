@@ -12,6 +12,7 @@ import com.ande.luxury.hotelapp.repository.UsuarioDAO;
 import com.ande.luxury.hotelapp.repository.UsuarioRolDAO;
 import java.util.ArrayList;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +25,9 @@ public class UsuarioService {
     private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
     
    
-    public void createUser(Usuario objUser){
+
+    public String createUser(Usuario objUser){
+        String response = "";
         try{
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             Usuario usuarioRegistered = usuarioDAO.findUserByUsername(objUser.getDocumentNumber());
@@ -36,13 +39,16 @@ public class UsuarioService {
                         UsuarioRol userRolSaved = new UsuarioRol(usuarioSave.getId(),rol.getId());
                         usuarioRolDAO.save(userRolSaved);
                     }
+                    response = "";
                 }
             }else{
-                throw new Exception("Usuario ya existe");
+                response = "El usuario con número de documento ya existe";
             }
-            
+            return response;
         }catch(Exception ex){
+            response = ex.getMessage();
             logger.error(ex.getMessage());
+            return response;
         }
     }
     public Usuario validateCredentials(String user,String password) throws Exception{

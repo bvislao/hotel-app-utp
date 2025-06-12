@@ -27,9 +27,6 @@ public class UsuarioRolDAO extends BaseDAO<UsuarioRol> {
 
     private static final Logger logger = LoggerFactory.getLogger(UsuarioRolDAO.class);
 
-    private String queryInsert = "INSERT INTO hotel.users_role (uuid, user_id, rol_id, active, created_by, created_at) "
-            + " values(?,?,?,?,?,?);";
-
     public UsuarioRolDAO() {
         super("hotel.users_role", new RowMapper<UsuarioRol>() {
             @Override
@@ -55,20 +52,23 @@ public class UsuarioRolDAO extends BaseDAO<UsuarioRol> {
         return null;
     }
 
+    private String queryInsert = "INSERT INTO hotel.users_role (uuid, user_id, rol_id, active, created_by, created_at) "
+            + " values(?,?,?,?,?,?);";
+
     public UsuarioRol save(UsuarioRol usuarioRol) throws Exception {
 
         String uuid = Constants.generateUuid();
         usuarioRol.setUuid(uuid); // Asigna el UUID generado al objeto
         usuarioRol.setActive(Constants.EntityActive.ACTIVO.getValue());
 
-        try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(queryInsert,Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(queryInsert, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, uuid);
             stmt.setInt(2, usuarioRol.getUser_id()); // user_id
             stmt.setInt(3, usuarioRol.getRol_id()); // rol_id
             stmt.setInt(4, usuarioRol.getActive()); // active
             stmt.setString(5, usuarioRol.getCreated_by()); // created_by
             stmt.setDate(6, java.sql.Date.valueOf(java.time.LocalDate.now()));
-            stmt.executeUpdate();
+            stmt.execute();
             conn.close();
             return usuarioRol;
         } catch (Exception ex) {
