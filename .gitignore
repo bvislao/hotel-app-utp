@@ -1,6 +1,7 @@
 /hotelapp/target/
 /hotelapp/nbproject/
 /hotelapp/config.properties
+config.properties
 /hotelapp/logs/
 /hotelapp/nb-configuration.xml
 .idea/
