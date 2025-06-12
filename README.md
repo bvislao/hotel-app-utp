@@ -7,7 +7,7 @@
 
 
 <p align="center">
-<a href="https://github.com/ShaanCoding">📱 Visit this Project</a>
+<a href="https://github.com/bvislao/hotel-app-utp">📱 Visitar Proyecto </a>
 </p>
 
 <h2 id="technologies">💻 Technologies</h2>
