@@ -3,7 +3,14 @@
 # Generated on 2025-06-12
 # Includes: java, netbeans, git, intellij, macos
 
-/hotelapp/config.properties
+# Si config.properties está en la raíz del proyecto
+config.properties
+
+# Si está en src/hotelapp/
+src/hotelapp/config.properties
+
+# Si está en cualquier carpeta hotelapp
+**/hotelapp/config.properties
 
 ### Universal ###
 # Common files that should be ignored in all projects
