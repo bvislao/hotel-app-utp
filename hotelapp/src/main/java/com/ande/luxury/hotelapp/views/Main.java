@@ -91,9 +91,14 @@ public class Main extends javax.swing.JFrame {
         setBackground(new java.awt.Color(51, 255, 51));
         setCursor(new java.awt.Cursor(java.awt.Cursor.MOVE_CURSOR));
         setResizable(false);
+        setType(java.awt.Window.Type.UTILITY);
 
-        panelMain.setDragMode(javax.swing.JDesktopPane.OUTLINE_DRAG_MODE);
-        panelMain.setLayout(new javax.swing.OverlayLayout(panelMain));
+        panelMain.setBackground(new java.awt.Color(102, 102, 102));
+        panelMain.setCursor(new java.awt.Cursor(java.awt.Cursor.MOVE_CURSOR));
+        panelMain.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
+        panelMain.setDesktopManager(null);
+        getContentPane().add(panelMain, java.awt.BorderLayout.CENTER);
+        getContentPane().add(jSeparator1, java.awt.BorderLayout.PAGE_START);
 
         pnlFooter.setBackground(new java.awt.Color(51, 255, 51));
         pnlFooter.setDoubleBuffered(false);
@@ -144,6 +149,9 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(lblDate))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        getContentPane().add(pnlFooter, java.awt.BorderLayout.PAGE_END);
+        pnlFooter.getAccessibleContext().setAccessibleParent(pnlFooter);
 
         jMenuBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -217,31 +225,6 @@ public class Main extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(1078, 1078, 1078)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlFooter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(panelMain)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(panelMain, javax.swing.GroupLayout.PREFERRED_SIZE, 849, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlFooter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        pnlFooter.getAccessibleContext().setAccessibleParent(pnlFooter);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
