@@ -3,14 +3,28 @@
 # Generated on 2025-06-12
 # Includes: java, netbeans, git, intellij, macos
 
-# Si config.properties está en la raíz del proyecto
+# Configuration files
 config.properties
+hotelapp/config.properties
+**/config.properties
 
-# Si está en src/hotelapp/
-src/hotelapp/config.properties
+# Database files
+*.db
+*.sqlite
 
-# Si está en cualquier carpeta hotelapp
-**/hotelapp/config.properties
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 ### Universal ###
 # Common files that should be ignored in all projects
