@@ -8,9 +8,12 @@ import com.ande.luxury.hotelapp.entities.Rol;
 import com.ande.luxury.hotelapp.entities.Usuario;
 import com.ande.luxury.hotelapp.services.UsuarioService;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +25,7 @@ public class Usuarios_Crear extends javax.swing.JFrame {
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Usuarios_Crear.class);
     private Usuarios_Gestion formularioPadre;
+    private Map<String, Integer> rolesValores;
 
     /**
      * Creates new form Usuarios_Crear
@@ -33,6 +37,7 @@ public class Usuarios_Crear extends javax.swing.JFrame {
     public Usuarios_Crear(Usuarios_Gestion padre) {
         this.formularioPadre = padre;
         initComponents();
+        configurarComboBox();
     }
 
     /**
@@ -59,7 +64,8 @@ public class Usuarios_Crear extends javax.swing.JFrame {
         cboPerfiles = new javax.swing.JComboBox<>();
         btnCrearUsuario = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Ande Luxury :: Crear Usuarios");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -201,7 +207,7 @@ public class Usuarios_Crear extends javax.swing.JFrame {
             userNuevov.setFullName(fullName);
             userNuevov.setPhone(phone);
             userNuevov.setEmail(email);
-            userNuevov.setCreated_by(Main.userLoguin);
+            userNuevov.setCreated_by(formularioPadre.userLogin);
             List<Rol> rol = new ArrayList();
             Rol rolAdd = new Rol(rolId);
             rolAdd.setCreated_by(Main.userLoguin);
@@ -309,4 +315,29 @@ public class Usuarios_Crear extends javax.swing.JFrame {
     private javax.swing.JTextField txtFullName;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
+
+
+private void configurarComboBox() {
+        // Definir los elementos y sus valores
+        String[] roles = {"[ Seleccionar ]", "Administrador", "Recepcionista", "Cliente"};
+        rolesValores = new HashMap<>();
+        rolesValores.put("[ Seleccionar ]", 0);
+        rolesValores.put("Administrador", 2);
+        rolesValores.put("Recepcionista", 3);
+        rolesValores.put("Cliente", 4);
+
+        // Crear el JComboBox
+        cboPerfiles.setModel(new DefaultComboBoxModel<>(roles));
+        cboPerfiles.setBounds(50, 50, 200, 30); // Posición y tamaño
+
+        // Listener para manejar la selección
+        // Listener para manejar la selección
+        cboPerfiles.addActionListener(e -> {
+            String seleccion = (String) cboPerfiles.getSelectedItem();
+            Integer valor = rolesValores.get(seleccion);
+            System.out.println("Rol seleccionado: " + seleccion + ", Valor: " + valor);
+            // Aquí puedes usar el valor (0, 2, 3, 4) para lógica adicional
+        });
+    }
+
 }
