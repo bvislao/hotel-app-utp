@@ -8,12 +8,10 @@ import com.ande.luxury.hotelapp.entities.Usuario;
 import com.ande.luxury.hotelapp.services.UsuarioService;
 import com.ande.luxury.hotelapp.utilsdb.ButtonEditor;
 import com.ande.luxury.hotelapp.utilsdb.ButtonRenderer;
-import java.awt.Dimension;
 import java.util.List;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +22,7 @@ import org.slf4j.LoggerFactory;
 public class Usuarios_Gestion extends javax.swing.JInternalFrame {
 
     private static final Logger logger = LoggerFactory.getLogger(Usuarios_Gestion.class);
+    public String userLogin;
 
     /**
      * Creates new form Usuarios_Gestion
@@ -32,6 +31,12 @@ public class Usuarios_Gestion extends javax.swing.JInternalFrame {
         initComponents();
         getDataInit();
 
+    }
+    
+     public Usuarios_Gestion(String usuario) {
+        initComponents();
+        getDataInit();
+        this.userLogin = usuario;
     }
 
     /**
@@ -47,6 +52,8 @@ public class Usuarios_Gestion extends javax.swing.JInternalFrame {
         btnCrearUsuario = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableUsuarios = new javax.swing.JTable();
+
+        setTitle("Ande Luxury :: Gestion Usuarios");
 
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         jLabel1.setText("Gestión de Usuarios");
@@ -79,23 +86,25 @@ public class Usuarios_Gestion extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jLabel1))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(732, 732, 732)
-                .addComponent(btnCrearUsuario))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 826, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCrearUsuario)
+                .addGap(14, 14, 14))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(10, 16, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 826, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(jLabel1)
-                .addGap(2, 2, 2)
-                .addComponent(btnCrearUsuario)
-                .addGap(27, 27, 27)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(btnCrearUsuario))
+                .addGap(29, 29, 29)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();

@@ -5,6 +5,7 @@
 package com.ande.luxury.hotelapp;
 
 import com.ande.luxury.hotelapp.views.Login;
+import javax.swing.UIManager;
 
 /**
  *
@@ -13,6 +14,18 @@ import com.ande.luxury.hotelapp.views.Login;
 public class Hotelapp {
 
     public static void main(String[] args) {
+        // Configura el Look and Feel Nimbus
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Fallback al LaF predeterminado si Nimbus falla
+            try {
+                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
          // Use SwingUtilities.invokeLater to run on the EDT
         javax.swing.SwingUtilities.invokeLater(() -> {
             Login mainForm = new Login();

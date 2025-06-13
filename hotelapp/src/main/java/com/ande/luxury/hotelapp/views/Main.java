@@ -6,11 +6,19 @@ package com.ande.luxury.hotelapp.views;
 
 import com.ande.luxury.hotelapp.entities.Rol;
 import com.ande.luxury.hotelapp.entities.Usuario;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.io.IOException;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 
 /**
  *
@@ -22,16 +30,19 @@ public class Main extends javax.swing.JFrame {
      * Creates new form Main
      */
     public static String userLoguin;
-    
+    private JLabel fondoLabel;
+    private Image imagenOriginal;
+
     public Main() {
         initComponents();
         //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setTitle("Principal - Ande Luxury");
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza la ventana
     }
-    
+
     public Main(Usuario usuario) {
         initComponents();
+        // Establece un tamaño inicial para evitar dimensiones cero
         //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setTitle("Principal - Ande Luxury");
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza la ventana
@@ -48,6 +59,9 @@ public class Main extends javax.swing.JFrame {
         });
         timer.start();
         userLoguin = usuario.getDocumentNumber();
+        //cargarImagenFondo();
+        configurarFondo();
+
     }
 
     /**
@@ -75,16 +89,20 @@ public class Main extends javax.swing.JFrame {
         jmiSalir = new javax.swing.JMenuItem();
         jmUsuarios = new javax.swing.JMenu();
         jmiGestionarUsuarios = new javax.swing.JMenuItem();
-        jmHabitaciones = new javax.swing.JMenu();
+        jmParametros = new javax.swing.JMenu();
         jmHabitacionServicios = new javax.swing.JMenuItem();
         jmGenTipoHabitacion = new javax.swing.JMenuItem();
+        jmHabitaciones = new javax.swing.JMenu();
         jmGestHabitaciones = new javax.swing.JMenuItem();
         jmReservas = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        jmCheckIn = new javax.swing.JMenuItem();
+        jmCheckInServicios = new javax.swing.JMenuItem();
+        jmCheckout = new javax.swing.JMenuItem();
+        jmClientes = new javax.swing.JMenu();
+        jmClienteNuevo = new javax.swing.JMenuItem();
+        jmClientesListado = new javax.swing.JMenuItem();
+        jmComprobantes = new javax.swing.JMenu();
+        jmVerFacturas = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAutoRequestFocus(false);
@@ -97,6 +115,7 @@ public class Main extends javax.swing.JFrame {
         panelMain.setCursor(new java.awt.Cursor(java.awt.Cursor.MOVE_CURSOR));
         panelMain.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
         panelMain.setDesktopManager(null);
+        panelMain.setOpaque(false);
         getContentPane().add(panelMain, java.awt.BorderLayout.CENTER);
         getContentPane().add(jSeparator1, java.awt.BorderLayout.PAGE_START);
 
@@ -187,7 +206,7 @@ public class Main extends javax.swing.JFrame {
 
         jMenuBar1.add(jmUsuarios);
 
-        jmHabitaciones.setText("Habitaciones");
+        jmParametros.setText("Parametros");
 
         jmHabitacionServicios.setText("Gestionar Servicios");
         jmHabitacionServicios.addActionListener(new java.awt.event.ActionListener() {
@@ -195,34 +214,89 @@ public class Main extends javax.swing.JFrame {
                 jmHabitacionServiciosActionPerformed(evt);
             }
         });
-        jmHabitaciones.add(jmHabitacionServicios);
+        jmParametros.add(jmHabitacionServicios);
 
         jmGenTipoHabitacion.setText("Gestion Tipo de Habitaciones");
-        jmHabitaciones.add(jmGenTipoHabitacion);
+        jmGenTipoHabitacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmGenTipoHabitacionActionPerformed(evt);
+            }
+        });
+        jmParametros.add(jmGenTipoHabitacion);
+
+        jMenuBar1.add(jmParametros);
+
+        jmHabitaciones.setText("Habitaciones");
 
         jmGestHabitaciones.setText("Gestionar Habitaciones");
+        jmGestHabitaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmGestHabitacionesActionPerformed(evt);
+            }
+        });
         jmHabitaciones.add(jmGestHabitaciones);
 
         jMenuBar1.add(jmHabitaciones);
 
         jmReservas.setText("Reservas");
 
-        jMenuItem1.setText("Reservar Habitacion");
-        jmReservas.add(jMenuItem1);
+        jmCheckIn.setText("Check In - Habitacion");
+        jmCheckIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmCheckInActionPerformed(evt);
+            }
+        });
+        jmReservas.add(jmCheckIn);
 
-        jMenuItem2.setText("Servicio - Habitación");
-        jmReservas.add(jMenuItem2);
+        jmCheckInServicios.setText("Servicio - Habitación");
+        jmCheckInServicios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmCheckInServiciosActionPerformed(evt);
+            }
+        });
+        jmReservas.add(jmCheckInServicios);
 
-        jMenuItem3.setText("Check-out - Habitación");
-        jmReservas.add(jMenuItem3);
+        jmCheckout.setText("Check-out - Habitación");
+        jmCheckout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmCheckoutActionPerformed(evt);
+            }
+        });
+        jmReservas.add(jmCheckout);
 
         jMenuBar1.add(jmReservas);
 
-        jMenu1.setText("Parametros");
-        jMenuBar1.add(jMenu1);
+        jmClientes.setText("Clientes");
 
-        jMenu2.setText("Clientes");
-        jMenuBar1.add(jMenu2);
+        jmClienteNuevo.setText("Nuevo Cliente");
+        jmClienteNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmClienteNuevoActionPerformed(evt);
+            }
+        });
+        jmClientes.add(jmClienteNuevo);
+
+        jmClientesListado.setText("Listado Clientes");
+        jmClientesListado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmClientesListadoActionPerformed(evt);
+            }
+        });
+        jmClientes.add(jmClientesListado);
+
+        jMenuBar1.add(jmClientes);
+
+        jmComprobantes.setText("Comprobantes Electronicos");
+
+        jmVerFacturas.setText("Ver Facturas");
+        jmVerFacturas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmVerFacturasActionPerformed(evt);
+            }
+        });
+        jmComprobantes.add(jmVerFacturas);
+
+        jMenuBar1.add(jmComprobantes);
 
         setJMenuBar(jMenuBar1);
 
@@ -240,21 +314,88 @@ public class Main extends javax.swing.JFrame {
         form.setClosable(true);          // Botón cerrar
         form.setVisible(true);
         panelMain.add(form);
-        
+
     }//GEN-LAST:event_jmiInfoProjectActionPerformed
 
     private void jmiGestionarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiGestionarUsuariosActionPerformed
         // TODO add your handling code here:
-        Usuarios_Gestion form = new Usuarios_Gestion();
-           form.setClosable(true);          // Botón cerrar
+        Usuarios_Gestion form = new Usuarios_Gestion(userLoguin);
+        form.setClosable(true);          // Botón cerrar
         // Configurar el comportamiento al cerrar
         form.setVisible(true);
-        panelMain.add(form);        
+        panelMain.add(form);
     }//GEN-LAST:event_jmiGestionarUsuariosActionPerformed
 
     private void jmHabitacionServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmHabitacionServiciosActionPerformed
         // TODO add your handling code here:
+        Servicios_Gestion form = new Servicios_Gestion(userLoguin);
+        form.setClosable(true);
+        form.setVisible(true);
+        panelMain.add(form);
     }//GEN-LAST:event_jmHabitacionServiciosActionPerformed
+
+    private void jmClienteNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmClienteNuevoActionPerformed
+        // TODO add your handling code here:
+         Clientes_Nuevo form = new Clientes_Nuevo();
+        form.setVisible(true);
+        panelMain.add(form);
+    }//GEN-LAST:event_jmClienteNuevoActionPerformed
+
+    private void jmCheckInServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmCheckInServiciosActionPerformed
+
+  Reservas_ServiciosHabitacion form = new Reservas_ServiciosHabitacion();
+        form.setClosable(true);
+        form.setVisible(true);
+        panelMain.add(form);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jmCheckInServiciosActionPerformed
+
+    private void jmCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmCheckoutActionPerformed
+        // TODO add your handling code here:
+         Reservas_Checkout form = new Reservas_Checkout();
+        form.setClosable(true);
+        form.setVisible(true);
+        panelMain.add(form);
+    }//GEN-LAST:event_jmCheckoutActionPerformed
+
+    private void jmVerFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmVerFacturasActionPerformed
+        // TODO add your handling code here:
+          ComprobanteElec_Facturas form = new ComprobanteElec_Facturas();
+        form.setClosable(true);
+        form.setVisible(true);
+        panelMain.add(form);
+    }//GEN-LAST:event_jmVerFacturasActionPerformed
+
+    private void jmGenTipoHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmGenTipoHabitacionActionPerformed
+        // TODO add your handling code here:
+         TipoHabitacion_Gestion form = new TipoHabitacion_Gestion();
+        form.setClosable(true);
+        form.setVisible(true);
+        panelMain.add(form);
+    }//GEN-LAST:event_jmGenTipoHabitacionActionPerformed
+
+    private void jmGestHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmGestHabitacionesActionPerformed
+        // TODO add your handling code here:
+            Habitacion_Gestion form = new Habitacion_Gestion();
+        form.setClosable(true);
+        form.setVisible(true);
+        panelMain.add(form);
+    }//GEN-LAST:event_jmGestHabitacionesActionPerformed
+
+    private void jmCheckInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmCheckInActionPerformed
+        // TODO add your handling code here:
+          Reservas_CheckIn form = new Reservas_CheckIn();
+        form.setClosable(true);
+        form.setVisible(true);
+        panelMain.add(form);
+    }//GEN-LAST:event_jmCheckInActionPerformed
+
+    private void jmClientesListadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmClientesListadoActionPerformed
+Clientes_Listado form = new Clientes_Listado();
+        form.setClosable(true);
+        form.setVisible(true);
+        panelMain.add(form);        // TODO add your handling code here:
+    }//GEN-LAST:event_jmClientesListadoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -283,6 +424,13 @@ public class Main extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+        // Configura el look and feel de macOS
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -295,19 +443,23 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JMenuItem jmCheckIn;
+    private javax.swing.JMenuItem jmCheckInServicios;
+    private javax.swing.JMenuItem jmCheckout;
+    private javax.swing.JMenuItem jmClienteNuevo;
+    private javax.swing.JMenu jmClientes;
+    private javax.swing.JMenuItem jmClientesListado;
+    private javax.swing.JMenu jmComprobantes;
     private javax.swing.JMenuItem jmGenTipoHabitacion;
     private javax.swing.JMenuItem jmGestHabitaciones;
     private javax.swing.JMenuItem jmHabitacionServicios;
     private javax.swing.JMenu jmHabitaciones;
+    private javax.swing.JMenu jmParametros;
     private javax.swing.JMenu jmReservas;
     private javax.swing.JMenu jmUsuarios;
+    private javax.swing.JMenuItem jmVerFacturas;
     private javax.swing.JMenuItem jmiGestionarUsuarios;
     private javax.swing.JMenuItem jmiInfoProject;
     private javax.swing.JMenuItem jmiSalir;
@@ -325,12 +477,111 @@ public class Main extends javax.swing.JFrame {
         if (!isRoot) {
             jmUsuarios.setEnabled(false);
             jmUsuarios.setVisible(false);
-            
+            jmParametros.setEnabled(false);
+            jmParametros.setVisible(false);
+            jmClientes.setEnabled(false);
+            jmClientes.setVisible(false);
+            jmHabitaciones.setEnabled(false);
+            jmHabitaciones.setVisible(false);
+            jmComprobantes.setEnabled(false);
+            jmComprobantes.setVisible(false);
+            jmReservas.setEnabled(false);
+            jmReservas.setVisible(false);
+
             boolean isAdmin = roles.stream().filter(x -> x.getCode().equals("ADMIN")).count() > 0;
+            if (isAdmin) {
+                jmParametros.setEnabled(true);
+                jmParametros.setVisible(true);
+                jmClientes.setEnabled(true);
+                jmClientes.setVisible(true);
+                jmHabitaciones.setEnabled(true);
+                jmHabitaciones.setVisible(true);
+                jmComprobantes.setEnabled(true);
+                jmComprobantes.setVisible(true);
+                jmReservas.setEnabled(true);
+                jmReservas.setVisible(true);
+            }
             // is admin
+            // gestion de usuarios
             boolean isRecepcionista = roles.stream().filter(x -> x.getCode().equals("RECEPCIONISTA")).count() > 0;
+             if (isRecepcionista) {
+                jmClientes.setEnabled(true);
+                jmClientes.setVisible(true);
+                jmHabitaciones.setEnabled(true);
+                jmHabitaciones.setVisible(true);
+                jmComprobantes.setEnabled(true);
+                jmComprobantes.setVisible(true);
+                jmReservas.setEnabled(true);
+                jmReservas.setVisible(true);
+            }
+            // Reservar Habitaciones (Check-In)
+            // Checkout 
+            // Ver facturas -- imprimirlas
             boolean isClient = roles.stream().filter(x -> x.getCode().equals("CLIENT")).count() > 0;
-            
+
         }
+    }
+
+    /*  class FondoPanel extends JPanel
+    {
+        private Image imagen;
+        
+        @Override
+        public void paint(Graphics g)
+        {
+            imagen = new ImageIcon(getClass().getResource("/background.jpg")).getImage();
+            
+            g.drawImage(imagen,0, 0, getWidth(), getHeight(),this);
+            
+            setOpaque(false);
+            
+            super.paint(g);
+        }
+    }
++
+     */
+    private void cargarImagenFondo() {
+        try {
+            // Carga la imagen
+            imagenOriginal = ImageIO.read(getClass().getResource("/background.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            imagenOriginal = null;
+        }
+    }
+
+    private void configurarFondo() {
+        // Crea el JLabel para la imagen
+        fondoLabel = new JLabel();
+        fondoLabel.setHorizontalAlignment(JLabel.CENTER);
+        fondoLabel.setVerticalAlignment(JLabel.CENTER);
+
+        // Añade el JLabel al JDesktopPane en la capa más baja
+        panelMain.add(fondoLabel, Integer.MIN_VALUE);
+
+        // Escucha cambios de tamaño para actualizar la imagen
+        panelMain.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                if (imagenOriginal != null && panelMain.getWidth() > 0 && panelMain.getHeight() > 0) {
+                    // Escala la imagen al tamaño del JDesktopPane
+                    fondoLabel.setIcon(new ImageIcon(imagenOriginal.getScaledInstance(
+                            panelMain.getWidth(), panelMain.getHeight(), Image.SCALE_SMOOTH)));
+                    fondoLabel.setBounds(0, 0, panelMain.getWidth(), panelMain.getHeight());
+                }
+            }
+        });
+
+        // Forzar un evento de redimensionamiento inicial después de que el frame sea visible
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                if (imagenOriginal != null && panelMain.getWidth() > 0 && panelMain.getHeight() > 0) {
+                    fondoLabel.setIcon(new ImageIcon(imagenOriginal.getScaledInstance(
+                            panelMain.getWidth(), panelMain.getHeight(), Image.SCALE_SMOOTH)));
+                    fondoLabel.setBounds(0, 0, panelMain.getWidth(), panelMain.getHeight());
+                }
+            }
+        });
     }
 }

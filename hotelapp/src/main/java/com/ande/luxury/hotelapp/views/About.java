@@ -19,7 +19,7 @@ public class About extends javax.swing.JInternalFrame {
      */
     public About() {
         initComponents();
-         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        this.closable=true;
     }
 
     /**
@@ -37,21 +37,28 @@ public class About extends javax.swing.JInternalFrame {
         label4 = new java.awt.Label();
         jButton1 = new javax.swing.JButton();
 
+        setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         setForeground(java.awt.Color.lightGray);
         setTitle("Acerca de");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        label2.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        label2.setFont(new java.awt.Font("Luminari", 1, 36)); // NOI18N
         label2.setText("Proyecto UTP - Curso Integrador l");
+        getContentPane().add(label2, new org.netbeans.lib.awtextra.AbsoluteConstraints(112, 10, -1, 49));
 
         label3.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
-        label3.setText("Bryan Vislao Chavez");
+        label3.setText("BRYAN VISLAO CHAVEZ");
+        getContentPane().add(label3, new org.netbeans.lib.awtextra.AbsoluteConstraints(158, 81, 585, -1));
+        label3.getAccessibleContext().setAccessibleName("BRYAN VISLAO CHAVEZ");
 
         label1.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
-        label1.setText("Alexis");
+        label1.setText("ALEXIS GIANFRANCO BANCES ALCANTARA");
+        getContentPane().add(label1, new org.netbeans.lib.awtextra.AbsoluteConstraints(158, 117, 585, -1));
 
         label4.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
-        label4.setText("Fernando");
+        label4.setText("FERNANDO JULIO FERNANDEZ YNGA");
+        getContentPane().add(label4, new org.netbeans.lib.awtextra.AbsoluteConstraints(158, 153, 585, -1));
 
         jButton1.setBackground(new java.awt.Color(0, 255, 51));
         jButton1.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
@@ -62,36 +69,7 @@ public class About extends javax.swing.JInternalFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(label4, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(27, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
-                .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(label4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
-        );
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(112, 189, 585, 41));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
