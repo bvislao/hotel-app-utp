@@ -30,6 +30,12 @@
             <artifactId>lombok</artifactId>
             <version>1.18.30</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.toedter/jcalendar -->
+<dependency>
+    <groupId>com.toedter</groupId>
+    <artifactId>jcalendar</artifactId>
+    <version>1.4</version>
+</dependency>
         <!-- BCrypt dependency from Spring Security -->
         <dependency>
             <groupId>org.springframework.security</groupId>

@@ -4,7 +4,6 @@
  */
 package com.ande.luxury.hotelapp.database;
 
-import com.ande.luxury.hotelapp.utilsdb.Constants;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
