@@ -256,3 +256,4 @@ Network Trash Folder/
 .Spotlight-V100
 .Trashes
 /hotelapp/logs/
+!/hotelapp/src/main/resources/jcalendar-1.4.jar

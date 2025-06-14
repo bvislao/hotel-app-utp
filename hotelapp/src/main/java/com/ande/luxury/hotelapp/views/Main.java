@@ -384,7 +384,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jmCheckInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmCheckInActionPerformed
         // TODO add your handling code here:
-          Reservas_CheckIn form = new Reservas_CheckIn();
+          Reservas_CheckIn form = new Reservas_CheckIn(userLoguin);
         form.setClosable(true);
         form.setVisible(true);
         panelMain.add(form);
