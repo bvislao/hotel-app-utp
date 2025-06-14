@@ -39,3 +39,4 @@
 2025-06-14 15:24:48 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
 2025-06-14 15:30:25 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
 2025-06-14 15:34:18 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-14 17:27:29 [main] ERROR c.a.l.hotelapp.utilsdb.Seguridad - rawPassword cannot be null
