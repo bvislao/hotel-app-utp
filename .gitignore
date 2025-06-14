@@ -7,6 +7,7 @@
 config.properties
 hotelapp/config.properties
 **/config.properties
+/logs/*.log
 
 # Database files
 *.db
