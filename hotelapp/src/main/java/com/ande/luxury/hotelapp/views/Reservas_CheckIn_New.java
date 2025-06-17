@@ -10,6 +10,7 @@ import com.ande.luxury.hotelapp.entities.Usuario;
 import com.ande.luxury.hotelapp.repository.HotelRoomDAO;
 import com.ande.luxury.hotelapp.services.BookingService;
 import com.ande.luxury.hotelapp.services.UsuarioService;
+import com.ande.luxury.hotelapp.utilsdb.Constants;
 import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
 import java.util.Arrays;
 import java.util.Date;
@@ -29,11 +30,17 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
     private static String userLogin;
     private static HotelRoom dataRoom;
     private static Usuario clientBooking;
+      private  Reservas_CheckIn formularioPadre;
 
     /**
      * Creates new form Reservas_CheckIn_New
      */
-    public Reservas_CheckIn_New(String userLogin, String text, HotelRoom dataRoom) {
+    public Reservas_CheckIn_New(String userLogin, String text, HotelRoom dataRoom,Reservas_CheckIn formularioPadre) {
+        
+            System.out.println("userLogin: " + userLogin);
+System.out.println("room: " + text);
+System.out.println("room.getRoomNumber(): " + (dataRoom != null ? dataRoom.getRoomNumber() : "room is null"));
+System.out.println("this class: " + formularioPadre.getClass().getName());
         initComponents();
         this.userLogin = userLogin;
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -41,6 +48,7 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
         jCalendarStart.setMinSelectableDate(new Date());
         jCalendarEnd.setMinSelectableDate(new Date());
        this.dataRoom = dataRoom;
+       this.formularioPadre = formularioPadre;
         btnReservar.setEnabled(false);
         jCalendarStart.setEnabled(false);
         jCalendarEnd.setEnabled(false);
@@ -402,7 +410,7 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
             txtCelular.setText(userSearch.getPhone());
             jCalendarStart.setEnabled(true);
             jCalendarEnd.setEnabled(true);
-            txtPIN.setText(txtDocumentNumber);
+            txtPIN.setText(String.valueOf(Constants.getRandomNumber()));
             jCalendarStart.setMinSelectableDate(new Date());
             jCalendarEnd.setMinSelectableDate(new Date());
         } catch (Exception ex) {
@@ -451,8 +459,11 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
         // TODO add your handling code here:
        //ValidatesInfo
        
+       
+       //TODO validate
+       
+     
        Booking booking = new Booking();
-  
         booking.setHotelRoom(dataRoom);
        booking.setUserId(clientBooking.getId());
        booking.setDocumentNumber(clientBooking.getDocumentNumber());
@@ -465,10 +476,13 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
        booking.setPhone(txtCelular.getText());
        booking.setEmail(txtEmail.getText());
        booking.setComments(txtComentario.getText());
+       booking.setCreated_by(userLogin);
        BookingService service = new BookingService();
-       this.dispose();
         try {
             service.saveBooking(booking);
+            //TODO Refresh
+            formularioPadre.refresh();
+             this.dispose();
         } catch (Exception ex) {
             Logger.getLogger(Reservas_CheckIn_New.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -512,7 +526,7 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Reservas_CheckIn_New(userLogin, "", null).setVisible(true);
+                new Reservas_CheckIn_New(userLogin, "", null,null).setVisible(true);
             }
         });
     }

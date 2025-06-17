@@ -40,6 +40,10 @@ public class Login extends javax.swing.JFrame {
         if (validateComponentsInitialized()) {
             System.exit(0);
         }
+        
+         ImageIcon icon = new ImageIcon(getClass().getResource("/logo.png"));
+        Image image = icon.getImage();
+        this.setIconImage(image);
     }
 
     /**
@@ -88,6 +92,12 @@ public class Login extends javax.swing.JFrame {
         txtUsuario.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         txtUsuario.setToolTipText("Contraseña");
         txtUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+
+        txtPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPasswordActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Jaini Purva", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 102, 0));
@@ -162,6 +172,7 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
     public boolean validateComponentsInitialized() {
         try (InputStream input = new FileInputStream("config.properties")) {
             return false;
@@ -171,9 +182,9 @@ public class Login extends javax.swing.JFrame {
             return true;
         }
     }
-    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO add your handling code here:
-        //validateFields();
+    
+    public void login() throws Exception{
+        validateFields();
         UsuarioService usuarioService = new UsuarioService();
         // Obtener contraseña
         char[] passwordChars = txtPassword.getPassword();
@@ -194,14 +205,33 @@ public class Login extends javax.swing.JFrame {
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        try {
+            login();
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }//GEN-LAST:event_btnLoginActionPerformed
 
-    public void validateFields() {
+    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
+        try {
+            // TODO add your handling code here:
+            login();
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_txtPasswordActionPerformed
+
+    public void validateFields() throws Exception {
         if (txtUsuario.getText().isBlank()) {
-            jDialog1.setTitle("Error");
-            jDialog1.setVisible(rootPaneCheckingEnabled);
-            return;
+           DialogUtils.showWarning(null, "Validación", "Ingrese un usuario");
+           throw new Exception("Campos invalidos");
+        }
+               if (txtPassword.getPassword().length == 0) {
+           DialogUtils.showWarning(null, "Validación", "Ingrese una contraseña");
+           throw new Exception("Campos invalidos");
         }
     }
 

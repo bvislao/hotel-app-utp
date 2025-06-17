@@ -4,22 +4,22 @@ package com.ande.luxury.hotelapp.views;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-
 /**
  *
  * @author bryanvislaochavez
  */
 public class Servicios_Gestion extends javax.swing.JInternalFrame {
 
-    private String userLoguin;
+    private static String userLoguin;
+
     /**
      * Creates new form Servicios_Gestion
      */
     public Servicios_Gestion() {
         initComponents();
     }
-    
-        public Servicios_Gestion(String usuario) {
+
+    public Servicios_Gestion(String usuario) {
         initComponents();
         this.userLoguin = usuario;
     }
@@ -103,7 +103,7 @@ public class Servicios_Gestion extends javax.swing.JInternalFrame {
         //form.setVisible(true);
         Servicios_Crear form = new Servicios_Crear();
         form.setVisible(true);
-    
+
     }//GEN-LAST:event_btnCrearActionPerformed
 
 

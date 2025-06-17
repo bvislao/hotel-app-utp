@@ -8,6 +8,7 @@ import com.ande.luxury.hotelapp.entities.Hotel;
 import com.ande.luxury.hotelapp.entities.HotelRoom;
 import com.ande.luxury.hotelapp.entities.RoomType;
 import com.ande.luxury.hotelapp.services.BookingService;
+import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,43 +37,55 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
     private static final Logger logger = LoggerFactory.getLogger(Reservas_CheckIn.class);
     private String userLogin;
     private List<HotelRoom> rooms;
+
     /**
      * Creates new form Reservas_CheckIn
      */
     public Reservas_CheckIn() {
-        
-         initComponents();
-         
-         setTitle("CheckIn - Habitaciones");
+
+        initComponents();
+
+        setTitle("CheckIn - Habitaciones");
         setSize(500, 300);
 
-         // Inicializar panel y lista de habitaciones
-       
+        // Inicializar panel y lista de habitaciones
         rooms = new ArrayList<>();
-        
+
         initializeRooms();
         createRoomButtons();
-        
-          // Agregar panel a un JScrollPane por si hay muchas habitaciones
+
+        // Agregar panel a un JScrollPane por si hay muchas habitaciones
         JScrollPane scrollPane = new JScrollPane(roomPanelView);
         add(scrollPane, BorderLayout.CENTER);
     }
-      public Reservas_CheckIn(String userLogin) {
+
+    public Reservas_CheckIn(String userLogin) {
         initComponents();
         setSize(500, 500);
         this.userLogin = userLogin;
-          setTitle("Gestión de Habitaciones Check-In Habitaciones");
+        setTitle("Gestión de Habitaciones Check-In Habitaciones");
 
-         // Inicializar panel y lista de habitaciones
+        // Inicializar panel y lista de habitaciones
         initializeRooms();
         createRoomButtons();
-             // Agregar panel a un JScrollPane por si hay muchas habitaciones
-       
-         // Forzar revalidación y repintado
+        // Agregar panel a un JScrollPane por si hay muchas habitaciones
+
+        // Forzar revalidación y repintado
         roomPanelView.revalidate();
         roomPanelView.repaint();
     }
 
+    public void refresh() {
+
+        roomPanelView.removeAll();
+        // Inicializar panel y lista de habitaciones
+        initializeRooms();
+        createRoomButtons();
+
+        // Forzar revalidación y repintado
+        roomPanelView.revalidate();
+        roomPanelView.repaint();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -108,55 +122,53 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
     //TEST
-    
-      private void initializeRooms() {
-          BookingService bookingService = new BookingService();
-          rooms =   bookingService.findAll();
-        
+    private void initializeRooms() {
+        BookingService bookingService = new BookingService();
+        rooms = bookingService.findAll();
+
     }
-      
-       private void createRoomButtons() {
+
+    private void createRoomButtons() {
         for (HotelRoom room : rooms) {
-             JButton button = new JButton();
+            JButton button = new JButton();
             button.setPreferredSize(new Dimension(80, 80));
             button.setBackground(room.isReserved() ? Color.RED : Color.GREEN);
             button.setOpaque(true);
             button.setBorderPainted(false);
-            StringBuilder strText =  new StringBuilder();
+            StringBuilder strText = new StringBuilder();
             strText.append(room.getRoomNumber().toString());
             button.setText(
-                   strText.toString());
-            
-             // Acción del botón
-            button.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (!room.isReserved()) {
-                        Reservas_CheckIn_New newReserva = new Reservas_CheckIn_New(userLogin,room.getRoomNumber().toString()+ " - " + room.getRoomType().getDescription().toUpperCase(),room) ;
-                        newReserva.setVisible(true);
-                    } else {
-                        JOptionPane.showMessageDialog(roomPanelView, 
-                            "Habitación " + room.getRoomNumber() + " está ocupada", 
-                            "Información", 
-                            JOptionPane.INFORMATION_MESSAGE);
+                    strText.toString());
+
+            // Acción del botón
+            // Acción del botón con lambda
+            button.addActionListener(e -> {
+                if (!room.isReserved()) {
+                    Reservas_CheckIn_New newReserva = new Reservas_CheckIn_New(
+                            userLogin,
+                            room.getRoomNumber().toString() + " - " + room.getRoomType().getDescription().toUpperCase(),
+                            room,
+                            this // Aquí sí funciona "this"
+                    );
+                    newReserva.setVisible(true);
+                } else {
+                    // Confirmación
+                    if (DialogUtils.showConfirmation(roomPanelView, "Alerta", "Habitación ocupada ¿Desea ver el detalle?")) {
+                        //confirmó
+
                     }
+
                 }
             });
-
-            
-             roomPanelView.add(button);
+            roomPanelView.add(button);
         }
-       }
-       
-       
-        private void showReservationForm(String roomNumber) {
+    }
+
+    private void showReservationForm(String roomNumber) {
         // Crear un nuevo JFrame para el formulario de reserva
     }
-      
-       
-       
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel roomPanelView;
