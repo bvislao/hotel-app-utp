@@ -183,7 +183,7 @@ CREATE TABLE `hotel`.`invoice` (
                               `created_at` timestamp,
                               `last_modified_by` varchar(15),
                               `last_modified_at` timestamp
-  
+
 );
 
 ALTER TABLE `hotel`.`invoice` ADD CONSTRAINT `fk_invoice_booking_id` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`);
@@ -306,6 +306,49 @@ BEGIN
     SET is_reserved = 1
     WHERE id = p_hotel_room_id;
 
+END$$
+
+DELIMITER ;
+
+
+
+
+DELIMITER $$
+
+CREATE PROCEDURE spInsertUser(
+    IN p_role_id INT,
+    IN p_uuid CHAR(36),
+    IN p_document_number VARCHAR(50),
+    IN p_full_name VARCHAR(200),
+    IN p_phone VARCHAR(20),
+    IN p_email VARCHAR(200),
+    IN p_password VARCHAR(255),
+    IN p_status_id INT,
+    IN p_active INT,
+    IN p_created_by VARCHAR(15),
+    IN p_created_at DATETIME
+)
+BEGIN
+    -- Insertar en tabla de usuarios
+    INSERT INTO hotel.users (
+        uuid, document_number, full_name, phone, email, password,
+        status_id, active, created_by, created_at
+    )
+    VALUES (
+        p_uuid, p_document_number, p_full_name, p_phone, p_email, p_password,
+        p_status_id, p_active, p_created_by, p_created_at
+    );
+
+    -- Obtener el ID del usuario recién insertado
+    SET @last_id = LAST_INSERT_ID();
+
+    -- Insertar en tabla users_role
+    INSERT INTO hotel.users_role (
+        uuid, user_id, rol_id, active, created_by, created_at
+    )
+    VALUES (
+        UUID(), @last_id, p_role_id, p_active, p_created_by, p_created_at
+    );
 END$$
 
 DELIMITER ;

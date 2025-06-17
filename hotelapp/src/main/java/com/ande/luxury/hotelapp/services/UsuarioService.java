@@ -35,11 +35,6 @@ public class UsuarioService {
             if(usuarioRegistered == null){
                 Usuario usuarioSave = usuarioDAO.saveUsuario(objUser);
                 if(usuarioSave != null){
-                    UsuarioRolDAO usuarioRolDAO = new UsuarioRolDAO();
-                    for(Rol rol : objUser.getRoles()){
-                        UsuarioRol userRolSaved = new UsuarioRol(usuarioSave.getId(),rol.getId());
-                        usuarioRolDAO.save(userRolSaved);
-                    }
                     response = "";
                 }
             }else{
