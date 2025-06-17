@@ -7,17 +7,13 @@ package com.ande.luxury.hotelapp.views;
 import com.ande.luxury.hotelapp.entities.Booking;
 import com.ande.luxury.hotelapp.entities.HotelRoom;
 import com.ande.luxury.hotelapp.entities.Usuario;
-import com.ande.luxury.hotelapp.repository.HotelRoomDAO;
 import com.ande.luxury.hotelapp.services.BookingService;
 import com.ande.luxury.hotelapp.services.UsuarioService;
 import com.ande.luxury.hotelapp.utilsdb.Constants;
 import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractSpinnerModel;
-import javax.swing.JOptionPane;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -25,33 +21,30 @@ import org.slf4j.LoggerFactory;
  * @author bryanvislaochavez
  */
 public class Reservas_CheckIn_New extends javax.swing.JFrame {
-    
+
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Reservas_CheckIn_New.class);
     private static String userLogin;
     private static HotelRoom dataRoom;
     private static Usuario clientBooking;
-      private  Reservas_CheckIn formularioPadre;
+    private Reservas_CheckIn formularioPadre;
+    private double totalBooking = 0;
 
     /**
      * Creates new form Reservas_CheckIn_New
      */
-    public Reservas_CheckIn_New(String userLogin, String text, HotelRoom dataRoom,Reservas_CheckIn formularioPadre) {
-        
-            System.out.println("userLogin: " + userLogin);
-System.out.println("room: " + text);
-System.out.println("room.getRoomNumber(): " + (dataRoom != null ? dataRoom.getRoomNumber() : "room is null"));
-System.out.println("this class: " + formularioPadre.getClass().getName());
+    public Reservas_CheckIn_New(String userLogin, String text, HotelRoom dataRoom, Reservas_CheckIn formularioPadre) {
         initComponents();
         this.userLogin = userLogin;
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         lblTextHabitacion.setText(text);
         jCalendarStart.setMinSelectableDate(new Date());
-        jCalendarEnd.setMinSelectableDate(new Date());
-       this.dataRoom = dataRoom;
-       this.formularioPadre = formularioPadre;
+        jCalendarEnd.setMinSelectableDate(jCalendarStart.getDate());
+        this.dataRoom = dataRoom;
+        this.formularioPadre = formularioPadre;
         btnReservar.setEnabled(false);
         jCalendarStart.setEnabled(false);
         jCalendarEnd.setEnabled(false);
+        lblDias.setText("0");
     }
 
     /**
@@ -91,6 +84,8 @@ System.out.println("this class: " + formularioPadre.getClass().getName());
         btnReservar = new javax.swing.JButton();
         lblDias = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        lblTotal = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -184,6 +179,7 @@ System.out.println("this class: " + formularioPadre.getClass().getName());
 
         spinerAdultos.setValue(1);
 
+        txtPIN.setEnabled(false);
         txtPIN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPINActionPerformed(evt);
@@ -218,6 +214,13 @@ System.out.println("this class: " + formularioPadre.getClass().getName());
 
         jLabel12.setText("DIAS");
 
+        jLabel13.setText("TOTAL");
+
+        lblTotal.setBackground(new java.awt.Color(0, 255, 204));
+        lblTotal.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        lblTotal.setForeground(new java.awt.Color(0, 0, 0));
+        lblTotal.setText("0");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -232,19 +235,6 @@ System.out.println("this class: " + formularioPadre.getClass().getName());
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(22, 22, 22)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(114, 114, 114))
-                                    .addComponent(jCalendarStart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jCalendarEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4)))
-                            .addComponent(jLabel10)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addGap(18, 18, 18)
@@ -255,7 +245,23 @@ System.out.println("this class: " + formularioPadre.getClass().getName());
                                 .addComponent(btnLimpiar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnNewClient)
-                                .addGap(12, 12, 12)))
+                                .addGap(12, 12, 12))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(22, 22, 22)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addComponent(jLabel2)
+                                                .addGap(114, 114, 114))
+                                            .addComponent(jCalendarStart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jCalendarEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel4)))
+                                    .addComponent(jLabel10)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblClientEncontrado)
@@ -264,28 +270,34 @@ System.out.println("this class: " + formularioPadre.getClass().getName());
                                 .addGap(31, 31, 31)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnReservar)
-                                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel3)
                                             .addComponent(jLabel7)
                                             .addComponent(jLabel6)
                                             .addComponent(jLabel8)
                                             .addComponent(jLabel9)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(13, 13, 13)
-                                                .addComponent(jLabel12)))
+                                            .addComponent(jLabel13)
+                                            .addComponent(jLabel12))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblDias)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(spinerNinos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(spinerAdultos, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(txtPIN, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(49, 49, 49))))))))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(lblDias)
+                                                    .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(35, 35, 35))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(txtPIN, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(spinerAdultos, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(16, 16, 16))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(spinerNinos, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addContainerGap())))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnReservar)
+                                        .addContainerGap())))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -341,31 +353,33 @@ System.out.println("this class: " + formularioPadre.getClass().getName());
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
                             .addComponent(txtPIN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel10))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblDias)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel12)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnReservar)
-                        .addGap(15, 15, 15)))
-                .addGap(30, 30, 30))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(lblTotal))
+                        .addGap(23, 23, 23)
+                        .addComponent(btnReservar))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jCalendarStartInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jCalendarStartInputMethodTextChanged
-        
+
     }//GEN-LAST:event_jCalendarStartInputMethodTextChanged
 
     private void jCalendarStartPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCalendarStartPropertyChange
@@ -374,9 +388,14 @@ System.out.println("this class: " + formularioPadre.getClass().getName());
         Date date = jCalendarStart.getDate();
         jCalendarEnd.setMinSelectableDate(date);
         int milisecondsByDay = 86400000;
-        Integer dias = (int) (( jCalendarStart.getDate().getTime() -  jCalendarEnd.getDate().getTime() ) / milisecondsByDay) + 1;
-        String diasConvert = dias.toString();
-        lblDias.setText(diasConvert);
+        Integer dias = (int) ((jCalendarStart.getDate().getTime() - jCalendarEnd.getDate().getTime()) / milisecondsByDay) + 1;
+        lblDias.setText(String.valueOf(dias));
+        if (dataRoom != null) {
+            if (dias > 0) {
+                totalBooking = dias * dataRoom.getPricePerNight();
+            }
+        }
+        lblTotal.setText("S/." + String.valueOf(totalBooking));
     }//GEN-LAST:event_jCalendarStartPropertyChange
 
     private void txtNumDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumDocActionPerformed
@@ -387,19 +406,19 @@ System.out.println("this class: " + formularioPadre.getClass().getName());
         }
         searchDocument(txtNumDoc.getText());
     }//GEN-LAST:event_txtNumDocActionPerformed
-    
+
     public void searchDocument(String txtDocumentNumber) {
         Usuario userSearch;
         UsuarioService usuarioService = new UsuarioService();
         try {
-            
+
             userSearch = usuarioService.findOnlyClients(txtNumDoc.getText());
             if (userSearch == null) {
                 DialogUtils.showInfo(null, "Busqueda", "No se encontro al cliente");
                 return;
             }
             clientBooking = userSearch;
-            
+
             lblClientEncontrado.setText(userSearch.getFullName());
             txtNumDoc.setEnabled(false);
             btnSearch.setEnabled(false);
@@ -409,10 +428,11 @@ System.out.println("this class: " + formularioPadre.getClass().getName());
             txtEmail.setText(userSearch.getEmail());
             txtCelular.setText(userSearch.getPhone());
             jCalendarStart.setEnabled(true);
-            jCalendarEnd.setEnabled(true);
-            txtPIN.setText(String.valueOf(Constants.getRandomNumber()));
             jCalendarStart.setMinSelectableDate(new Date());
-            jCalendarEnd.setMinSelectableDate(new Date());
+            jCalendarEnd.setEnabled(true);
+            txtPIN.setText(String.valueOf(dataRoom.getRoomNumber()) + String.valueOf(Constants.getRandomNumber()));
+            lblDias.setText("0");
+            lblTotal.setText("S/ 0.00");
         } catch (Exception ex) {
             Logger.getLogger(Reservas_CheckIn_New.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -441,6 +461,8 @@ System.out.println("this class: " + formularioPadre.getClass().getName());
         txtComentario.setText("");
         jCalendarStart.setEnabled(false);
         jCalendarEnd.setEnabled(false);
+        lblDias.setText("0");
+        lblTotal.setText("S/ 0.00");
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void txtPINActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPINActionPerformed
@@ -457,32 +479,29 @@ System.out.println("this class: " + formularioPadre.getClass().getName());
 
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
         // TODO add your handling code here:
-       //ValidatesInfo
-       
-       
-       //TODO validate
-       
-     
-       Booking booking = new Booking();
+        //ValidatesInfo
+
+        //TODO validate
+        Booking booking = new Booking();
         booking.setHotelRoom(dataRoom);
-       booking.setUserId(clientBooking.getId());
-       booking.setDocumentNumber(clientBooking.getDocumentNumber());
-       booking.setFullName(clientBooking.getFullName());
-       booking.setCheckOut(jCalendarEnd.getDate());
-       booking.setCheckIn(jCalendarStart.getDate());
-       booking.setPinCode(Integer.valueOf(txtPIN.getText()));
-       booking.setChildrens(Integer.valueOf(spinerNinos.getValue().toString()));
-       booking.setAdults(Integer.valueOf(spinerAdultos.getValue().toString()));
-       booking.setPhone(txtCelular.getText());
-       booking.setEmail(txtEmail.getText());
-       booking.setComments(txtComentario.getText());
-       booking.setCreated_by(userLogin);
-       BookingService service = new BookingService();
+        booking.setUserId(clientBooking.getId());
+        booking.setDocumentNumber(clientBooking.getDocumentNumber());
+        booking.setFullName(clientBooking.getFullName());
+        booking.setCheckOut(jCalendarEnd.getDate());
+        booking.setCheckIn(jCalendarStart.getDate());
+        booking.setPinCode(Integer.valueOf(txtPIN.getText()));
+        booking.setChildrens(Integer.valueOf(spinerNinos.getValue().toString()));
+        booking.setAdults(Integer.valueOf(spinerAdultos.getValue().toString()));
+        booking.setPhone(txtCelular.getText());
+        booking.setEmail(txtEmail.getText());
+        booking.setComments(txtComentario.getText());
+        booking.setCreated_by(userLogin);
+        BookingService service = new BookingService();
         try {
             service.saveBooking(booking);
             //TODO Refresh
             formularioPadre.refresh();
-             this.dispose();
+            this.dispose();
         } catch (Exception ex) {
             Logger.getLogger(Reservas_CheckIn_New.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -490,10 +509,15 @@ System.out.println("this class: " + formularioPadre.getClass().getName());
 
     private void jCalendarEndPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCalendarEndPropertyChange
         // TODO add your handling code here:
-          int milisecondsByDay = 86400000;
-        Integer dias = (int) (( jCalendarEnd.getDate().getTime() -  jCalendarStart.getDate().getTime() ) / milisecondsByDay) + 1;
-        String diasConvert = dias.toString();
-        lblDias.setText(diasConvert);
+        int milisecondsByDay = 86400000;
+        Integer dias = (int) ((jCalendarEnd.getDate().getTime() - jCalendarStart.getDate().getTime()) / milisecondsByDay) + 1;
+        lblDias.setText(String.valueOf(dias));
+        if (dataRoom != null) {
+            if (dias > 0) {
+                totalBooking = dias * dataRoom.getPricePerNight();
+            }
+        }
+        lblTotal.setText("S/." + String.valueOf(totalBooking));
     }//GEN-LAST:event_jCalendarEndPropertyChange
 
     /**
@@ -526,7 +550,7 @@ System.out.println("this class: " + formularioPadre.getClass().getName());
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Reservas_CheckIn_New(userLogin, "", null,null).setVisible(true);
+                new Reservas_CheckIn_New(userLogin, "", null, null).setVisible(true);
             }
         });
     }
@@ -541,6 +565,7 @@ System.out.println("this class: " + formularioPadre.getClass().getName());
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -553,6 +578,7 @@ System.out.println("this class: " + formularioPadre.getClass().getName());
     private javax.swing.JLabel lblClientEncontrado;
     private javax.swing.JLabel lblDias;
     private javax.swing.JLabel lblTextHabitacion;
+    private javax.swing.JLabel lblTotal;
     private javax.swing.JSpinner spinerAdultos;
     private javax.swing.JSpinner spinerNinos;
     private javax.swing.JTextField txtCelular;

@@ -4,27 +4,16 @@
  */
 package com.ande.luxury.hotelapp.views;
 
-import com.ande.luxury.hotelapp.entities.Hotel;
 import com.ande.luxury.hotelapp.entities.HotelRoom;
-import com.ande.luxury.hotelapp.entities.RoomType;
 import com.ande.luxury.hotelapp.services.BookingService;
 import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

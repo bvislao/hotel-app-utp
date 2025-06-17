@@ -23,6 +23,7 @@ public class HotelRoom  extends Auditable {
     private double PricePerNight;
     private boolean isReserved;
     private Integer statusId;
+    private Booking bookingReference;
    
     
     public HotelRoom(){
