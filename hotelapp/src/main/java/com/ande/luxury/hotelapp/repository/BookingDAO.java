@@ -40,14 +40,15 @@ public class BookingDAO extends BaseDAO<Booking> {
                 rs.getString("email_guest"),
                 rs.getString("country_code"),
                 rs.getString("phone_number"),
-                rs.getString("comments"))
+                rs.getString("comments"),
+                rs.getInt("total_nights"),
+                rs.getDouble("total"),
+                rs.getInt("is_released")
+        )
         );
     }
 
-    String queryInsert = "insert into bookings (uuid, hotel_room_id, pin_code, check_in, check_out, user_id, childrens, adults, "
-            + "                      document_number_guest, full_name_guest, email_guest, country_code, phone_number, comments, active, "
-            + "                      created_by, created_at) "
-            + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+    String queryInsert = "CALL spBookingCreated(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
     @Transactional
     public String save(Booking booking) throws Exception {
@@ -73,14 +74,10 @@ public class BookingDAO extends BaseDAO<Booking> {
             stmt.setString(14, booking.getComments()); // comments
             stmt.setInt(15, booking.getActive()); // active
             stmt.setString(16, booking.getCreated_by()); // created_by
-            stmt.setDate(17, java.sql.Date.valueOf(java.time.LocalDate.now()));
+            stmt.setDate(17, java.sql.Date.valueOf(java.time.LocalDate.now()));  // created_by
+            stmt.setInt(18, booking.getTotalNights()); // total_nights
+            stmt.setDouble(19, booking.getTotal()); // total
             stmt.executeUpdate();
-            // 🔑 Obtener el ID generado
-            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    booking.setId(generatedKeys.getInt(1)); 
-                }
-            }
             conn.close();
             return booking.getUuid();
         } catch (Exception ex) {

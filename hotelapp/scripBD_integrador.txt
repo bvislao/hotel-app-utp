@@ -110,6 +110,7 @@ CREATE TABLE `hotel`.`bookings` (
   `hotel_room_id` int NOT NULL,
   `pin_code` int,
   `check_in` timestamp,
+  `total_nights` int,
   `check_out` timestamp,
   `user_id` int null,
   `childrens` int NOT NULL,
@@ -120,7 +121,10 @@ CREATE TABLE `hotel`.`bookings` (
   `country_code` char(5) null,
   `phone_number` varchar(20) null,
   `comments` varchar(500),
-     `active` integer,
+  `total` decimal(10,2),
+  `is_released` int default 0,
+
+    `active` integer,
                               `created_by` varchar(15),
                               `created_at` timestamp,
                               `last_modified_by` varchar(15),
@@ -260,3 +264,48 @@ VALUES (1, 'a2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 5, 'Lima Centro', '-12.066188
 INSERT  INTO `hotel`.`hotel_room` (`id`, `uuid`, `hotel_id`, `room_type_id`, `room_number`, `price_per_hour`, `price_per_night`, `is_reserved`, `status_id`, `active`, `created_by`, `created_at`)
 VALUES (1, 'a2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 1, 101, 50.00, 200.00, 0, 1, 1, 'admin', CURRENT_TIMESTAMP),
        (2, 'b2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 2, 102, 75.00, 300.00, 0, 1, 1, 'admin', CURRENT_TIMESTAMP);
+
+
+
+DELIMITER $$
+
+CREATE PROCEDURE spBookingCreated(
+    IN p_uuid CHAR(36),
+    IN p_hotel_room_id INT,
+    IN p_pin_code INT,
+    IN p_check_in DATE,
+    IN p_check_out DATE,
+    IN p_user_id INT,
+    IN p_childrens INT,
+    IN p_adults INT,
+    IN p_document_number_guest VARCHAR(200),
+    IN p_full_name_guest VARCHAR(200),
+    IN p_email_guest VARCHAR(200),
+    IN p_country_code CHAR(5),
+    IN p_phone_number VARCHAR(20),
+    IN p_comments VARCHAR(500),
+    IN p_active INT,
+    IN p_created_by VARCHAR(15),
+    IN p_created_at DATETIME,
+    IN p_total_nights INT,
+    IN p_total DECIMAL(10, 2)
+)
+BEGIN
+    INSERT INTO bookings (
+        uuid, hotel_room_id, pin_code, check_in, check_out, user_id, childrens, adults,
+        document_number_guest, full_name_guest, email_guest, country_code, phone_number,
+        comments, active, created_by, created_at, total_nights, total
+    )
+    VALUES (
+        p_uuid, p_hotel_room_id, p_pin_code, p_check_in, p_check_out, p_user_id, p_childrens, p_adults,
+        p_document_number_guest, p_full_name_guest, p_email_guest, p_country_code, p_phone_number,
+        p_comments, p_active, p_created_by, p_created_at, p_total_nights, p_total
+    );
+    -- ACTUALIZO EL CUARTO COMO RESERVADO
+    UPDATE hotel_room
+    SET is_reserved = 1
+    WHERE id = p_hotel_room_id;
+
+END$$
+
+DELIMITER ;

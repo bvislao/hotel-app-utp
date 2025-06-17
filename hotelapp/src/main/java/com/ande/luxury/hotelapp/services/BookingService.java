@@ -51,8 +51,6 @@ public class BookingService {
             BookingDAO bookingDAO = new BookingDAO();
             String uuidRegistered = bookingDAO.save(booking);
             if(!uuidRegistered.isEmpty()){
-                HotelRoomDAO hotelRoomDAo = new HotelRoomDAO();
-                hotelRoomDAo.updateReserved(1, booking.getHotelRoom().getUuid());
                 DialogUtils.showSuccess(null, "Reserva", "Reserva confirmada ID=> " + uuidRegistered);
             }else{
                 DialogUtils.showWarning(null, "Reserva", "No se pudo registrar la reserva");

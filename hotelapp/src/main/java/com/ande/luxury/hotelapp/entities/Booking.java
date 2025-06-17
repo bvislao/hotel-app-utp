@@ -21,6 +21,9 @@ public class Booking  extends Auditable {
     private Integer hotelRoomId;
     private Integer pinCode;
     private Date checkIn;
+    private Integer totalNights;
+    private double total;
+    private Integer isReleased;
     private Date checkOut;
     private Integer userId;
     private Integer childrens;
@@ -51,7 +54,7 @@ public class Booking  extends Auditable {
      * @param email
      * @param countryCode
      */
-    public Booking(Integer id,String uuid,Integer hotelRoomId,Integer pinCode,Date checkIn,Date checkOut,Integer userId,Integer childrens, Integer adults,String documentNumber,String fullName,String email,String countryCode,String phone,String comments){
+    public Booking(Integer id,String uuid,Integer hotelRoomId,Integer pinCode,Date checkIn,Date checkOut,Integer userId,Integer childrens, Integer adults,String documentNumber,String fullName,String email,String countryCode,String phone,String comments,Integer totalNights,double total,Integer isReleased){
         this.id=id;
         this.uuid=uuid;
         this.hotelRoomId=hotelRoomId;
@@ -67,6 +70,10 @@ public class Booking  extends Auditable {
         this.countryCode=countryCode;
         this.phone=phone;
         this.comments=comments;
+        this.total = total;
+        this.totalNights = totalNights;
+        this.isReleased= isReleased;
+        
     }
           
     

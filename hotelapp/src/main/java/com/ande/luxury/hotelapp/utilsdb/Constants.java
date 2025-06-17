@@ -61,7 +61,7 @@ public class Constants {
     }
       
       public static int getRandomNumber() {
-    return ThreadLocalRandom.current().nextInt(1000000, 100000000);
+    return ThreadLocalRandom.current().nextInt(100000, 999999);
 }
 
     

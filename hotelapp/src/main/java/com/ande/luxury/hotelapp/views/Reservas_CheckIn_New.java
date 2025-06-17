@@ -28,6 +28,7 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
     private static Usuario clientBooking;
     private Reservas_CheckIn formularioPadre;
     private double totalBooking = 0;
+    private Integer totalDays;
 
     /**
      * Creates new form Reservas_CheckIn_New
@@ -388,11 +389,11 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
         Date date = jCalendarStart.getDate();
         jCalendarEnd.setMinSelectableDate(date);
         int milisecondsByDay = 86400000;
-        Integer dias = (int) ((jCalendarStart.getDate().getTime() - jCalendarEnd.getDate().getTime()) / milisecondsByDay) + 1;
-        lblDias.setText(String.valueOf(dias));
+        totalDays = (int) ((jCalendarStart.getDate().getTime() - jCalendarEnd.getDate().getTime()) / milisecondsByDay) + 1;
+        lblDias.setText(String.valueOf(totalDays));
         if (dataRoom != null) {
-            if (dias > 0) {
-                totalBooking = dias * dataRoom.getPricePerNight();
+            if (totalDays > 0) {
+                totalBooking = totalDays * dataRoom.getPricePerNight();
             }
         }
         lblTotal.setText("S/." + String.valueOf(totalBooking));
@@ -495,6 +496,8 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
         booking.setPhone(txtCelular.getText());
         booking.setEmail(txtEmail.getText());
         booking.setComments(txtComentario.getText());
+        booking.setTotal(totalBooking);
+        booking.setTotalNights(totalDays);
         booking.setCreated_by(userLogin);
         BookingService service = new BookingService();
         try {
@@ -510,11 +513,11 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
     private void jCalendarEndPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCalendarEndPropertyChange
         // TODO add your handling code here:
         int milisecondsByDay = 86400000;
-        Integer dias = (int) ((jCalendarEnd.getDate().getTime() - jCalendarStart.getDate().getTime()) / milisecondsByDay) + 1;
-        lblDias.setText(String.valueOf(dias));
+        totalDays = (int) ((jCalendarEnd.getDate().getTime() - jCalendarStart.getDate().getTime()) / milisecondsByDay) + 1;
+        lblDias.setText(String.valueOf(totalDays));
         if (dataRoom != null) {
-            if (dias > 0) {
-                totalBooking = dias * dataRoom.getPricePerNight();
+            if (totalDays > 0) {
+                totalBooking = totalDays * dataRoom.getPricePerNight();
             }
         }
         lblTotal.setText("S/." + String.valueOf(totalBooking));
