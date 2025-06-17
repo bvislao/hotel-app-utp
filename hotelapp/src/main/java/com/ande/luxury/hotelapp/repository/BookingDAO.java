@@ -8,7 +8,6 @@ import com.ande.luxury.hotelapp.database.databaseConnection;
 import com.ande.luxury.hotelapp.entities.Booking;
 import com.ande.luxury.hotelapp.utilsdb.BaseDAO;
 import com.ande.luxury.hotelapp.utilsdb.Constants;
-import com.ande.luxury.hotelapp.utilsdb.Seguridad;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

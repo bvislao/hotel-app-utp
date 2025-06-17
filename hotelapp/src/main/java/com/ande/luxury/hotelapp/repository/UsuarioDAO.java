@@ -6,7 +6,6 @@ package com.ande.luxury.hotelapp.repository;
 
 import com.ande.luxury.hotelapp.database.databaseConnection;
 import com.ande.luxury.hotelapp.entities.Usuario;
-import com.ande.luxury.hotelapp.services.UsuarioService;
 import com.ande.luxury.hotelapp.utilsdb.BaseDAO;
 import com.ande.luxury.hotelapp.utilsdb.Constants;
 import com.ande.luxury.hotelapp.utilsdb.RowMapper;

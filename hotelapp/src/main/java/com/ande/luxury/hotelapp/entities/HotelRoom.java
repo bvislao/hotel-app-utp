@@ -5,10 +5,6 @@
 package com.ande.luxury.hotelapp.entities;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 /**
  *
  * @author bryanvislaochavez
