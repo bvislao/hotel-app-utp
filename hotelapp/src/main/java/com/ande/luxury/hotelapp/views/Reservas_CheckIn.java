@@ -7,6 +7,7 @@ package com.ande.luxury.hotelapp.views;
 import com.ande.luxury.hotelapp.entities.Hotel;
 import com.ande.luxury.hotelapp.entities.HotelRoom;
 import com.ande.luxury.hotelapp.entities.RoomType;
+import com.ande.luxury.hotelapp.services.BookingService;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,6 +23,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -29,6 +32,7 @@ import javax.swing.JTextField;
  */
 public class Reservas_CheckIn extends javax.swing.JInternalFrame {
 
+    private static final Logger logger = LoggerFactory.getLogger(Reservas_CheckIn.class);
     private String userLogin;
     private List<HotelRoom> rooms;
     /**
@@ -108,44 +112,8 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
     //TEST
     
       private void initializeRooms() {
-          rooms = new ArrayList<>();
-        // Ejemplo de habitaciones (puedes conectar esto a una base de datos)
-        HotelRoom dataFake = new HotelRoom();
-        dataFake.setId(1);
-        dataFake.setUuid("7583a4a9-276d-441e-8342-9e8003dcda59");
-        dataFake.setHotel(new Hotel(1,"7cd0e276-27a5-41e5-84c7-3f8bfdf40323",5,"VMT","",1));
-        dataFake.setRoomType(new RoomType(1,"4584b24f-702f-4e7b-b39b-04888e8b622d","Habitacion Matrimonial",1));
-        dataFake.setRoomNumber(101);
-        dataFake.setPricePerHour(40);
-        dataFake.setPricePerNight(100);
-        dataFake.setReserved(true);
-        
-        rooms.add(dataFake);
-        
-          HotelRoom dataFake2 = new HotelRoom();
-        dataFake2.setId(2);
-        dataFake2.setUuid("7583a4a9-276d-441e-8342-9e8003dcda29");
-        dataFake2.setHotel(new Hotel(1,"7cd0e276-27a5-41e5-84c7-3f8bfdf40323",5,"VMT","",1));
-        dataFake2.setRoomType(new RoomType(1,"4584b24f-702f-4e7b-b39b-04888e8b622d","Habitacion Matrimonial",1));
-        dataFake2.setRoomNumber(102);
-        dataFake2.setPricePerHour(40);
-        dataFake2.setPricePerNight(100);
-        dataFake2.setReserved(false);
-        
-        rooms.add(dataFake2);
-        
-        
-           HotelRoom dataFake3 = new HotelRoom();
-        dataFake3.setId(3);
-        dataFake3.setUuid("7583a4a9-276d-441e-8342-9e8003dcda39");
-        dataFake3.setHotel(new Hotel(1,"7cd0e276-27a5-41e5-84c7-3f8bfdf40323",5,"VMT","",1));
-        dataFake3.setRoomType(new RoomType(1,"4584b24f-702f-4e7b-b39b-04888e8b622d","Habitacion Matrimonial",1));
-        dataFake3.setRoomNumber(103);
-        dataFake3.setPricePerHour(30);
-        dataFake3.setPricePerNight(100);
-        dataFake3.setReserved(false);
-        
-        rooms.add(dataFake3);
+          BookingService bookingService = new BookingService();
+          rooms =   bookingService.findAll();
         
     }
       
@@ -166,7 +134,7 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (!room.isReserved()) {
-                        Reservas_CheckIn_New newReserva = new Reservas_CheckIn_New(userLogin,room.getRoomNumber().toString()+ " - " + room.getRoomType().getDescription().toUpperCase()) ;
+                        Reservas_CheckIn_New newReserva = new Reservas_CheckIn_New(userLogin,room.getRoomNumber().toString()+ " - " + room.getRoomType().getDescription().toUpperCase(),room) ;
                         newReserva.setVisible(true);
                     } else {
                         JOptionPane.showMessageDialog(roomPanelView, 

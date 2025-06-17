@@ -6,6 +6,7 @@ package com.ande.luxury.hotelapp.views;
 
 import com.ande.luxury.hotelapp.entities.Usuario;
 import com.ande.luxury.hotelapp.services.UsuarioService;
+import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
 import java.awt.Image;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -54,8 +55,6 @@ public class Login extends javax.swing.JFrame {
         btnLogin = new javax.swing.JButton();
         txtUsuario = new javax.swing.JTextField();
         txtPassword = new javax.swing.JPasswordField();
-        jSeparator1 = new javax.swing.JSeparator();
-        btnReservar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -75,7 +74,10 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        btnLogin.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        btnLogin.setBackground(new java.awt.Color(0, 255, 51));
+        btnLogin.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        btnLogin.setForeground(new java.awt.Color(102, 0, 0));
+        btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/login.png"))); // NOI18N
         btnLogin.setText("Ingresar");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,14 +88,6 @@ public class Login extends javax.swing.JFrame {
         txtUsuario.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         txtUsuario.setToolTipText("Contraseña");
         txtUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-
-        btnReservar.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
-        btnReservar.setText("+ Reserva ");
-        btnReservar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReservarActionPerformed(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Jaini Purva", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 102, 0));
@@ -115,38 +109,29 @@ public class Login extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
-                                .addGap(68, 68, 68)
-                                .addComponent(jLabel1))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(78, 78, 78)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.CENTER)
-                                    .addComponent(btnReservar, javax.swing.GroupLayout.Alignment.CENTER)
-                                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(54, 54, 54))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtUsuario)
-                                    .addComponent(txtPassword))))
-                        .addGap(189, 189, 189))
+                        .addGap(125, 125, 125)
+                        .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(192, 192, 192)
+                        .addComponent(jLabel3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(184, 184, 184)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(139, 139, 139)
+                        .addComponent(btnLogin))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(180, 180, 180)
-                                .addComponent(jLabel3))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(172, 172, 172)
-                                .addComponent(jLabel2)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,25 +142,21 @@ public class Login extends javax.swing.JFrame {
                         .addComponent(jLabel4))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(46, 46, 46)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(41, 41, 41)
-                                .addComponent(btnLogin)
-                                .addGap(2, 2, 2)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnReservar)))))
-                .addContainerGap(45, Short.MAX_VALUE))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(btnLogin))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         pack();
@@ -186,7 +167,7 @@ public class Login extends javax.swing.JFrame {
             return false;
         } catch (IOException e) {
             logger.info("No se encuentra el archivo de configuración");
-            JOptionPane.showMessageDialog(null, "El archivo de configuración no se encuentra disponible. ");
+            DialogUtils.showError(this, "Error", "El archivo de configuración no se encuentra disponible.");
             return true;
         }
     }
@@ -202,13 +183,13 @@ public class Login extends javax.swing.JFrame {
             usuario = usuarioService.validateCredentials(txtUsuario.getText().trim(), password.trim());
             if (usuario != null) {
                 logger.info("Autenticación exitosa " + usuario.getDocumentNumber().toString() + " - " + usuario.getFullName());
-                JOptionPane.showMessageDialog(null, "Autenticado correctamente");
+                DialogUtils.showSuccess(this, "Éxito", "Autenticado correctamente!");
                 this.setVisible(false);
                 Main mainForm = new Main(usuario);
                 mainForm.setVisible(true);
             } else {
                 logger.error("El usuario y/o contraseña es incorrecto, verifique nuevamente");
-                JOptionPane.showMessageDialog(null, "El usuario y/o contraseña es incorrecto, verifique nuevamente");
+                DialogUtils.showError(this, "Error", "El usuario y/o contraseña es incorrecto, verifique nuevamente");
             }
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
@@ -223,10 +204,6 @@ public class Login extends javax.swing.JFrame {
             return;
         }
     }
-
-    private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnReservarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -262,14 +239,12 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
-    private javax.swing.JButton btnReservar;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
@@ -283,7 +258,7 @@ public class Login extends javax.swing.JFrame {
             Image imagenEscalada = imagenLabel.getScaledInstance(400, 400, Image.SCALE_SMOOTH);
             jLabel5.setIcon(new ImageIcon(imagenEscalada));
             // Establece el tamaño del JLabel
-            jLabel5.setBounds(50, 150, 150, 100); // Position below jFormattedTextField1
+            jLabel5.setBounds(50, 150, 100, 100); // Position below jFormattedTextField1
         } catch (IOException e) {
             e.printStackTrace();
             jLabel1.setText("Error cargando imagen");

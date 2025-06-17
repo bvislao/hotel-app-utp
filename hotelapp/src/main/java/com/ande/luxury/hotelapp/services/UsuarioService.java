@@ -12,7 +12,7 @@ import com.ande.luxury.hotelapp.repository.UsuarioDAO;
 import com.ande.luxury.hotelapp.repository.UsuarioRolDAO;
 import java.util.ArrayList;
 import java.util.List;
-import javax.transaction.Transactional;
+import javax.transaction.TransactionScoped;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +26,7 @@ public class UsuarioService {
     
    
 
+    @TransactionScoped
     public String createUser(Usuario objUser){
         String response = "";
         try{
@@ -90,5 +91,17 @@ public class UsuarioService {
             }
         }
         return usuariosList;
+    }
+    
+    public Usuario findOnlyClients(String documentNumber) throws Exception{
+        validateFindOnlyClients(documentNumber);
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        return usuarioDAO.findUserByUsername(documentNumber);
+    }
+
+    private void validateFindOnlyClients(String documentNumber) throws Exception {
+        if(documentNumber.isBlank()){
+            throw new Exception("Ingrese número de documento del cliente");
+        }
     }
 }

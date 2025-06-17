@@ -4,21 +4,46 @@
  */
 package com.ande.luxury.hotelapp.views;
 
+import com.ande.luxury.hotelapp.entities.Booking;
+import com.ande.luxury.hotelapp.entities.HotelRoom;
+import com.ande.luxury.hotelapp.entities.Usuario;
+import com.ande.luxury.hotelapp.repository.HotelRoomDAO;
+import com.ande.luxury.hotelapp.services.BookingService;
+import com.ande.luxury.hotelapp.services.UsuarioService;
+import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.AbstractSpinnerModel;
+import javax.swing.JOptionPane;
+import org.slf4j.LoggerFactory;
+
 /**
  *
  * @author bryanvislaochavez
  */
 public class Reservas_CheckIn_New extends javax.swing.JFrame {
+    
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Reservas_CheckIn_New.class);
+    private static String userLogin;
+    private static HotelRoom dataRoom;
+    private static Usuario clientBooking;
 
-    private  static String userLogin;
     /**
      * Creates new form Reservas_CheckIn_New
      */
-    public Reservas_CheckIn_New(String userLogin,String text) {
+    public Reservas_CheckIn_New(String userLogin, String text, HotelRoom dataRoom) {
         initComponents();
         this.userLogin = userLogin;
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         lblTextHabitacion.setText(text);
+        jCalendarStart.setMinSelectableDate(new Date());
+        jCalendarEnd.setMinSelectableDate(new Date());
+       this.dataRoom = dataRoom;
+        btnReservar.setEnabled(false);
+        jCalendarStart.setEnabled(false);
+        jCalendarEnd.setEnabled(false);
     }
 
     /**
@@ -31,70 +56,431 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jCalendar1 = new com.toedter.calendar.JCalendar();
+        jCalendarStart = new com.toedter.calendar.JCalendar();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jCalendar2 = new com.toedter.calendar.JCalendar();
+        jCalendarEnd = new com.toedter.calendar.JCalendar();
+        lblClientEncontrado = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txtNumDoc = new javax.swing.JTextField();
+        btnNewClient = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
         lblTextHabitacion = new javax.swing.JLabel();
+        btnLimpiar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtComentario = new javax.swing.JTextArea();
+        spinerNinos = new javax.swing.JSpinner();
+        spinerAdultos = new javax.swing.JSpinner();
+        txtPIN = new javax.swing.JTextField();
+        txtCelular = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
+        btnReservar = new javax.swing.JButton();
+        lblDias = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel1.setText("Reservar Habitación");
 
-        jCalendar1.setDate(new java.util.Date(1749932835000L));
-        jCalendar1.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        jCalendarStart.setDate(new java.util.Date(1749932835000L));
+        jCalendarStart.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        jCalendarStart.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                jCalendarStartInputMethodTextChanged(evt);
+            }
+        });
+        jCalendarStart.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jCalendarStartPropertyChange(evt);
+            }
+        });
 
+        jLabel2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel2.setText("Fecha de Inicio");
 
-        jLabel3.setText("Fecha de Fin");
+        jCalendarEnd.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jCalendarEndPropertyChange(evt);
+            }
+        });
 
+        lblClientEncontrado.setBackground(new java.awt.Color(204, 255, 0));
+        lblClientEncontrado.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        lblClientEncontrado.setText("------------");
+
+        jLabel4.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel4.setText("Fecha Fin");
+
+        jLabel5.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        jLabel5.setText("Cliente/NumeroDocumento");
+
+        txtNumDoc.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+        txtNumDoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNumDocActionPerformed(evt);
+            }
+        });
+
+        btnNewClient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/new.png"))); // NOI18N
+        btnNewClient.setToolTipText("Nuevo Cliente");
+        btnNewClient.setDisabledIcon(null);
+
+        btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/search.png"))); // NOI18N
+        btnSearch.setToolTipText("Buscar");
+        btnSearch.setDisabledIcon(null);
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+
+        lblTextHabitacion.setBackground(new java.awt.Color(204, 255, 0));
+        lblTextHabitacion.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
         lblTextHabitacion.setText("txt");
+
+        btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/clear.png"))); // NOI18N
+        btnLimpiar.setToolTipText("Nuevo Cliente");
+        btnLimpiar.setDisabledIcon(null);
+        btnLimpiar.setEnabled(false);
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Niños");
+
+        jLabel6.setText("Adultos");
+
+        jLabel7.setText("Email");
+
+        jLabel8.setText("Celular");
+
+        jLabel9.setText("PIN CODE");
+
+        jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jLabel10.setText("Comentario");
+
+        txtComentario.setColumns(20);
+        txtComentario.setRows(5);
+        jScrollPane1.setViewportView(txtComentario);
+
+        spinerAdultos.setValue(1);
+
+        txtPIN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPINActionPerformed(evt);
+            }
+        });
+
+        txtCelular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCelularActionPerformed(evt);
+            }
+        });
+
+        txtEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEmailActionPerformed(evt);
+            }
+        });
+
+        btnReservar.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        btnReservar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/check.png"))); // NOI18N
+        btnReservar.setText("Reservar");
+        btnReservar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReservarActionPerformed(evt);
+            }
+        });
+
+        lblDias.setBackground(new java.awt.Color(0, 255, 204));
+        lblDias.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        lblDias.setForeground(new java.awt.Color(0, 0, 0));
+        lblDias.setText("0");
+
+        jLabel12.setText("DIAS");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(35, 35, 35)
+                        .addComponent(lblTextHabitacion)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3)
-                        .addGap(147, 147, 147))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
-                        .addComponent(jCalendar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(84, 84, 84))))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(104, 104, 104)
-                .addComponent(lblTextHabitacion)
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(114, 114, 114))
+                                    .addComponent(jCalendarStart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jCalendarEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4)))
+                            .addComponent(jLabel10)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtNumDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSearch)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnLimpiar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnNewClient)
+                                .addGap(12, 12, 12)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblClientEncontrado)
+                                .addContainerGap())
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnReservar)
+                                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel7)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jLabel8)
+                                            .addComponent(jLabel9)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(13, 13, 13)
+                                                .addComponent(jLabel12)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblDias)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(spinerNinos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(spinerAdultos, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txtPIN, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(49, 49, 49))))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-                    .addComponent(lblTextHabitacion))
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCalendar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(150, 150, 150))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(lblTextHabitacion))
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnLimpiar)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(txtNumDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel5)))
+                                .addGap(29, 29, 29)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel4))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jCalendarEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jCalendarStart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnNewClient)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnSearch)
+                                .addGap(45, 45, 45))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(lblClientEncontrado)
+                                .addGap(54, 54, 54)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(spinerNinos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(spinerAdultos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(txtPIN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel10))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblDias)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel12)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnReservar)
+                        .addGap(15, 15, 15)))
+                .addGap(30, 30, 30))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jCalendarStartInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jCalendarStartInputMethodTextChanged
+        
+    }//GEN-LAST:event_jCalendarStartInputMethodTextChanged
+
+    private void jCalendarStartPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCalendarStartPropertyChange
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        Date date = jCalendarStart.getDate();
+        jCalendarEnd.setMinSelectableDate(date);
+        int milisecondsByDay = 86400000;
+        Integer dias = (int) (( jCalendarStart.getDate().getTime() -  jCalendarEnd.getDate().getTime() ) / milisecondsByDay) + 1;
+        String diasConvert = dias.toString();
+        lblDias.setText(diasConvert);
+    }//GEN-LAST:event_jCalendarStartPropertyChange
+
+    private void txtNumDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumDocActionPerformed
+        // TODO add your handling code here:
+        if (txtNumDoc.getText().isEmpty()) {
+            DialogUtils.showError(null, "Validación", "Ingresa el numero de documento valido");
+            return;
+        }
+        searchDocument(txtNumDoc.getText());
+    }//GEN-LAST:event_txtNumDocActionPerformed
+    
+    public void searchDocument(String txtDocumentNumber) {
+        Usuario userSearch;
+        UsuarioService usuarioService = new UsuarioService();
+        try {
+            
+            userSearch = usuarioService.findOnlyClients(txtNumDoc.getText());
+            if (userSearch == null) {
+                DialogUtils.showInfo(null, "Busqueda", "No se encontro al cliente");
+                return;
+            }
+            clientBooking = userSearch;
+            
+            lblClientEncontrado.setText(userSearch.getFullName());
+            txtNumDoc.setEnabled(false);
+            btnSearch.setEnabled(false);
+            btnNewClient.setEnabled(false);
+            btnLimpiar.setEnabled(true);
+            btnReservar.setEnabled(true);
+            txtEmail.setText(userSearch.getEmail());
+            txtCelular.setText(userSearch.getPhone());
+            jCalendarStart.setEnabled(true);
+            jCalendarEnd.setEnabled(true);
+            txtPIN.setText(txtDocumentNumber);
+            jCalendarStart.setMinSelectableDate(new Date());
+            jCalendarEnd.setMinSelectableDate(new Date());
+        } catch (Exception ex) {
+            Logger.getLogger(Reservas_CheckIn_New.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+        if (txtNumDoc.getText().isEmpty()) {
+            DialogUtils.showError(null, "Validación", "Ingresa el numero de documento valido");
+            return;
+        }
+        searchDocument(txtNumDoc.getText());
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+        clientBooking = null;
+        lblClientEncontrado.setText("----------");
+        txtNumDoc.setEnabled(true);
+        txtNumDoc.setText("");
+        btnSearch.setEnabled(true);
+        btnNewClient.setEnabled(true);
+        btnLimpiar.setEnabled(false);
+        btnReservar.setEnabled(false);
+        txtEmail.setText("");
+        txtCelular.setText("");
+        txtComentario.setText("");
+        jCalendarStart.setEnabled(false);
+        jCalendarEnd.setEnabled(false);
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void txtPINActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPINActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPINActionPerformed
+
+    private void txtCelularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCelularActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCelularActionPerformed
+
+    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEmailActionPerformed
+
+    private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
+        // TODO add your handling code here:
+       //ValidatesInfo
+       
+       Booking booking = new Booking();
+  
+        booking.setHotelRoom(dataRoom);
+       booking.setUserId(clientBooking.getId());
+       booking.setDocumentNumber(clientBooking.getDocumentNumber());
+       booking.setFullName(clientBooking.getFullName());
+       booking.setCheckOut(jCalendarEnd.getDate());
+       booking.setCheckIn(jCalendarStart.getDate());
+       booking.setPinCode(Integer.valueOf(txtPIN.getText()));
+       booking.setChildrens(Integer.valueOf(spinerNinos.getValue().toString()));
+       booking.setAdults(Integer.valueOf(spinerAdultos.getValue().toString()));
+       booking.setPhone(txtCelular.getText());
+       booking.setEmail(txtEmail.getText());
+       booking.setComments(txtComentario.getText());
+       BookingService service = new BookingService();
+       this.dispose();
+        try {
+            service.saveBooking(booking);
+        } catch (Exception ex) {
+            Logger.getLogger(Reservas_CheckIn_New.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnReservarActionPerformed
+
+    private void jCalendarEndPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCalendarEndPropertyChange
+        // TODO add your handling code here:
+          int milisecondsByDay = 86400000;
+        Integer dias = (int) (( jCalendarEnd.getDate().getTime() -  jCalendarStart.getDate().getTime() ) / milisecondsByDay) + 1;
+        String diasConvert = dias.toString();
+        lblDias.setText(diasConvert);
+    }//GEN-LAST:event_jCalendarEndPropertyChange
 
     /**
      * @param args the command line arguments
@@ -126,17 +512,39 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Reservas_CheckIn_New(userLogin,"").setVisible(true);
+                new Reservas_CheckIn_New(userLogin, "", null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.toedter.calendar.JCalendar jCalendar1;
-    private com.toedter.calendar.JCalendar jCalendar2;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnNewClient;
+    private javax.swing.JButton btnReservar;
+    private javax.swing.JButton btnSearch;
+    private com.toedter.calendar.JCalendar jCalendarEnd;
+    private com.toedter.calendar.JCalendar jCalendarStart;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblClientEncontrado;
+    private javax.swing.JLabel lblDias;
     private javax.swing.JLabel lblTextHabitacion;
+    private javax.swing.JSpinner spinerAdultos;
+    private javax.swing.JSpinner spinerNinos;
+    private javax.swing.JTextField txtCelular;
+    private javax.swing.JTextArea txtComentario;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtNumDoc;
+    private javax.swing.JTextField txtPIN;
     // End of variables declaration//GEN-END:variables
 }

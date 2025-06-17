@@ -5,7 +5,7 @@
 package com.ande.luxury.hotelapp.utilsdb;
 
 import java.util.UUID;
-
+import java.util.Date;
 /**
  *
  * @author bryanvislaochavez
@@ -51,5 +51,13 @@ public class Constants {
             return value;
         }
     }
+    
+      public static java.sql.Date convertToSqlDate(Date utilDate) {
+        if (utilDate == null) {
+            return null;
+        }
+        return new java.sql.Date(utilDate.getTime());
+    }
+
     
 }

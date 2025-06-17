@@ -4,18 +4,25 @@
  */
 package com.ande.luxury.hotelapp.repository;
 
-import com.ande.luxury.hotelapp.entities.Hotel;
+import com.ande.luxury.hotelapp.database.databaseConnection;
 import com.ande.luxury.hotelapp.entities.HotelRoom;
 import com.ande.luxury.hotelapp.utilsdb.BaseDAO;
 import com.ande.luxury.hotelapp.utilsdb.RowMapper;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author bryanvislaochavez
  */
 public class HotelRoomDAO extends BaseDAO<HotelRoom>{
+    
+    private static final Logger logger = LoggerFactory.getLogger(HotelRoomDAO.class);
     
     public HotelRoomDAO() {
         super("hotel.hotel_room", new RowMapper<HotelRoom>() {
@@ -34,6 +41,20 @@ public class HotelRoomDAO extends BaseDAO<HotelRoom>{
                 );
             }
         });
+    }
+    
+    String queryUpdateReserverd= "update hotel_room  set is_reserved = ? where uuid = ? ";
+    
+    public void updateReserved(Integer isReserved,String uuid) throws Exception{
+                try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(queryUpdateReserverd)) {
+                     stmt.setInt(1, isReserved); //is_reserved
+                    stmt.setString(2, uuid); // uuid
+                    stmt.executeUpdate();
+                }catch(Exception ex){
+                     logger.error("Error updateReserved => " + ex.getMessage());
+                    throw new Exception("Ocurrio un error al querer insertar.");
+                }finally {
+                }
     }
     
 }
