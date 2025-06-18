@@ -6,7 +6,6 @@ package com.ande.luxury.hotelapp.repository;
 
 import com.ande.luxury.hotelapp.database.databaseConnection;
 import com.ande.luxury.hotelapp.entities.Usuario;
-import com.ande.luxury.hotelapp.services.UsuarioService;
 import com.ande.luxury.hotelapp.utilsdb.BaseDAO;
 import com.ande.luxury.hotelapp.utilsdb.Constants;
 import com.ande.luxury.hotelapp.utilsdb.RowMapper;
@@ -45,8 +44,7 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
         });
     }
 
-    private String queryInsert = "INSERT INTO hotel.users (uuid, document_number, full_name, phone, email, password, status_id, active, created_by,"
-            + "                         created_at) values(?,?,?,?,?,?,?,?,?,?);";
+    private String callSPInsert = "CALL spInsertUser(?,?,?,?,?,?,?,?,?,?,?);";
 
     public Usuario getDataUser(String username) throws Exception {
         Usuario user = this.findUserByUsername(username);
@@ -79,24 +77,19 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
         usuario.setStatus(Constants.EntityStatus.ACTIVO.getValue());
         usuario.setActive(Constants.EntityActive.ACTIVO.getValue());
 
-        try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(queryInsert, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, uuid);
-            stmt.setString(2, usuario.getDocumentNumber()); // document_number
-            stmt.setString(3, usuario.getFullName()); // full_name
-            stmt.setString(4, usuario.getPhone()); // phone
-            stmt.setString(5, usuario.getEmail()); // email
-            stmt.setString(6, usuario.getPassword()); // password
-            stmt.setInt(7, usuario.getStatus()); // status_id
-            stmt.setInt(8, usuario.getActive()); // active
-            stmt.setString(9, usuario.getCreated_by()); // created_by
-            stmt.setDate(10, java.sql.Date.valueOf(java.time.LocalDate.now()));
+        try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(callSPInsert, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, usuario.getRoles().getFirst().getId());
+            stmt.setString(2, uuid);
+            stmt.setString(3, usuario.getDocumentNumber()); // document_number
+            stmt.setString(4, usuario.getFullName()); // full_name
+            stmt.setString(5, usuario.getPhone()); // phone
+            stmt.setString(6, usuario.getEmail()); // email
+            stmt.setString(7, usuario.getPassword()); // password
+            stmt.setInt(8, usuario.getStatus()); // status_id
+            stmt.setInt(9, usuario.getActive()); // active
+            stmt.setString(10, usuario.getCreated_by()); // created_by
+            stmt.setDate(11, java.sql.Date.valueOf(java.time.LocalDate.now()));
             stmt.executeUpdate();
-            // 🔑 Obtener el ID generado
-            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    usuario.setId(generatedKeys.getInt(1)); 
-                }
-            }
             conn.close();
             
             return usuario;

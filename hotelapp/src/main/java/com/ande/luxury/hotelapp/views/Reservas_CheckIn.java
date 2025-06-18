@@ -4,24 +4,18 @@
  */
 package com.ande.luxury.hotelapp.views;
 
-import com.ande.luxury.hotelapp.entities.Hotel;
 import com.ande.luxury.hotelapp.entities.HotelRoom;
-import com.ande.luxury.hotelapp.entities.RoomType;
+import com.ande.luxury.hotelapp.services.BookingService;
+import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -29,45 +23,58 @@ import javax.swing.JTextField;
  */
 public class Reservas_CheckIn extends javax.swing.JInternalFrame {
 
+    private static final Logger logger = LoggerFactory.getLogger(Reservas_CheckIn.class);
     private String userLogin;
     private List<HotelRoom> rooms;
+
     /**
      * Creates new form Reservas_CheckIn
      */
     public Reservas_CheckIn() {
-        
-         initComponents();
-         
-         setTitle("CheckIn - Habitaciones");
+
+        initComponents();
+
+        setTitle("CheckIn - Habitaciones");
         setSize(500, 300);
 
-         // Inicializar panel y lista de habitaciones
-       
+        // Inicializar panel y lista de habitaciones
         rooms = new ArrayList<>();
-        
+
         initializeRooms();
         createRoomButtons();
-        
-          // Agregar panel a un JScrollPane por si hay muchas habitaciones
+
+        // Agregar panel a un JScrollPane por si hay muchas habitaciones
         JScrollPane scrollPane = new JScrollPane(roomPanelView);
         add(scrollPane, BorderLayout.CENTER);
     }
-      public Reservas_CheckIn(String userLogin) {
+
+    public Reservas_CheckIn(String userLogin) {
         initComponents();
         setSize(500, 500);
         this.userLogin = userLogin;
-          setTitle("Gestión de Habitaciones Check-In Habitaciones");
+        setTitle("Gestión de Habitaciones Check-In Habitaciones");
 
-         // Inicializar panel y lista de habitaciones
+        // Inicializar panel y lista de habitaciones
         initializeRooms();
         createRoomButtons();
-             // Agregar panel a un JScrollPane por si hay muchas habitaciones
-       
-         // Forzar revalidación y repintado
+        // Agregar panel a un JScrollPane por si hay muchas habitaciones
+
+        // Forzar revalidación y repintado
         roomPanelView.revalidate();
         roomPanelView.repaint();
     }
 
+    public void refresh() {
+
+        roomPanelView.removeAll();
+        // Inicializar panel y lista de habitaciones
+        initializeRooms();
+        createRoomButtons();
+
+        // Forzar revalidación y repintado
+        roomPanelView.revalidate();
+        roomPanelView.repaint();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -81,114 +88,63 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
         roomPanelView = new javax.swing.JPanel();
 
         setTitle("Ande Luxury :: CheckIn");
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         roomPanelView.setBackground(new java.awt.Color(102, 102, 102));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(roomPanelView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(roomPanelView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(19, 19, 19))
-        );
+        getContentPane().add(roomPanelView, new org.netbeans.lib.awtextra.AbsoluteConstraints(26, 16, 480, 470));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
     //TEST
-    
-      private void initializeRooms() {
-          rooms = new ArrayList<>();
-        // Ejemplo de habitaciones (puedes conectar esto a una base de datos)
-        HotelRoom dataFake = new HotelRoom();
-        dataFake.setId(1);
-        dataFake.setUuid("7583a4a9-276d-441e-8342-9e8003dcda59");
-        dataFake.setHotel(new Hotel(1,"7cd0e276-27a5-41e5-84c7-3f8bfdf40323",5,"VMT","",1));
-        dataFake.setRoomType(new RoomType(1,"4584b24f-702f-4e7b-b39b-04888e8b622d","Habitacion Matrimonial",1));
-        dataFake.setRoomNumber(101);
-        dataFake.setPricePerHour(40);
-        dataFake.setPricePerNight(100);
-        dataFake.setReserved(true);
-        
-        rooms.add(dataFake);
-        
-          HotelRoom dataFake2 = new HotelRoom();
-        dataFake2.setId(2);
-        dataFake2.setUuid("7583a4a9-276d-441e-8342-9e8003dcda29");
-        dataFake2.setHotel(new Hotel(1,"7cd0e276-27a5-41e5-84c7-3f8bfdf40323",5,"VMT","",1));
-        dataFake2.setRoomType(new RoomType(1,"4584b24f-702f-4e7b-b39b-04888e8b622d","Habitacion Matrimonial",1));
-        dataFake2.setRoomNumber(102);
-        dataFake2.setPricePerHour(40);
-        dataFake2.setPricePerNight(100);
-        dataFake2.setReserved(false);
-        
-        rooms.add(dataFake2);
-        
-        
-           HotelRoom dataFake3 = new HotelRoom();
-        dataFake3.setId(3);
-        dataFake3.setUuid("7583a4a9-276d-441e-8342-9e8003dcda39");
-        dataFake3.setHotel(new Hotel(1,"7cd0e276-27a5-41e5-84c7-3f8bfdf40323",5,"VMT","",1));
-        dataFake3.setRoomType(new RoomType(1,"4584b24f-702f-4e7b-b39b-04888e8b622d","Habitacion Matrimonial",1));
-        dataFake3.setRoomNumber(103);
-        dataFake3.setPricePerHour(30);
-        dataFake3.setPricePerNight(100);
-        dataFake3.setReserved(false);
-        
-        rooms.add(dataFake3);
-        
+    private void initializeRooms() {
+        BookingService bookingService = new BookingService();
+        rooms = bookingService.findAll();
+
     }
-      
-       private void createRoomButtons() {
+
+    private void createRoomButtons() {
         for (HotelRoom room : rooms) {
-             JButton button = new JButton();
+            JButton button = new JButton();
             button.setPreferredSize(new Dimension(80, 80));
             button.setBackground(room.isReserved() ? Color.RED : Color.GREEN);
             button.setOpaque(true);
             button.setBorderPainted(false);
-            StringBuilder strText =  new StringBuilder();
+            StringBuilder strText = new StringBuilder();
             strText.append(room.getRoomNumber().toString());
             button.setText(
-                   strText.toString());
-            
-             // Acción del botón
-            button.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (!room.isReserved()) {
-                        Reservas_CheckIn_New newReserva = new Reservas_CheckIn_New(userLogin,room.getRoomNumber().toString()+ " - " + room.getRoomType().getDescription().toUpperCase()) ;
-                        newReserva.setVisible(true);
-                    } else {
-                        JOptionPane.showMessageDialog(roomPanelView, 
-                            "Habitación " + room.getRoomNumber() + " está ocupada", 
-                            "Información", 
-                            JOptionPane.INFORMATION_MESSAGE);
+                    strText.toString());
+
+            // Acción del botón
+            // Acción del botón con lambda
+            button.addActionListener(e -> {
+                if (!room.isReserved()) {
+                    Reservas_CheckIn_New newReserva = new Reservas_CheckIn_New(
+                            userLogin,
+                            room.getRoomNumber().toString() + " - " + room.getRoomType().getDescription().toUpperCase(),
+                            room,
+                            this // Aquí sí funciona "this"
+                    );
+                    newReserva.setVisible(true);
+                } else {
+                    // Confirmación
+                    if (DialogUtils.showConfirmation(roomPanelView, "Alerta", "Habitación ocupada ¿Desea ver el detalle?")) {
+                        //confirmó
+                        Reservas_CheckIn_Detail detailBooking = new Reservas_CheckIn_Detail(room);
+                        detailBooking.setVisible(true);
+
                     }
+
                 }
             });
-
-            
-             roomPanelView.add(button);
+            roomPanelView.add(button);
         }
-       }
-       
-       
-        private void showReservationForm(String roomNumber) {
+    }
+
+    private void showReservationForm(String roomNumber) {
         // Crear un nuevo JFrame para el formulario de reserva
     }
-      
-       
-       
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel roomPanelView;

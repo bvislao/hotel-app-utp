@@ -5,7 +5,8 @@
 package com.ande.luxury.hotelapp.utilsdb;
 
 import java.util.UUID;
-
+import java.util.Date;
+import java.util.concurrent.ThreadLocalRandom;
 /**
  *
  * @author bryanvislaochavez
@@ -51,5 +52,17 @@ public class Constants {
             return value;
         }
     }
+    
+      public static java.sql.Date convertToSqlDate(Date utilDate) {
+        if (utilDate == null) {
+            return null;
+        }
+        return new java.sql.Date(utilDate.getTime());
+    }
+      
+      public static int getRandomNumber() {
+    return ThreadLocalRandom.current().nextInt(100000, 999999);
+}
+
     
 }

@@ -4,13 +4,11 @@
  */
 package com.ande.luxury.hotelapp.utilsdb;
 
-import com.ande.luxury.hotelapp.views.Main;
 import com.ande.luxury.hotelapp.views.Usuarios_Gestion;
 import java.awt.Component;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;

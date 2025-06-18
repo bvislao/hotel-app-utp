@@ -93,6 +93,7 @@ CREATE TABLE `hotel`.`hotel_room` (
                               `hotel_id` integer NOT NULL,
                               `room_type_id` integer NOT NULL,
                               `room_number` integer,
+                              `capacity` integer,
                               `price_per_hour` decimal(10,2),
                               `price_per_night` decimal(10,2),
                               `is_reserved` integer,
@@ -110,6 +111,7 @@ CREATE TABLE `hotel`.`bookings` (
   `hotel_room_id` int NOT NULL,
   `pin_code` int,
   `check_in` timestamp,
+  `total_nights` int,
   `check_out` timestamp,
   `user_id` int null,
   `childrens` int NOT NULL,
@@ -120,7 +122,10 @@ CREATE TABLE `hotel`.`bookings` (
   `country_code` char(5) null,
   `phone_number` varchar(20) null,
   `comments` varchar(500),
-     `active` integer,
+  `total` decimal(10,2),
+  `is_released` int default 0,
+
+    `active` integer,
                               `created_by` varchar(15),
                               `created_at` timestamp,
                               `last_modified_by` varchar(15),
@@ -179,7 +184,7 @@ CREATE TABLE `hotel`.`invoice` (
                               `created_at` timestamp,
                               `last_modified_by` varchar(15),
                               `last_modified_at` timestamp
-  
+
 );
 
 ALTER TABLE `hotel`.`invoice` ADD CONSTRAINT `fk_invoice_booking_id` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`);
@@ -257,6 +262,117 @@ INSERT  INTO `hotel`.`hotel` (`id`, `uuid`, `category`, `address`, `location`, `
 VALUES (1, 'a2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 5, 'Lima Centro', '-12.066188148973394, -77.03696239441621', 1, 1, 'admin', CURRENT_TIMESTAMP);
 
 
-INSERT  INTO `hotel`.`hotel_room` (`id`, `uuid`, `hotel_id`, `room_type_id`, `room_number`, `price_per_hour`, `price_per_night`, `is_reserved`, `status_id`, `active`, `created_by`, `created_at`)
-VALUES (1, 'a2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 1, 101, 50.00, 200.00, 0, 1, 1, 'admin', CURRENT_TIMESTAMP),
-       (2, 'b2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 2, 102, 75.00, 300.00, 0, 1, 1, 'admin', CURRENT_TIMESTAMP);
+INSERT  INTO `hotel`.`hotel_room` (`id`, `uuid`, `hotel_id`, `room_type_id`, `room_number`, `price_per_hour`, `price_per_night`, `is_reserved`,`capacity`, `status_id`, `active`, `created_by`, `created_at`)
+VALUES (1, 'a2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 1, 101, 50.00, 200.00, 0, 2,1, 1, 'admin', CURRENT_TIMESTAMP),
+       (2, 'b2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 2, 102, 75.00, 300.00, 0, 2,1, 1, 'admin', CURRENT_TIMESTAMP),
+       (3, 'c2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 1, 103, 60.00, 220.00, 0, 2, 1, 1, 'admin', CURRENT_TIMESTAMP),
+(4, 'd2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 2, 104, 80.00, 320.00, 0, 3, 1, 1, 'admin', CURRENT_TIMESTAMP),
+(5, 'e2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 1, 105, 55.00, 210.00, 0, 2, 1, 1, 'admin', CURRENT_TIMESTAMP),
+(6, 'f2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 3, 106, 100.00, 400.00, 0, 4, 1, 1, 'admin', CURRENT_TIMESTAMP),
+(7, 'g2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 2, 107, 70.00, 290.00, 0, 3, 1, 1, 'admin', CURRENT_TIMESTAMP),
+(8, 'h2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 1, 108, 50.00, 200.00, 0, 2, 1, 1, 'admin', CURRENT_TIMESTAMP),
+(9, 'i2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 3, 109, 110.00, 420.00, 0, 4, 1, 1, 'admin', CURRENT_TIMESTAMP),
+(10,'j2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 2, 110, 85.00, 350.00, 0, 3, 1, 1, 'admin', CURRENT_TIMESTAMP);
+
+
+
+DELIMITER $$
+
+CREATE PROCEDURE spBookingCreated(
+    IN p_uuid CHAR(36),
+    IN p_hotel_room_id INT,
+    IN p_pin_code INT,
+    IN p_check_in DATE,
+    IN p_check_out DATE,
+    IN p_user_id INT,
+    IN p_childrens INT,
+    IN p_adults INT,
+    IN p_document_number_guest VARCHAR(200),
+    IN p_full_name_guest VARCHAR(200),
+    IN p_email_guest VARCHAR(200),
+    IN p_country_code CHAR(5),
+    IN p_phone_number VARCHAR(20),
+    IN p_comments VARCHAR(500),
+    IN p_active INT,
+    IN p_created_by VARCHAR(15),
+    IN p_created_at DATETIME,
+    IN p_total_nights INT,
+    IN p_total DECIMAL(10, 2)
+)
+BEGIN
+    INSERT INTO bookings (
+        uuid, hotel_room_id, pin_code, check_in, check_out, user_id, childrens, adults,
+        document_number_guest, full_name_guest, email_guest, country_code, phone_number,
+        comments, active, created_by, created_at, total_nights, total
+    )
+    VALUES (
+        p_uuid, p_hotel_room_id, p_pin_code, p_check_in, p_check_out, p_user_id, p_childrens, p_adults,
+        p_document_number_guest, p_full_name_guest, p_email_guest, p_country_code, p_phone_number,
+        p_comments, p_active, p_created_by, p_created_at, p_total_nights, p_total
+    );
+    -- ACTUALIZO EL CUARTO COMO RESERVADO
+    UPDATE hotel_room
+    SET is_reserved = 1
+    WHERE id = p_hotel_room_id;
+
+END$$
+
+DELIMITER ;
+
+
+
+
+DELIMITER $$
+
+CREATE PROCEDURE spInsertUser(
+    IN p_role_id INT,
+    IN p_uuid CHAR(36),
+    IN p_document_number VARCHAR(50),
+    IN p_full_name VARCHAR(200),
+    IN p_phone VARCHAR(20),
+    IN p_email VARCHAR(200),
+    IN p_password VARCHAR(255),
+    IN p_status_id INT,
+    IN p_active INT,
+    IN p_created_by VARCHAR(15),
+    IN p_created_at DATETIME
+)
+BEGIN
+    -- Insertar en tabla de usuarios
+    INSERT INTO hotel.users (
+        uuid, document_number, full_name, phone, email, password,
+        status_id, active, created_by, created_at
+    )
+    VALUES (
+        p_uuid, p_document_number, p_full_name, p_phone, p_email, p_password,
+        p_status_id, p_active, p_created_by, p_created_at
+    );
+
+    -- Obtener el ID del usuario recién insertado
+    SET @last_id = LAST_INSERT_ID();
+
+    -- Insertar en tabla users_role
+    INSERT INTO hotel.users_role (
+        uuid, user_id, rol_id, active, created_by, created_at
+    )
+    VALUES (
+        UUID(), @last_id, p_role_id, p_active, p_created_by, p_created_at
+    );
+END$$
+
+DELIMITER ;
+
+
+
+
+DELIMITER $$
+
+CREATE PROCEDURE spListRooms()
+BEGIN
+    select hr.id,hr.uuid,hr.hotel_id,b.id as booking_id,
+       hr.room_type_id,hr.room_number,hr.capacity,hr.price_per_hour,hr.price_per_night,hr.is_reserved,hr.status_id
+from hotel_room hr
+left join hotel.bookings b on hr.id = b.hotel_room_id and b.is_released = 0
+where hr.hotel_id = 1 and hr.status_id = 1;
+END$$
+DELIMITER ;
