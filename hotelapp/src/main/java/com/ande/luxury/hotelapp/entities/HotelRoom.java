@@ -17,8 +17,10 @@ public class HotelRoom  extends Auditable {
     private Hotel hotel;
     private Integer hotelId;
     private RoomType roomType;
+    private Integer bookingId;
     private Integer roomTypeId;
     private Integer roomNumber;
+    private Integer capacity;
     private double PricePerHour;
     private double PricePerNight;
     private boolean isReserved;

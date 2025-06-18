@@ -88,25 +88,10 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
         roomPanelView = new javax.swing.JPanel();
 
         setTitle("Ande Luxury :: CheckIn");
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         roomPanelView.setBackground(new java.awt.Color(102, 102, 102));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(roomPanelView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(roomPanelView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(19, 19, 19))
-        );
+        getContentPane().add(roomPanelView, new org.netbeans.lib.awtextra.AbsoluteConstraints(26, 16, 480, 470));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -145,6 +130,8 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
                     // Confirmación
                     if (DialogUtils.showConfirmation(roomPanelView, "Alerta", "Habitación ocupada ¿Desea ver el detalle?")) {
                         //confirmó
+                        Reservas_CheckIn_Detail detailBooking = new Reservas_CheckIn_Detail(room);
+                        detailBooking.setVisible(true);
 
                     }
 

@@ -12,6 +12,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,18 +45,38 @@ public class HotelRoomDAO extends BaseDAO<HotelRoom>{
         });
     }
     
-    String queryUpdateReserverd= "update hotel_room  set is_reserved = ? where uuid = ? ";
+    String callFindAll = "call spListRooms();";
     
-    public void updateReserved(Integer isReserved,String uuid) throws Exception{
-                try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(queryUpdateReserverd)) {
-                     stmt.setInt(1, isReserved); //is_reserved
-                    stmt.setString(2, uuid); // uuid
-                    stmt.executeUpdate();
-                }catch(Exception ex){
-                     logger.error("Error updateReserved => " + ex.getMessage());
-                    throw new Exception("Ocurrio un error al querer insertar.");
-                }finally {
-                }
+    @Override
+    public List<HotelRoom> findAll() throws Exception{
+           List<HotelRoom> result = new ArrayList<>();
+        try (Connection conn = databaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(callFindAll)) {
+
+            
+            while (rs.next()) {
+                HotelRoom hotelRoom = new HotelRoom();
+                hotelRoom.setId(rs.getInt("id"));
+                hotelRoom.setUuid(rs.getString("uuid"));
+                hotelRoom.setHotelId(rs.getInt("hotel_id"));
+                hotelRoom.setBookingId(rs.getInt("booking_id"));
+                hotelRoom.setRoomTypeId(rs.getInt("room_type_id"));
+                hotelRoom.setRoomNumber(rs.getInt("room_number"));
+                hotelRoom.setCapacity(rs.getInt("capacity"));
+                hotelRoom.setPricePerHour(rs.getDouble("price_per_hour"));
+                hotelRoom.setPricePerNight(rs.getDouble("price_per_night"));
+                hotelRoom.setReserved(rs.getBoolean("is_reserved"));
+                hotelRoom.setStatusId(rs.getInt("status_id"));
+                result.add(hotelRoom);
+            }
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        }
+        return result;
     }
+    
+   
+    
     
 }

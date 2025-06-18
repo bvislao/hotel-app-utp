@@ -34,10 +34,17 @@ public class BookingService {
         for(HotelRoom item : listReturn){
             HotelDAO hotelDAO = new HotelDAO();
             RoomTypeDAO roomTypeDAO = new RoomTypeDAO();
+            BookingDAO bookingDAO = new BookingDAO();
             Hotel hotel = hotelDAO.findById(item.getHotelId());
             item.setHotel(hotel);
             RoomType roomType = roomTypeDAO.findById(item.getRoomTypeId());
             item.setRoomType(roomType);
+            if(item.getBookingId() > 0){
+                Booking booking =     bookingDAO.findById(item.getBookingId());
+                item.setBookingReference(booking);
+            }
+            
+            
         }
         }catch(Exception ex){
             listReturn = null;

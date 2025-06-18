@@ -93,6 +93,7 @@ CREATE TABLE `hotel`.`hotel_room` (
                               `hotel_id` integer NOT NULL,
                               `room_type_id` integer NOT NULL,
                               `room_number` integer,
+                              `capacity` integer,
                               `price_per_hour` decimal(10,2),
                               `price_per_night` decimal(10,2),
                               `is_reserved` integer,
@@ -261,9 +262,17 @@ INSERT  INTO `hotel`.`hotel` (`id`, `uuid`, `category`, `address`, `location`, `
 VALUES (1, 'a2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 5, 'Lima Centro', '-12.066188148973394, -77.03696239441621', 1, 1, 'admin', CURRENT_TIMESTAMP);
 
 
-INSERT  INTO `hotel`.`hotel_room` (`id`, `uuid`, `hotel_id`, `room_type_id`, `room_number`, `price_per_hour`, `price_per_night`, `is_reserved`, `status_id`, `active`, `created_by`, `created_at`)
-VALUES (1, 'a2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 1, 101, 50.00, 200.00, 0, 1, 1, 'admin', CURRENT_TIMESTAMP),
-       (2, 'b2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 2, 102, 75.00, 300.00, 0, 1, 1, 'admin', CURRENT_TIMESTAMP);
+INSERT  INTO `hotel`.`hotel_room` (`id`, `uuid`, `hotel_id`, `room_type_id`, `room_number`, `price_per_hour`, `price_per_night`, `is_reserved`,`capacity`, `status_id`, `active`, `created_by`, `created_at`)
+VALUES (1, 'a2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 1, 101, 50.00, 200.00, 0, 2,1, 1, 'admin', CURRENT_TIMESTAMP),
+       (2, 'b2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 2, 102, 75.00, 300.00, 0, 2,1, 1, 'admin', CURRENT_TIMESTAMP),
+       (3, 'c2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 1, 103, 60.00, 220.00, 0, 2, 1, 1, 'admin', CURRENT_TIMESTAMP),
+(4, 'd2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 2, 104, 80.00, 320.00, 0, 3, 1, 1, 'admin', CURRENT_TIMESTAMP),
+(5, 'e2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 1, 105, 55.00, 210.00, 0, 2, 1, 1, 'admin', CURRENT_TIMESTAMP),
+(6, 'f2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 3, 106, 100.00, 400.00, 0, 4, 1, 1, 'admin', CURRENT_TIMESTAMP),
+(7, 'g2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 2, 107, 70.00, 290.00, 0, 3, 1, 1, 'admin', CURRENT_TIMESTAMP),
+(8, 'h2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 1, 108, 50.00, 200.00, 0, 2, 1, 1, 'admin', CURRENT_TIMESTAMP),
+(9, 'i2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 3, 109, 110.00, 420.00, 0, 4, 1, 1, 'admin', CURRENT_TIMESTAMP),
+(10,'j2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 2, 110, 85.00, 350.00, 0, 3, 1, 1, 'admin', CURRENT_TIMESTAMP);
 
 
 
@@ -351,4 +360,19 @@ BEGIN
     );
 END$$
 
+DELIMITER ;
+
+
+
+
+DELIMITER $$
+
+CREATE PROCEDURE spListRooms()
+BEGIN
+    select hr.id,hr.uuid,hr.hotel_id,b.id as booking_id,
+       hr.room_type_id,hr.room_number,hr.capacity,hr.price_per_hour,hr.price_per_night,hr.is_reserved,hr.status_id
+from hotel_room hr
+left join hotel.bookings b on hr.id = b.hotel_room_id and b.is_released = 0
+where hr.hotel_id = 1 and hr.status_id = 1;
+END$$
 DELIMITER ;
