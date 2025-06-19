@@ -36,6 +36,12 @@
             <artifactId>jcalendar</artifactId>
             <version>1.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.2-android</version>
+            <type>jar</type>
+        </dependency>
         <!-- BCrypt dependency from Spring Security -->
         <dependency>
             <groupId>org.springframework.security</groupId>
