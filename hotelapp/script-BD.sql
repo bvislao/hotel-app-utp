@@ -276,6 +276,79 @@ VALUES (1, 'a2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 1, 101, 50.00, 200.00, 0, 
 
 
 
+/******************************************************************************************
+*
+* Descripción        :    Función que retorna codigo de la factura o boleta
+* Autor              :    Bryan Vislao
+* Fecha de creación  :    2025-06-18
+* Base de datos      :    hotel
+* Entorno            :    Dev
+* Versión            :    1.0
+*
+* Historial de cambios:
+* ----------------------------------------------------------------------------------------
+* Fecha       | Autor            | Descripción
+* ------------|------------------|-------------------------------------------------------
+* 2025-06-18  | Bryan Vislao | Versión inicial
+*
+******************************************************************************************/
+
+DELIMITER $$
+
+CREATE FUNCTION generate_invoice_name(booking_id INT)
+RETURNS VARCHAR(50)
+DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(50);
+    
+    SET result = CONCAT(
+        'INV_',
+        DATE_FORMAT(NOW(), '%Y_%m_%d_'),
+        booking_id,
+        '_',
+        DATE_FORMAT(NOW(), '%H%i%s')
+    );
+
+    RETURN result;
+END$$
+
+DELIMITER ;
+
+
+/******************************************************************************************
+*
+* Descripción        :    Función que retorna codigo UUID
+* Autor              :    Bryan Vislao
+* Fecha de creación  :    2025-06-18
+* Base de datos      :    hotel
+* Entorno            :    Dev
+* Versión            :    1.0
+*
+* Historial de cambios:
+* ----------------------------------------------------------------------------------------
+* Fecha       | Autor            | Descripción
+* ------------|------------------|-------------------------------------------------------
+* 2025-06-18  | Bryan Vislao | Versión inicial
+*
+******************************************************************************************/
+
+
+CREATE FUNCTION uuid_v4()
+RETURNS CHAR(36)
+DETERMINISTIC
+BEGIN
+  RETURN LOWER(CONCAT(
+    LPAD(HEX(FLOOR(RAND() * 0xffffffff)), 8, '0'), '-',
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'), '-',
+    '4', LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- versión 4
+    SUBSTRING('89ab', FLOOR(1 + (RAND() * 4)), 1), LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- variante
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0')
+  ));
+END;
+
+
 DELIMITER $$
 
 CREATE PROCEDURE spBookingCreated(
@@ -283,7 +356,6 @@ CREATE PROCEDURE spBookingCreated(
     IN p_hotel_room_id INT,
     IN p_pin_code INT,
     IN p_check_in DATE,
-    IN p_check_out DATE,
     IN p_user_id INT,
     IN p_childrens INT,
     IN p_adults INT,
@@ -301,12 +373,12 @@ CREATE PROCEDURE spBookingCreated(
 )
 BEGIN
     INSERT INTO bookings (
-        uuid, hotel_room_id, pin_code, check_in, check_out, user_id, childrens, adults,
+        uuid, hotel_room_id, pin_code, check_in, user_id, childrens, adults,
         document_number_guest, full_name_guest, email_guest, country_code, phone_number,
         comments, active, created_by, created_at, total_nights, total
     )
     VALUES (
-        p_uuid, p_hotel_room_id, p_pin_code, p_check_in, p_check_out, p_user_id, p_childrens, p_adults,
+        p_uuid, p_hotel_room_id, p_pin_code, p_check_in, p_user_id, p_childrens, p_adults,
         p_document_number_guest, p_full_name_guest, p_email_guest, p_country_code, p_phone_number,
         p_comments, p_active, p_created_by, p_created_at, p_total_nights, p_total
     );
@@ -356,7 +428,7 @@ BEGIN
         uuid, user_id, rol_id, active, created_by, created_at
     )
     VALUES (
-        UUID(), @last_id, p_role_id, p_active, p_created_by, p_created_at
+        uuid_v4(), @last_id, p_role_id, p_active, p_created_by, p_created_at
     );
 END$$
 
@@ -375,4 +447,146 @@ from hotel_room hr
 left join hotel.bookings b on hr.id = b.hotel_room_id and b.is_released = 0
 where hr.hotel_id = 1 and hr.status_id = 1;
 END$$
+DELIMITER ;
+
+
+/******************************************************************************************
+*
+* Descripción        :    Lista los servicios asociados a una reserva específica.
+* Autor              :    Bryan Vislao
+* Fecha de creación  :    2025-06-18
+* Base de datos      :    hotel
+* Entorno            :    Dev
+* Versión            :    1.0
+*
+* Historial de cambios:
+* ----------------------------------------------------------------------------------------
+* Fecha       | Autor            | Descripción
+* ------------|------------------|-------------------------------------------------------
+* 2025-06-18  | Bryan Vislao | Versión inicial
+*
+******************************************************************************************/
+
+DELIMITER $$
+
+CREATE PROCEDURE spListServicesByBooking(
+    IN p_booking_id INT
+    )
+BEGIN
+    SELECT  bs.id,bs.uuid,bst.name,bs.count,bs.price,bs.price_total FROM bookings_service bs
+             INNER JOIN bookings_service_type bst on bs.bookings_service_type_id = bst.id
+             WHERE bs.booking_id = p_booking_id and bs.active=1;
+END$$
+
+DELIMITER ;
+
+
+
+/******************************************************************************************
+*
+* Descripción        :    Busca las reservas de una persona que esten pendientes de hacer check-out.
+* Autor              :    Bryan Vislao
+* Fecha de creación  :    2025-06-18
+* Base de datos      :    hotel
+* Entorno            :    Dev
+* Versión            :    1.0
+*
+* Historial de cambios:
+* ----------------------------------------------------------------------------------------
+* Fecha       | Autor            | Descripción
+* ------------|------------------|-------------------------------------------------------
+* 2025-06-18  | Bryan Vislao | Versión inicial
+*
+******************************************************************************************/
+
+DELIMITER $$
+
+CREATE PROCEDURE spSearchBookingForCheckOut(
+    IN document_number VARCHAR(15)
+    )
+BEGIN
+    SELECT
+        bk.id,
+        bk.uuid,
+        CONCAT(CAST(hr.room_number AS CHAR),"-",UPPER(rt.description)) AS room_number,
+        hr.uuid AS room_uuid,
+        bk.total as sub_total,
+        IFNULL(bks.total_services, 0) AS sub_total_services,
+        (bk.total + IFNULL(bks.total_services, 0)) AS total
+    FROM bookings bk
+             INNER JOIN hotel_room hr ON hr.id = bk.hotel_room_id
+             INNER JOIN room_type rt on hr.room_type_id = rt.id
+             LEFT JOIN (SELECT booking_id,SUM(price_total) AS total_services  FROM bookings_service
+                        GROUP BY booking_id) bks on bks.booking_id = bk.id
+
+    WHERE document_number_guest = document_number and bk.is_released = 0 and bk.check_out IS NULL;
+END$$
+
+DELIMITER ;
+
+
+
+/******************************************************************************************
+*
+* Descripción        :    Checkout de la reserva y genera invoice con el detalle
+* Autor              :    Bryan Vislao
+* Fecha de creación  :    2025-06-18
+* Base de datos      :    hotel
+* Entorno            :    Dev
+* Versión            :    1.0
+*
+* Historial de cambios:
+* ----------------------------------------------------------------------------------------
+* Fecha       | Autor            | Descripción
+* ------------|------------------|-------------------------------------------------------
+* 2025-06-18  | Bryan Vislao | Versión inicial
+*
+******************************************************************************************/
+
+DELIMITER $$
+
+CREATE PROCEDURE spCheckoutBooking(
+    IN p_booking_uuid CHAR(36),
+    IN p_user_name VARCHAR(50)
+    )
+BEGIN
+    -- LIBERO LA RESERVA
+   UPDATE bookings
+    SET is_released = 1,
+         check_out = NOW()
+    WHERE uuid = p_booking_uuid;
+
+    -- SELECCIONO LA HABITACION
+   SELECT @room_id := bookings.hotel_room_id,@booking_id := id
+          from bookings WHERE uuid= p_booking_uuid;
+
+    SELECT @total_amount := bk.total + IFNULL(bks.total_services,0) FROM bookings bk
+     LEFT JOIN (SELECT booking_id,SUM(price_total) AS total_services  FROM bookings_service
+                        GROUP BY booking_id) bks on bks.booking_id = bk.id
+    WHERE bk.id = @booking_id;
+
+
+    -- LIBERO LA HABITACIÓN
+   UPDATE hotel_room
+   SET is_reserved = 0
+   WHERE id = @room_id;
+
+    INSERT INTO invoice (uuid, document_invoice, booking_id, amount_total, active, created_by, created_at)
+    VALUES (uuid_v4(), generate_invoice_name(@booking_id), @booking_id, @total_amount, 1, p_user_name, NOW());
+    -- GENERO LA FACTURA
+    SET @invoice_id = LAST_INSERT_ID();
+
+    -- INSERTO EL DETALLE DE LA FACTURA
+    INSERT INTO invoice_detail (uuid, invoice_id, description, unit, amount_total, active, created_by, created_at)
+    SELECT uuid_v4(), @invoice_id,'HABITACION POR NOCHE', total_nights, total, 1, p_user_name, NOW()
+    FROM bookings WHERE id= @booking_id;
+
+    INSERT INTO invoice_detail (uuid, invoice_id, description, unit, amount_total, active, created_by, created_at)
+    SELECT uuid_v4(), @invoice_id, bookings_service_type.name, bookings_service.count, bookings_service.price, 1, p_user_name, NOW()
+    FROM bookings_service
+    INNER JOIN bookings_service_type ON bookings_service.bookings_service_type_id = bookings_service_type.id
+    WHERE booking_id = @booking_id;
+
+END$$
+
 DELIMITER ;

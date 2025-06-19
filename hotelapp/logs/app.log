@@ -52,3 +52,8 @@
 2025-06-17 15:33:47 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
 2025-06-17 16:02:12 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
 2025-06-17 16:02:15 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-18 01:10:50 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-18 13:42:16 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
+2025-06-18 13:42:20 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-18 21:18:02 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-18 23:39:40 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador

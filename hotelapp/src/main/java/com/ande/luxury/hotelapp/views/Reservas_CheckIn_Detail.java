@@ -67,17 +67,18 @@ lblCheckout.setText(sdf.format(checkOut));
         lblCheckin = new javax.swing.JLabel();
         lblCheckout = new javax.swing.JLabel();
         lblDias = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
-        jLabel1.setText("Reserva");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
+        jLabel1.setText("Servicios Adicionales");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 410, -1, -1));
 
         lblReserva.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         lblReserva.setText("----------------");
-        getContentPane().add(lblReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 40, -1, -1));
+        getContentPane().add(lblReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 40, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel2.setText("Habitación");
@@ -85,43 +86,43 @@ lblCheckout.setText(sdf.format(checkOut));
 
         jLabel3.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel3.setText("DOI - Cliente");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel4.setText("Email");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel5.setText("Telefono");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel6.setText("Niños");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel7.setText("Adultos");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 300, -1, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel8.setText("Checkin");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, -1, -1));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 300, -1, -1));
 
         jLabel9.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel9.setText("CheckOut");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 370, -1, -1));
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, -1, -1));
 
         jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel10.setText("Días");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 410, -1, -1));
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 360, -1, -1));
 
         jLabel11.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
-        jLabel11.setText("TOTAL");
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 220, -1, -1));
+        jLabel11.setText("SUBTOTAL");
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 190, -1, -1));
 
         lblTotal.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         lblTotal.setText("----------------");
-        getContentPane().add(lblTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 240, -1, -1));
+        getContentPane().add(lblTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 220, -1, -1));
 
         lblHabitacion.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblHabitacion.setText("----------------");
@@ -129,35 +130,39 @@ lblCheckout.setText(sdf.format(checkOut));
 
         lblClient.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblClient.setText("----------------");
-        getContentPane().add(lblClient, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 160, -1, -1));
+        getContentPane().add(lblClient, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 150, -1, -1));
 
         lblEmail.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblEmail.setText("----------------");
-        getContentPane().add(lblEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 190, -1, -1));
+        getContentPane().add(lblEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 180, -1, -1));
 
         lblTelefono.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblTelefono.setText("----------------");
-        getContentPane().add(lblTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 230, -1, -1));
+        getContentPane().add(lblTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 210, -1, -1));
 
         lblNinos.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblNinos.setText("----------------");
-        getContentPane().add(lblNinos, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 260, -1, -1));
+        getContentPane().add(lblNinos, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 240, -1, -1));
 
         lblAdultos.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblAdultos.setText("----------------");
-        getContentPane().add(lblAdultos, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 300, -1, -1));
+        getContentPane().add(lblAdultos, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 270, -1, -1));
 
         lblCheckin.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblCheckin.setText("----------------");
-        getContentPane().add(lblCheckin, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 330, -1, -1));
+        getContentPane().add(lblCheckin, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 300, -1, -1));
 
         lblCheckout.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblCheckout.setText("----------------");
-        getContentPane().add(lblCheckout, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 370, -1, -1));
+        getContentPane().add(lblCheckout, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 330, -1, -1));
 
         lblDias.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblDias.setText("----------------");
-        getContentPane().add(lblDias, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 410, -1, -1));
+        getContentPane().add(lblDias, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 360, -1, -1));
+
+        jLabel12.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel12.setText("RESERVA");
+        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -201,6 +206,7 @@ lblCheckout.setText(sdf.format(checkOut));
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
