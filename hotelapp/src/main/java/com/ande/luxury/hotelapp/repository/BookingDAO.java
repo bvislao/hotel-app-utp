@@ -48,7 +48,10 @@ public class BookingDAO extends BaseDAO<Booking> {
         );
     }
 
-    String queryInsert = "CALL spBookingCreated(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+    String queryInsert = "CALL spBookingCreated(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+    //String listServicesByBookingId = "CALL spListServicesByBooking(?);"
+    //String searchBookingsByDocument = "CALL spSearchBookingForCheckOut(?);"
+   // String checkOutBoking = "CALL spCheckoutBooking(?,?); "
 
     @Transactional
     public String save(Booking booking) throws Exception {
@@ -62,21 +65,20 @@ public class BookingDAO extends BaseDAO<Booking> {
             stmt.setInt(2, booking.getHotelRoom().getId()); // hotel_room_id
             stmt.setInt(3, booking.getPinCode()); // pin_code
             stmt.setDate(4, Constants.convertToSqlDate(booking.getCheckIn())); // check_in
-            stmt.setDate(5, Constants.convertToSqlDate(booking.getCheckOut())); // check_out
-            stmt.setInt(6, booking.getUserId()); // user_id
-            stmt.setInt(7, booking.getChildrens()); // childrens
-            stmt.setInt(8, booking.getAdults()); // adults
-            stmt.setString(9, booking.getDocumentNumber()); // document_number_guest
-            stmt.setString(10, booking.getFullName()); // full_name_guest
-            stmt.setString(11, booking.getEmail()); // email_guest
-            stmt.setString(12, booking.getCountryCode()); // country_code
-            stmt.setString(13, booking.getPhone()); // phone_number
-            stmt.setString(14, booking.getComments()); // comments
-            stmt.setInt(15, booking.getActive()); // active
-            stmt.setString(16, booking.getCreated_by()); // created_by
-            stmt.setDate(17, java.sql.Date.valueOf(java.time.LocalDate.now()));  // created_by
-            stmt.setInt(18, booking.getTotalNights()); // total_nights
-            stmt.setDouble(19, booking.getTotal()); // total
+            stmt.setInt(5, booking.getUserId()); // user_id
+            stmt.setInt(6, booking.getChildrens()); // childrens
+            stmt.setInt(7, booking.getAdults()); // adults
+            stmt.setString(8, booking.getDocumentNumber()); // document_number_guest
+            stmt.setString(9, booking.getFullName()); // full_name_guest
+            stmt.setString(10, booking.getEmail()); // email_guest
+            stmt.setString(11, booking.getCountryCode()); // country_code
+            stmt.setString(12, booking.getPhone()); // phone_number
+            stmt.setString(13, booking.getComments()); // comments
+            stmt.setInt(14, booking.getActive()); // active
+            stmt.setString(15, booking.getCreated_by()); // created_by
+            stmt.setDate(16, java.sql.Date.valueOf(java.time.LocalDate.now()));  // created_by
+            stmt.setInt(17, booking.getTotalNights()); // total_nights
+            stmt.setDouble(18, booking.getTotal()); // total
             stmt.executeUpdate();
             conn.close();
             return booking.getUuid();
