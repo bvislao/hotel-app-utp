@@ -11,6 +11,8 @@ import com.ande.luxury.hotelapp.services.BookingService;
 import com.ande.luxury.hotelapp.services.UsuarioService;
 import com.ande.luxury.hotelapp.utilsdb.Constants;
 import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -131,6 +133,11 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
         txtNumDoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNumDocActionPerformed(evt);
+            }
+        });
+        txtNumDoc.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNumDocKeyTyped(evt);
             }
         });
 
@@ -388,6 +395,7 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
         // TODO add your handling code here:
         Date date = jCalendarStart.getDate();
         jCalendarEnd.setMinSelectableDate(date);
+        jCalendarEnd.setDate(date);
         int milisecondsByDay = 86400000;
         totalDays = (int) ((jCalendarStart.getDate().getTime() - jCalendarEnd.getDate().getTime()) / milisecondsByDay) + 1;
         lblDias.setText(String.valueOf(totalDays));
@@ -431,6 +439,7 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
             jCalendarStart.setEnabled(true);
             jCalendarStart.setMinSelectableDate(new Date());
             jCalendarEnd.setEnabled(true);
+            jCalendarEnd.setMinSelectableDate(new Date());
             txtPIN.setText(String.valueOf(dataRoom.getRoomNumber()) + String.valueOf(Constants.getRandomNumber()));
             lblDias.setText("0");
             lblTotal.setText("S/ 0.00");
@@ -479,33 +488,32 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEmailActionPerformed
 
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
-        // TODO add your handling code here:
-        //ValidatesInfo
 
-        //TODO validate
-        Booking booking = new Booking();
-        booking.setHotelRoom(dataRoom);
-        booking.setUserId(clientBooking.getId());
-        booking.setDocumentNumber(clientBooking.getDocumentNumber());
-        booking.setFullName(clientBooking.getFullName());
-        booking.setCheckOut(jCalendarEnd.getDate());
-        booking.setCheckIn(jCalendarStart.getDate());
-        booking.setPinCode(Integer.valueOf(txtPIN.getText()));
-        booking.setChildrens(Integer.valueOf(spinerNinos.getValue().toString()));
-        booking.setAdults(Integer.valueOf(spinerAdultos.getValue().toString()));
-        booking.setPhone(txtCelular.getText());
-        booking.setEmail(txtEmail.getText());
-        booking.setComments(txtComentario.getText());
-        booking.setTotal(totalBooking);
-        booking.setTotalNights(totalDays);
-        booking.setCreated_by(userLogin);
-        BookingService service = new BookingService();
         try {
+            validateRequestBooking();
+            Booking booking = new Booking();
+            booking.setHotelRoom(dataRoom);
+            booking.setUserId(clientBooking.getId());
+            booking.setDocumentNumber(clientBooking.getDocumentNumber());
+            booking.setFullName(clientBooking.getFullName());
+            booking.setCheckOut(jCalendarEnd.getDate());
+            booking.setCheckIn(jCalendarStart.getDate());
+            booking.setPinCode(Integer.valueOf(txtPIN.getText()));
+            booking.setChildrens(Integer.valueOf(spinerNinos.getValue().toString()));
+            booking.setAdults(Integer.valueOf(spinerAdultos.getValue().toString()));
+            booking.setPhone(txtCelular.getText());
+            booking.setEmail(txtEmail.getText());
+            booking.setComments(txtComentario.getText());
+            booking.setTotal(totalBooking);
+            booking.setTotalNights(totalDays);
+            booking.setCreated_by(userLogin);
+            BookingService service = new BookingService();
             service.saveBooking(booking);
             //TODO Refresh
             formularioPadre.refresh();
             this.dispose();
         } catch (Exception ex) {
+            DialogUtils.showError(this, "Error", ex.getMessage());
             Logger.getLogger(Reservas_CheckIn_New.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnReservarActionPerformed
@@ -522,6 +530,14 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
         }
         lblTotal.setText("S/." + String.valueOf(totalBooking));
     }//GEN-LAST:event_jCalendarEndPropertyChange
+
+    private void txtNumDocKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumDocKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            evt.consume(); // Ignora el carácter
+        }
+    }//GEN-LAST:event_txtNumDocKeyTyped
 
     /**
      * @param args the command line arguments
@@ -590,4 +606,11 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
     private javax.swing.JTextField txtNumDoc;
     private javax.swing.JTextField txtPIN;
     // End of variables declaration//GEN-END:variables
+
+    private void validateRequestBooking() {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(txtNumDoc.getText()), "DOI : Número de documento invalido");
+        Integer totalPersons = Integer.valueOf(spinerNinos.getValue().toString()) + Integer.valueOf(spinerAdultos.getValue().toString());
+        Preconditions.checkArgument(!(totalPersons <= 0), "AFORO : Cantidad minima debe ser mayor a 0");
+    }
+
 }

@@ -7,6 +7,7 @@ package com.ande.luxury.hotelapp.utilsdb;
 import java.util.UUID;
 import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
+
 /**
  *
  * @author bryanvislaochavez
@@ -17,6 +18,7 @@ public class Constants {
         UUID randomUUID = UUID.randomUUID();
         return randomUUID.toString();
     }
+
     /**
      * Estado del registro para las operaciones
      */
@@ -36,7 +38,7 @@ public class Constants {
     }
 
     /**
-     * Activo como registro lógico 
+     * Activo como registro lógico
      */
     public enum EntityActive {
         ACTIVO(1),
@@ -52,17 +54,16 @@ public class Constants {
             return value;
         }
     }
-    
-      public static java.sql.Date convertToSqlDate(Date utilDate) {
+
+    public static java.sql.Date convertToSqlDate(Date utilDate) {
         if (utilDate == null) {
             return null;
         }
         return new java.sql.Date(utilDate.getTime());
     }
-      
-      public static int getRandomNumber() {
-    return ThreadLocalRandom.current().nextInt(100000, 999999);
-}
 
-    
+    public static int getRandomNumber() {
+        return ThreadLocalRandom.current().nextInt(100000, 999999);
+    }
+
 }

@@ -20,7 +20,7 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
     public Reservas_CheckIn_Detail(HotelRoom room) {
         initComponents();
         lblReserva.setText(room.getBookingReference().getUuid());
-        lblTotal.setText("S/."+String.valueOf(room.getBookingReference().getTotal()));
+        lblTotal.setText("S/." + String.valueOf(room.getBookingReference().getTotal()));
         lblDias.setText(String.valueOf(room.getBookingReference().getTotalNights()));
         lblNinos.setText(String.valueOf(room.getBookingReference().getChildrens()));
         lblAdultos.setText(String.valueOf(room.getBookingReference().getAdults()));
@@ -28,11 +28,13 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
         lblClient.setText(room.getBookingReference().getDocumentNumber() + " - " + room.getBookingReference().getFullName());
         lblTelefono.setText(room.getBookingReference().getPhone());
         lblEmail.setText(room.getBookingReference().getEmail());
-Date checkIn = room.getBookingReference().getCheckIn();
-Date checkOut= room.getBookingReference().getCheckOut();
-SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-lblCheckin.setText(sdf.format(checkIn));
-lblCheckout.setText(sdf.format(checkOut));
+        Date checkIn = room.getBookingReference().getCheckIn();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        lblCheckin.setText(sdf.format(checkIn));
+        if (room.getBookingReference().getCheckOut() != null) {
+            Date checkOut = room.getBookingReference().getCheckOut();
+            lblCheckout.setText(sdf.format(checkOut));
+        }
 
     }
 

@@ -1,59 +1,15 @@
-2025-06-17 11:11:56 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 11:22:11 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 11:23:13 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-17 11:23:18 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 11:57:03 [main] ERROR c.a.l.hotelapp.utilsdb.Seguridad - rawPassword cannot be null
-2025-06-17 13:48:29 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 13:54:54 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-17 13:56:02 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 14:02:32 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 14:11:43 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 14:14:33 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 14:16:23 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 14:17:32 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 14:17:36 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - data room
-2025-06-17 14:17:36 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - data room end
-2025-06-17 14:17:40 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - data room
-2025-06-17 14:17:40 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - data room end
-2025-06-17 14:17:41 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - data room
-2025-06-17 14:17:42 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - data room end
-2025-06-17 14:19:02 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 14:19:06 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - data room
-2025-06-17 14:19:06 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - -200.0
-2025-06-17 14:19:06 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - data room end
-2025-06-17 14:19:06 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - 600.0
-2025-06-17 14:19:08 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - data room
-2025-06-17 14:19:08 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - -200.0
-2025-06-17 14:19:08 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - data room end
-2025-06-17 14:19:08 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - 600.0
-2025-06-17 14:19:11 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - data room
-2025-06-17 14:19:11 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - 200.0
-2025-06-17 14:19:12 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - data room end
-2025-06-17 14:19:12 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - 2000.0
-2025-06-17 14:19:21 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - data room end
-2025-06-17 14:19:21 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - 2400.0
-2025-06-17 14:19:24 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - data room end
-2025-06-17 14:19:24 [AWT-EventQueue-0] INFO  c.a.l.h.views.Reservas_CheckIn_New - 400.0
-2025-06-17 14:22:34 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 14:24:29 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 14:26:25 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 14:28:41 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-17 14:28:47 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-17 14:28:50 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 14:30:21 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 14:32:42 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 15:01:38 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 15:03:28 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-17 15:03:32 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 15:03:45 [AWT-EventQueue-0] ERROR c.a.l.hotelapp.repository.BookingDAO - Error saveBooking => Parameter index out of range (18 > number of parameters, which is 17).
-2025-06-17 15:06:05 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-17 15:06:09 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 15:18:04 [main] ERROR c.a.l.hotelapp.utilsdb.Seguridad - rawPassword cannot be null
-2025-06-17 15:33:47 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-17 16:02:12 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-17 16:02:15 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-18 01:10:50 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-18 13:42:16 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
-2025-06-18 13:42:20 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-18 21:18:02 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
-2025-06-18 23:39:40 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-19 13:51:12 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-19 13:54:03 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-19 13:55:15 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-19 13:58:00 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
+2025-06-19 13:58:06 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Bryan Vislao Chavez
+2025-06-19 13:59:30 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-19 14:00:47 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-19 14:02:21 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
+2025-06-19 14:02:24 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-19 14:04:01 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
+2025-06-19 14:04:05 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-19 14:06:18 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
+2025-06-19 14:07:22 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa 72854591 - Bryan Vislao Chavez
+2025-06-19 14:09:12 [AWT-EventQueue-0] ERROR c.ande.luxury.hotelapp.views.Login - El usuario y/o contraseña es incorrecto, verifique nuevamente
+2025-06-19 14:09:17 [AWT-EventQueue-0] INFO  c.ande.luxury.hotelapp.views.Login - Autenticación exitosa admin - Super Administrador
