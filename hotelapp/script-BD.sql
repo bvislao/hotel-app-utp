@@ -333,6 +333,8 @@ DELIMITER ;
 ******************************************************************************************/
 
 
+DELIMITER $$
+
 CREATE FUNCTION uuid_v4()
 RETURNS CHAR(36)
 DETERMINISTIC
@@ -346,7 +348,9 @@ BEGIN
     LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
     LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0')
   ));
-END;
+END$$
+
+DELIMITER ;
 
 
 DELIMITER $$
