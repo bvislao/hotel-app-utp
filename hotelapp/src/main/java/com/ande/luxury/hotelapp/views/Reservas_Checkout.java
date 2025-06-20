@@ -4,6 +4,19 @@
  */
 package com.ande.luxury.hotelapp.views;
 
+import com.ande.luxury.hotelapp.entities.Usuario;
+import com.ande.luxury.hotelapp.entities.models.SearchBookings;
+import com.ande.luxury.hotelapp.services.BookingService;
+import com.ande.luxury.hotelapp.services.UsuarioService;
+import com.ande.luxury.hotelapp.utilsdb.ButtonEditor;
+import com.ande.luxury.hotelapp.utilsdb.ButtonRenderer;
+import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JCheckBox;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author bryanvislaochavez
@@ -15,6 +28,7 @@ public class Reservas_Checkout extends javax.swing.JInternalFrame {
      */
     public Reservas_Checkout() {
         initComponents();
+        
     }
 
     /**
@@ -26,23 +40,157 @@ public class Reservas_Checkout extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel5 = new javax.swing.JLabel();
+        txtNumDoc = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableBookings = new javax.swing.JTable();
+
         setTitle("Ande Luxury :: Check-out");
+
+        jLabel5.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        jLabel5.setText("Cliente/NumeroDocumento");
+
+        txtNumDoc.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+        txtNumDoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNumDocActionPerformed(evt);
+            }
+        });
+        txtNumDoc.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNumDocKeyTyped(evt);
+            }
+        });
+
+        btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/search.png"))); // NOI18N
+        btnSearch.setToolTipText("Buscar");
+        btnSearch.setDisabledIcon(null);
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+
+        jTableBookings.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jTableBookings.setAutoscrolls(false);
+        jTableBookings.setColumnSelectionAllowed(true);
+        jTableBookings.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jTableBookings);
+        jTableBookings.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jLabel5)
+                .addGap(18, 18, 18)
+                .addComponent(txtNumDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSearch)
+                .addContainerGap(457, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtNumDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5))
+                    .addComponent(btnSearch))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtNumDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumDocActionPerformed
+        try {
+            // TODO add your handling code here:
+            if (txtNumDoc.getText().isEmpty()) {
+                DialogUtils.showError(null, "Validación", "Ingresa el numero de documento valido");
+                return;
+            }
+            searchBookings();
+        } catch (Exception ex) {
+            Logger.getLogger(Reservas_Checkout.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_txtNumDocActionPerformed
+
+    private void txtNumDocKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumDocKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            evt.consume(); // Ignora el carácter
+        }
+    }//GEN-LAST:event_txtNumDocKeyTyped
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        try {
+            // TODO add your handling code here:
+            if (txtNumDoc.getText().isEmpty()) {
+                DialogUtils.showError(null, "Validación", "Ingresa el numero de documento valido");
+                return;
+            }
+            searchBookings();
+        } catch (Exception ex) {
+            Logger.getLogger(Reservas_Checkout.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    public void searchBookings() throws Exception {
+        BookingService bookingService = new BookingService();
+        List<SearchBookings> list = bookingService.listBookingsByDocumentNumber(txtNumDoc.getText());
+        String[] columns = {"UUID", "Habitación", "SubTotal", "SubTotal Servicios", "Total a Pagar", "Checkout"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
+
+        for (SearchBookings item : list) {
+            Object[] row = new Object[]{
+                item.getUuid(),
+                item.getRoomNumber(),
+                item.getSubtotalRoom(),
+                item.getSubTotalServices(),
+                item.getTotal(),
+                "-"
+            };
+            model.addRow(row);
+        }
+        jTableBookings.setModel(model);
+
+        jTableBookings.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer("Checkout"));
+    jTableBookings.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox(), jTableBookings, "Checkout", this));
+
+        // Refrescar la vista
+        jTableBookings.revalidate();
+        jTableBookings.repaint();
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTableBookings;
+    private javax.swing.JTextField txtNumDoc;
     // End of variables declaration//GEN-END:variables
 }
