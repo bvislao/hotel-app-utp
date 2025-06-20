@@ -8,6 +8,7 @@ import com.ande.luxury.hotelapp.entities.Booking;
 import com.ande.luxury.hotelapp.entities.Hotel;
 import com.ande.luxury.hotelapp.entities.HotelRoom;
 import com.ande.luxury.hotelapp.entities.RoomType;
+import com.ande.luxury.hotelapp.entities.models.SearchBookings;
 import com.ande.luxury.hotelapp.repository.BookingDAO;
 import com.ande.luxury.hotelapp.repository.HotelDAO;
 import com.ande.luxury.hotelapp.repository.HotelRoomDAO;
@@ -67,8 +68,12 @@ public class BookingService {
             logger.error(ex.getMessage());
             throw new Exception("Ocurrio un error al registrar");
         }
-        
     }
     
+
+    public List<SearchBookings> listBookingsByDocumentNumber(String document) throws Exception{
+          BookingDAO bookingDAO = new BookingDAO();
+          return bookingDAO.listBookingForCheckoutByDocument(document);
+    }
     
 }

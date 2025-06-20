@@ -6,12 +6,18 @@ package com.ande.luxury.hotelapp.repository;
 
 import com.ande.luxury.hotelapp.database.databaseConnection;
 import com.ande.luxury.hotelapp.entities.Booking;
+import com.ande.luxury.hotelapp.entities.HotelRoom;
+import com.ande.luxury.hotelapp.entities.models.SearchBookings;
 import com.ande.luxury.hotelapp.utilsdb.BaseDAO;
 import com.ande.luxury.hotelapp.utilsdb.Constants;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,8 +55,9 @@ public class BookingDAO extends BaseDAO<Booking> {
     }
 
     String queryInsert = "CALL spBookingCreated(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+    String searchBookingsByDocument = "CALL spSearchBookingForCheckOut(?);";
     //String listServicesByBookingId = "CALL spListServicesByBooking(?);"
-    //String searchBookingsByDocument = "CALL spSearchBookingForCheckOut(?);"
+    //
    // String checkOutBoking = "CALL spCheckoutBooking(?,?); "
 
     @Transactional
@@ -89,6 +96,33 @@ public class BookingDAO extends BaseDAO<Booking> {
               return booking.getUuid();
         }
 
+    }
+    
+    public List<SearchBookings> listBookingForCheckoutByDocument(String document) throws Exception{
+         List<SearchBookings> result = new ArrayList<>();
+        
+    try (Connection conn = databaseConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(searchBookingsByDocument)) {
+
+        stmt.setString(1, document); // Setea el parámetro del procedimiento
+        ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+               SearchBookings searchBooking = new SearchBookings();
+               searchBooking.setUuid(rs.getString("uuid"));
+               searchBooking.setRoomNumber(rs.getString("room_number"));
+               searchBooking.setRoomUuid(rs.getString("room_uuid"));
+               searchBooking.setSubtotalRoom(rs.getDouble("sub_total"));
+               searchBooking.setSubTotalServices(rs.getDouble("sub_total_services"));
+               searchBooking.setTotal(rs.getDouble("total"));
+               result.add(searchBooking);
+            }
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        }
+        return result;
+        
     }
 
 }

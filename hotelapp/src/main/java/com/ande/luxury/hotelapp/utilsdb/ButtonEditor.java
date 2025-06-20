@@ -4,11 +4,11 @@
  */
 package com.ande.luxury.hotelapp.utilsdb;
 
-import com.ande.luxury.hotelapp.views.Usuarios_Gestion;
 import java.awt.Component;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -24,7 +24,7 @@ public class ButtonEditor extends DefaultCellEditor {
     private boolean clicked;
     private int row, col;
     private JTable table;
-    private Usuarios_Gestion parent;
+    private JInternalFrame parent;
 
     public ButtonEditor(JCheckBox checkBox, JTable table) {
         super(checkBox);
@@ -34,8 +34,9 @@ public class ButtonEditor extends DefaultCellEditor {
         button.setOpaque(true);
         button.addActionListener(e -> fireEditingStopped());
     }
+  
 
-    public ButtonEditor(JCheckBox checkBox, JTable table, String label,Usuarios_Gestion parent) {
+    public ButtonEditor(JCheckBox checkBox, JTable table, String label,JInternalFrame parent) {
         super(checkBox);
         this.table = table;
         this.label = label;
@@ -63,16 +64,6 @@ public class ButtonEditor extends DefaultCellEditor {
     public Object getCellEditorValue() {
         if (clicked) {
             String uuid = table.getValueAt(row, 0).toString();
-
-            if (col == 6) { // Edit column
-                parent.editarFilaEnFormularioPadre(row);
-                // 👉 You can open a form or dialog to edit this record
-            } else if (col == 7) { // Delete column
-                int confirm = JOptionPane.showConfirmDialog(button, "Delete uuid: " + uuid + "?");
-                if (confirm == JOptionPane.YES_OPTION) {
-                    ((DefaultTableModel) table.getModel()).removeRow(row);
-                }
-            }
         }
         clicked = false;
         return label;
