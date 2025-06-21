@@ -192,11 +192,11 @@ public class Usuarios_Crear extends javax.swing.JFrame {
             String email = txtEmail.getText();
             Integer rolId = 0;
             rolId = switch (cboPerfiles.getSelectedIndex()) {
-                case 1 ->
-                    2; // Administrador
                 case 2 ->
-                    3; // Recepcionista
+                    2; // Administrador
                 case 3 ->
+                    3; // Recepcionista
+                case 4 ->
                     4; // Cliente
                 default ->
                     4; // Cliente

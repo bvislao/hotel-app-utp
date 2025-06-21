@@ -4,7 +4,6 @@
  */
 package com.ande.luxury.hotelapp.repository;
 
-import com.ande.luxury.hotelapp.entities.Rol;
 import com.ande.luxury.hotelapp.entities.RoomType;
 import com.ande.luxury.hotelapp.utilsdb.BaseDAO;
 import com.ande.luxury.hotelapp.utilsdb.RowMapper;

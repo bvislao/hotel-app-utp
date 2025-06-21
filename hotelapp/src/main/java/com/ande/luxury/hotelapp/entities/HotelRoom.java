@@ -5,10 +5,6 @@
 package com.ande.luxury.hotelapp.entities;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 /**
  *
  * @author bryanvislaochavez
@@ -21,12 +17,15 @@ public class HotelRoom  extends Auditable {
     private Hotel hotel;
     private Integer hotelId;
     private RoomType roomType;
+    private Integer bookingId;
     private Integer roomTypeId;
     private Integer roomNumber;
+    private Integer capacity;
     private double PricePerHour;
     private double PricePerNight;
     private boolean isReserved;
     private Integer statusId;
+    private Booking bookingReference;
    
     
     public HotelRoom(){

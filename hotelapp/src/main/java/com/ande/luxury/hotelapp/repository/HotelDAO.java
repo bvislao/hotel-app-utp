@@ -5,7 +5,6 @@
 package com.ande.luxury.hotelapp.repository;
 
 import com.ande.luxury.hotelapp.entities.Hotel;
-import com.ande.luxury.hotelapp.entities.Rol;
 import com.ande.luxury.hotelapp.utilsdb.BaseDAO;
 import com.ande.luxury.hotelapp.utilsdb.RowMapper;
 import java.sql.ResultSet;
