@@ -58,8 +58,22 @@ public class BookingDAO extends BaseDAO<Booking> {
     String searchBookingsByDocument = "CALL spSearchBookingForCheckOut(?);";
     //String listServicesByBookingId = "CALL spListServicesByBooking(?);"
     //
-   // String checkOutBoking = "CALL spCheckoutBooking(?,?); "
+    String checkOutBoking = "CALL spCheckoutBooking(?,?); ";
 
+    @Transactional
+    public void checkout(String uuid, String auditUser) throws Exception{
+        try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(checkOutBoking)) {
+              stmt.setString(1, uuid);
+            stmt.setString(2, auditUser); 
+            stmt.executeUpdate();
+            conn.close();
+        }catch (Exception ex) {
+            logger.error("Error checkout => " + ex.getMessage());
+            throw new Exception("Ocurrio un error al querer hacer checkout.");
+        } finally {
+             
+        }
+    }
     @Transactional
     public String save(Booking booking) throws Exception {
         
