@@ -590,3 +590,31 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+
+/******************************************************************************************
+*
+* Descripción        :    Lista las facturas creadas
+* Autor              :    Bryan Vislao
+* Fecha de creación  :    2025-06-21
+* Base de datos      :    hotel
+* Entorno            :    Dev
+* Versión            :    1.0
+*
+* Historial de cambios:
+* ----------------------------------------------------------------------------------------
+* Fecha       | Autor            | Descripción
+* ------------|------------------|-------------------------------------------------------
+* 2025-06-18  | Bryan Vislao | Versión inicial
+*
+******************************************************************************************/
+
+DELIMITER $$
+
+CREATE PROCEDURE spListInvoices()
+BEGIN
+    SELECT uuid,document_invoice,booking_id,amount_total,created_by FROM invoice WHERE active = 1;
+END$$
+
+DELIMITER ;
