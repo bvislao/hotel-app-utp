@@ -14,14 +14,13 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 import javax.swing.JOptionPane;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.NumberFormatter;
 
 /**
  *
  * @author bryanvislaochavez
  */
 public class Servicios_Crear extends javax.swing.JFrame {
+    
 
     /**
      * Creates new form Servicios_Crear
@@ -164,9 +163,43 @@ public class Servicios_Crear extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearServicioActionPerformed
+String nombre = (String) jComboBox3.getSelectedItem();
 
-        // TODO add your handling code here:
+    if (nombre == null || nombre.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Seleccione un servicio válido.");
+        return;
+    }
 
+    try {
+        String url = "jdbc:mysql://localhost:3306/hotel";
+        String usuario = "root";
+        String clave = "ECOdid/789";
+
+        Connection conn = DriverManager.getConnection(url, usuario, clave);
+
+        String sql = """
+            INSERT INTO bookings_service_type (name, price, uuid, active, created_by, created_at)
+            SELECT name, price, UUID(), 1, 'admin', NOW()
+            FROM bookings_service_type
+            WHERE name = ?;
+        """;
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, nombre);
+
+        int filas = stmt.executeUpdate();
+
+        if (filas > 0) {
+            JOptionPane.showMessageDialog(this, "Servicio duplicado exitosamente.");
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró un servicio con ese nombre.");
+        }
+
+        stmt.close();
+        conn.close();
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al insertar en la base de datos:\n" + e.getMessage());
+    }
     }//GEN-LAST:event_btnCrearServicioActionPerformed
 
     private void Jcbhabitación(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Jcbhabitación
@@ -203,7 +236,7 @@ public class Servicios_Crear extends javax.swing.JFrame {
             // Formatear como moneda peruana
             Locale localePeru = new Locale("es", "PE");
             NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(localePeru);
-            lblPrecio.setText(formatoMoneda.format(precio)); // Ej: S/ 45.00
+            lblPrecio.setText(formatoMoneda.format(precio));
         } else {
             lblPrecio.setText("No encontrado");
         }
