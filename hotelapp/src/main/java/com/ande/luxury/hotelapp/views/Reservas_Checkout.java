@@ -4,19 +4,14 @@
  */
 package com.ande.luxury.hotelapp.views;
 
-import com.ande.luxury.hotelapp.entities.Usuario;
 import com.ande.luxury.hotelapp.entities.models.SearchBookings;
 import com.ande.luxury.hotelapp.services.BookingService;
-import com.ande.luxury.hotelapp.services.UsuarioService;
-import com.ande.luxury.hotelapp.utilsdb.ButtonEditor;
-import com.ande.luxury.hotelapp.utilsdb.ButtonRenderer;
 import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JCheckBox;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 

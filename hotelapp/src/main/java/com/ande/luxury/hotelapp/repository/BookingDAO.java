@@ -6,7 +6,6 @@ package com.ande.luxury.hotelapp.repository;
 
 import com.ande.luxury.hotelapp.database.databaseConnection;
 import com.ande.luxury.hotelapp.entities.Booking;
-import com.ande.luxury.hotelapp.entities.HotelRoom;
 import com.ande.luxury.hotelapp.entities.models.SearchBookings;
 import com.ande.luxury.hotelapp.utilsdb.BaseDAO;
 import com.ande.luxury.hotelapp.utilsdb.Constants;
@@ -16,7 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.slf4j.Logger;
@@ -62,7 +60,8 @@ public class BookingDAO extends BaseDAO<Booking> {
 
     @Transactional
     public void checkout(String uuid, String auditUser) throws Exception{
-        try (Connection conn = databaseConnection.getInstancia().getConexion(); PreparedStatement stmt = conn.prepareStatement(checkOutBoking)) {
+        Connection conn = databaseConnection.getInstancia().getConexion();
+        try (PreparedStatement stmt = conn.prepareStatement(checkOutBoking)) {
               stmt.setString(1, uuid);
             stmt.setString(2, auditUser); 
             stmt.executeUpdate();
@@ -112,8 +111,8 @@ public class BookingDAO extends BaseDAO<Booking> {
     
     public List<SearchBookings> listBookingForCheckoutByDocument(String document) throws Exception{
          List<SearchBookings> result = new ArrayList<>();
-        
-    try (Connection conn = databaseConnection.getInstancia().getConexion();
+        Connection conn = databaseConnection.getInstancia().getConexion();
+    try (
          PreparedStatement stmt = conn.prepareStatement(searchBookingsByDocument)) {
 
         stmt.setString(1, document); // Setea el parámetro del procedimiento
