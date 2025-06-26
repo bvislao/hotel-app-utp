@@ -27,7 +27,7 @@ public class HotelRoomDAO extends BaseDAO<HotelRoom>{
     private static final Logger logger = LoggerFactory.getLogger(HotelRoomDAO.class);
     
     public HotelRoomDAO() {
-        super("hotel.hotel_room", new RowMapper<HotelRoom>() {
+        super("hotel_room", new RowMapper<HotelRoom>() {
             @Override
             public HotelRoom map(ResultSet rs) throws SQLException {
                 return new HotelRoom(
@@ -50,7 +50,8 @@ public class HotelRoomDAO extends BaseDAO<HotelRoom>{
     @Override
     public List<HotelRoom> findAll() throws Exception{
            List<HotelRoom> result = new ArrayList<>();
-        try (Connection conn = databaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(callFindAll)) {
+           Connection conn = databaseConnection.getInstancia().getConexion();
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(callFindAll)) {
 
             
             while (rs.next()) {

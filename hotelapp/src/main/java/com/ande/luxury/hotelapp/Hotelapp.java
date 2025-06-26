@@ -5,7 +5,6 @@
 package com.ande.luxury.hotelapp;
 
 import com.ande.luxury.hotelapp.views.Login;
-import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
 /**

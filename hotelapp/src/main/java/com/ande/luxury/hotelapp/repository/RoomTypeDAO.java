@@ -17,7 +17,7 @@ import java.sql.SQLException;
 public class RoomTypeDAO extends BaseDAO<RoomType> {
     
     public RoomTypeDAO() {
-        super("hotel.room_type", new RowMapper<RoomType>() {
+        super("room_type", new RowMapper<RoomType>() {
             @Override
             public RoomType map(ResultSet rs) throws SQLException {
                 return new RoomType(

@@ -4,6 +4,7 @@
  */
 package com.ande.luxury.hotelapp.views;
 
+import com.ande.luxury.hotelapp.database.databaseConnection;
 import com.ande.luxury.hotelapp.entities.Usuario;
 import com.ande.luxury.hotelapp.services.UsuarioService;
 import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
@@ -11,6 +12,7 @@ import java.awt.Image;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -40,7 +42,10 @@ public class Login extends javax.swing.JFrame {
         if (validateComponentsInitialized()) {
             System.exit(0);
         }
-        
+        if (!validarConexionBD()) {
+    JOptionPane.showMessageDialog(this, "No se pudo conectar a la base de datos", "Error", JOptionPane.ERROR_MESSAGE);
+    System.exit(1);
+}
          ImageIcon icon = new ImageIcon(getClass().getResource("/logo.png"));
         Image image = icon.getImage();
         this.setIconImage(image);
@@ -172,6 +177,15 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private boolean validarConexionBD() {
+    try {
+        Connection conn = databaseConnection.getInstancia().getConexion();
+        return (conn != null && !conn.isClosed());
+    } catch (Exception e) {
+        logger.error("No se pudo establecer conexión con la base de datos", e);
+        return false;
+    }
+}
     
     public boolean validateComponentsInitialized() {
         try (InputStream input = new FileInputStream("config.properties")) {

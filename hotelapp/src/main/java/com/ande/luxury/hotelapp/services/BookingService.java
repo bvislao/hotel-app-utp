@@ -70,6 +70,17 @@ public class BookingService {
         }
     }
     
+     public void checkOutBooking(String  uuid,String user) throws Exception{
+        try{
+            BookingDAO bookingDAO = new BookingDAO();
+            bookingDAO.checkout(uuid,user);
+            DialogUtils.showSuccess(null, "Reserva", "Se hizo el checkout correctamente");
+        }catch(Exception ex){
+            logger.error(ex.getMessage());
+            throw new Exception("Ocurrio un error al registrar");
+        }
+    }
+    
 
     public List<SearchBookings> listBookingsByDocumentNumber(String document) throws Exception{
           BookingDAO bookingDAO = new BookingDAO();
