@@ -48,7 +48,6 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        lblReserva = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -69,102 +68,165 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
         lblCheckin = new javax.swing.JLabel();
         lblCheckout = new javax.swing.JLabel();
         lblDias = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableBookingServices = new javax.swing.JTable();
+        jLabel13 = new javax.swing.JLabel();
+        lblTotalApagar = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
+        lblReserva = new javax.swing.JLabel();
+        lblReserva1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel1.setText("Servicios Adicionales");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 410, -1, -1));
-
-        lblReserva.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
-        lblReserva.setText("----------------");
-        getContentPane().add(lblReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 40, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel2.setText("Habitación");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 190, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel3.setText("DOI - Cliente");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 220, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel4.setText("Email");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 250, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel5.setText("Telefono");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 280, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel6.setText("Niños");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 310, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel7.setText("Adultos");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, -1, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 340, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel8.setText("Checkin");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 300, -1, -1));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 370, -1, -1));
 
         jLabel9.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel9.setText("CheckOut");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, -1, -1));
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 400, -1, -1));
 
         jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel10.setText("Días");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 360, -1, -1));
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 430, -1, -1));
 
         jLabel11.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel11.setText("SUBTOTAL");
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 190, -1, -1));
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 760, -1, 30));
 
         lblTotal.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         lblTotal.setText("----------------");
-        getContentPane().add(lblTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 220, -1, -1));
+        getContentPane().add(lblTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 790, -1, 40));
 
         lblHabitacion.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblHabitacion.setText("----------------");
-        getContentPane().add(lblHabitacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 120, -1, -1));
+        getContentPane().add(lblHabitacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 190, -1, -1));
 
         lblClient.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblClient.setText("----------------");
-        getContentPane().add(lblClient, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 150, -1, -1));
+        getContentPane().add(lblClient, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 220, -1, -1));
 
         lblEmail.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblEmail.setText("----------------");
-        getContentPane().add(lblEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 180, -1, -1));
+        getContentPane().add(lblEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 250, -1, -1));
 
         lblTelefono.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblTelefono.setText("----------------");
-        getContentPane().add(lblTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 210, -1, -1));
+        getContentPane().add(lblTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 280, -1, -1));
 
         lblNinos.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblNinos.setText("----------------");
-        getContentPane().add(lblNinos, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 240, -1, -1));
+        getContentPane().add(lblNinos, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 310, -1, -1));
 
         lblAdultos.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblAdultos.setText("----------------");
-        getContentPane().add(lblAdultos, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 270, -1, -1));
+        getContentPane().add(lblAdultos, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 340, -1, -1));
 
         lblCheckin.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblCheckin.setText("----------------");
-        getContentPane().add(lblCheckin, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 300, -1, -1));
+        getContentPane().add(lblCheckin, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 370, -1, -1));
 
         lblCheckout.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblCheckout.setText("----------------");
-        getContentPane().add(lblCheckout, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 330, -1, -1));
+        getContentPane().add(lblCheckout, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 400, -1, -1));
 
         lblDias.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         lblDias.setText("----------------");
-        getContentPane().add(lblDias, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 360, -1, -1));
+        getContentPane().add(lblDias, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 430, -1, -1));
+
+        jTableBookingServices.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTableBookingServices);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, 670, 240));
+
+        jLabel13.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel13.setText("TOTAL A PAGAR");
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 750, -1, 30));
+
+        lblTotalApagar.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        lblTotalApagar.setText("----------------");
+        getContentPane().add(lblTotalApagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 780, -1, 40));
+
+        jPanel1.setBackground(new java.awt.Color(51, 102, 255));
 
         jLabel12.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
-        jLabel12.setText("RESERVA");
-        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
+        jLabel12.setText("DETALLE DE LA RESERVA");
+
+        lblReserva.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
+        lblReserva.setText("----------------");
+
+        lblReserva1.setBackground(new java.awt.Color(51, 255, 0));
+        lblReserva1.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
+        lblReserva1.setForeground(new java.awt.Color(51, 255, 102));
+        lblReserva1.setText("CONFIRMADA");
+        lblReserva1.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel12)
+                    .addComponent(lblReserva))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 393, Short.MAX_VALUE)
+                .addComponent(lblReserva1)
+                .addGap(20, 20, 20))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblReserva1)
+                    .addComponent(jLabel12))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblReserva)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 740, 90));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -209,6 +271,7 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -217,6 +280,9 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTableBookingServices;
     private javax.swing.JLabel lblAdultos;
     private javax.swing.JLabel lblCheckin;
     private javax.swing.JLabel lblCheckout;
@@ -226,7 +292,9 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
     private javax.swing.JLabel lblHabitacion;
     private javax.swing.JLabel lblNinos;
     private javax.swing.JLabel lblReserva;
+    private javax.swing.JLabel lblReserva1;
     private javax.swing.JLabel lblTelefono;
     private javax.swing.JLabel lblTotal;
+    private javax.swing.JLabel lblTotalApagar;
     // End of variables declaration//GEN-END:variables
 }

@@ -94,7 +94,6 @@ public class Main extends javax.swing.JFrame {
         jmGestHabitaciones = new javax.swing.JMenuItem();
         jmReservas = new javax.swing.JMenu();
         jmCheckIn = new javax.swing.JMenuItem();
-        jmCheckInServicios = new javax.swing.JMenuItem();
         jmCheckout = new javax.swing.JMenuItem();
         jmClientes = new javax.swing.JMenu();
         jmClienteNuevo = new javax.swing.JMenuItem();
@@ -246,14 +245,6 @@ public class Main extends javax.swing.JFrame {
         });
         jmReservas.add(jmCheckIn);
 
-        jmCheckInServicios.setText("Servicio - Habitación");
-        jmCheckInServicios.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmCheckInServiciosActionPerformed(evt);
-            }
-        });
-        jmReservas.add(jmCheckInServicios);
-
         jmCheckout.setText("Check-out - Habitación");
         jmCheckout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -342,15 +333,6 @@ public class Main extends javax.swing.JFrame {
         form.setVisible(true);
         panelMain.add(form);
     }//GEN-LAST:event_jmClienteNuevoActionPerformed
-
-    private void jmCheckInServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmCheckInServiciosActionPerformed
-limpiarPanel();
-        Reservas_ServiciosHabitacion form = new Reservas_ServiciosHabitacion();
-        form.setClosable(true);
-        form.setVisible(true);
-        panelMain.add(form);
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jmCheckInServiciosActionPerformed
 
     private void jmCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmCheckoutActionPerformed
         // TODO add your handling code here:
@@ -454,7 +436,6 @@ limpiarPanel();
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JMenuItem jmCheckIn;
-    private javax.swing.JMenuItem jmCheckInServicios;
     private javax.swing.JMenuItem jmCheckout;
     private javax.swing.JMenuItem jmClienteNuevo;
     private javax.swing.JMenu jmClientes;
