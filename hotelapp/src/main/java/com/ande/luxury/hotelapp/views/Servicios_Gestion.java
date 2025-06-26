@@ -1,5 +1,16 @@
 package com.ande.luxury.hotelapp.views;
 
+import java.security.Timestamp;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
@@ -10,18 +21,49 @@ package com.ande.luxury.hotelapp.views;
  */
 public class Servicios_Gestion extends javax.swing.JInternalFrame {
 
-    private static String userLoguin;
+    private String userLoguin;
 
-    /**
-     * Creates new form Servicios_Gestion
-     */
+private void cargarDatosServicios() {
+    // Crear modelo de tabla
+    DefaultTableModel modelo = new DefaultTableModel(
+        new String[]{"ID", "Nombre", "Precio","Habitación" }, 0
+    );
+
+    String url = "jdbc:mysql://localhost:3306/hotel"; 
+    String user = "root"; 
+    String password = "ECOdid/789"; 
+
+    String sql = "SELECT * FROM bookings_service_type";
+
+    try (Connection conn = DriverManager.getConnection(url, user, password);
+         Statement stmt = conn.createStatement();
+         ResultSet rs = stmt.executeQuery(sql)) {
+
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            double price = rs.getDouble("price");
+
+            modelo.addRow(new Object[]{id, name, price});
+        }
+
+        jTable1.setModel(modelo);
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
+    }
+}
+
+
     public Servicios_Gestion() {
         initComponents();
+        cargarDatosServicios();
     }
 
     public Servicios_Gestion(String usuario) {
         initComponents();
-        this.userLoguin = usuario;
+    this.userLoguin = usuario;
+    cargarDatosServicios(); 
     }
 
     /**
@@ -37,6 +79,7 @@ public class Servicios_Gestion extends javax.swing.JInternalFrame {
         btnCrear = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        btnCrear1 = new javax.swing.JButton();
 
         setTitle("Ande Luxury :: Gestion Servicios");
 
@@ -55,16 +98,23 @@ public class Servicios_Gestion extends javax.swing.JInternalFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {},
-                {},
-                {},
-                {}
+
             },
             new String [] {
 
             }
         ));
         jScrollPane1.setViewportView(jTable1);
+
+        btnCrear1.setBackground(new java.awt.Color(102, 255, 102));
+        btnCrear1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        btnCrear1.setForeground(new java.awt.Color(0, 102, 102));
+        btnCrear1.setText("+ Actualizar");
+        btnCrear1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrear1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -81,6 +131,10 @@ public class Servicios_Gestion extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCrear)
                         .addGap(35, 35, 35))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(243, 243, 243)
+                .addComponent(btnCrear1)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,7 +145,9 @@ public class Servicios_Gestion extends javax.swing.JInternalFrame {
                     .addComponent(btnCrear))
                 .addGap(50, 50, 50)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnCrear1)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
@@ -106,11 +162,47 @@ public class Servicios_Gestion extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_btnCrearActionPerformed
 
+    private void btnCrear1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrear1ActionPerformed
+        // TODO add your handling code here:
+        
+        String url = "jdbc:mysql://localhost:3306/hotel";
+    String usuario = "root";
+    String clave = "ECOdid/789";
+
+    String[] columnas = {"ID", "Nombre", "Precio", "Fecha creación"};
+    DefaultTableModel modelo = new DefaultTableModel(null, columnas);
+
+    try {
+        Connection conn = DriverManager.getConnection(url, usuario, clave);
+        String sql = "SELECT id, name, price, created_at FROM bookings_service_type";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            Object[] fila = new Object[4];
+            fila[0] = rs.getInt("id");
+            fila[1] = rs.getString("name");
+            fila[2] = rs.getDouble("price");
+            modelo.addRow(fila);
+        }
+
+        jTable1.setModel(modelo);
+
+        rs.close();
+        stmt.close();
+        conn.close();
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar la tabla:\n" + e.getMessage());
+    }
+    }//GEN-LAST:event_btnCrear1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrear;
+    private javax.swing.JButton btnCrear1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+ 
 }
