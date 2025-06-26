@@ -7,7 +7,7 @@ CREATE SCHEMA IF NOT EXISTS `hotel` DEFAULT CHARACTER SET utf8mb4;
 
 USE `hotel`;
 
-CREATE TABLE `hotel`.`status` (
+CREATE TABLE `status` (
                           `id` integer AUTO_INCREMENT PRIMARY KEY,
                           `uuid` char(36) UNIQUE,
                           `description` varchar(100),
@@ -19,7 +19,7 @@ CREATE TABLE `hotel`.`status` (
 );
 
 
-CREATE TABLE `hotel`.`room_type` (
+CREATE TABLE `room_type` (
                              `id` integer AUTO_INCREMENT PRIMARY KEY,
                              `uuid` char(36) UNIQUE,
                              `description` varchar(100),
@@ -31,7 +31,7 @@ CREATE TABLE `hotel`.`room_type` (
 );
 
 
-CREATE TABLE `hotel`.`rol` (
+CREATE TABLE `rol` (
                        `id` integer AUTO_INCREMENT PRIMARY KEY,
                        `uuid` char(36) UNIQUE,
                        `code` varchar(50),
@@ -44,7 +44,7 @@ CREATE TABLE `hotel`.`rol` (
 );
 
 
-CREATE TABLE `hotel`.`users` (
+CREATE TABLE `users` (
                          `id` integer AUTO_INCREMENT PRIMARY KEY,
                          `uuid` char(36) UNIQUE,
                          `document_number` varchar(15) UNIQUE,
@@ -60,7 +60,7 @@ CREATE TABLE `hotel`.`users` (
                          `last_modified_at` timestamp
 );
 
-CREATE TABLE `hotel`.`users_role` (
+CREATE TABLE `users_role` (
                               `id` integer AUTO_INCREMENT PRIMARY KEY,
                               `uuid` char(36) UNIQUE,
                               `user_id` integer NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE `hotel`.`users_role` (
 );
 
 
-CREATE TABLE `hotel`.`hotel` (
+CREATE TABLE `hotel` (
                          `id` integer AUTO_INCREMENT PRIMARY KEY,
                          `uuid` char(36) UNIQUE,
                          `category` int,
@@ -87,7 +87,7 @@ CREATE TABLE `hotel`.`hotel` (
                          `last_modified_at` timestamp
 );
 
-CREATE TABLE `hotel`.`hotel_room` (
+CREATE TABLE `hotel_room` (
                               `id` integer AUTO_INCREMENT PRIMARY KEY,
                               `uuid` char(36) UNIQUE,
                               `hotel_id` integer NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE `hotel`.`hotel_room` (
                               `last_modified_at` timestamp
 );
 
-CREATE TABLE `hotel`.`bookings` (
+CREATE TABLE `bookings` (
   `id` integer AUTO_INCREMENT PRIMARY KEY,
   `uuid` char(36) UNIQUE,
   `hotel_room_id` int NOT NULL,
@@ -133,7 +133,7 @@ CREATE TABLE `hotel`.`bookings` (
 );
 
 
-CREATE TABLE `hotel`.`bookings_service_type`(
+CREATE TABLE `bookings_service_type`(
   `id` integer AUTO_INCREMENT PRIMARY KEY,
   `uuid` char(36) UNIQUE,
   `name` varchar(200) null,
@@ -145,7 +145,7 @@ CREATE TABLE `hotel`.`bookings_service_type`(
                               `last_modified_at` timestamp
 );
 
-INSERT INTO `hotel`.`bookings_service_type` (`id`, `uuid`, `name`, `price`, `active`, `created_by`, `created_at`)
+INSERT INTO `bookings_service_type` (`id`, `uuid`, `name`, `price`, `active`, `created_by`, `created_at`)
 VALUES
 (1, 'd1f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 'Desayuno', 10.00, 1, 'admin', CURRENT_TIMESTAMP),
 (2, 'e2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 'Almuerzo', 15.00, 1, 'admin', CURRENT_TIMESTAMP),
@@ -153,7 +153,7 @@ VALUES
 (4, 'g4f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 'Servicio de limpieza', 5.00, 1, 'admin', CURRENT_TIMESTAMP),
 (5, 'h5f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 'Transporte al aeropuerto', 30.00, 1, 'admin', CURRENT_TIMESTAMP);
 
-CREATE TABLE `hotel`.`bookings_service`(
+CREATE TABLE `bookings_service`(
   `id` integer AUTO_INCREMENT PRIMARY KEY,
   `uuid` char(36) UNIQUE,
    `booking_id` int not null,
@@ -168,12 +168,12 @@ CREATE TABLE `hotel`.`bookings_service`(
                               `last_modified_at` timestamp
 );
 
-ALTER TABLE `hotel`.`bookings_service` ADD CONSTRAINT `fk_bookings_service_booking_id` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`);
-ALTER TABLE `hotel`.`bookings_service` ADD CONSTRAINT `fk_bookings_service_bookings_service_type_id` FOREIGN KEY (`booking_id`) REFERENCES `bookings_service_type` (`id`);
+ALTER TABLE `bookings_service` ADD CONSTRAINT `fk_bookings_service_booking_id` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`);
+ALTER TABLE `bookings_service` ADD CONSTRAINT `fk_bookings_service_bookings_service_type_id` FOREIGN KEY (`booking_id`) REFERENCES `bookings_service_type` (`id`);
 
 
 
-CREATE TABLE `hotel`.`invoice` (
+CREATE TABLE `invoice` (
  `id` integer AUTO_INCREMENT PRIMARY KEY,
   `uuid` char(36) UNIQUE,
    `document_invoice` varchar(200),
@@ -187,9 +187,9 @@ CREATE TABLE `hotel`.`invoice` (
 
 );
 
-ALTER TABLE `hotel`.`invoice` ADD CONSTRAINT `fk_invoice_booking_id` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`);
+ALTER TABLE `invoice` ADD CONSTRAINT `fk_invoice_booking_id` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`);
 
-CREATE TABLE `hotel`.`invoice_detail` (
+CREATE TABLE `invoice_detail` (
  `id` integer AUTO_INCREMENT PRIMARY KEY,
   `uuid` char(36) UNIQUE,
     `invoice_id` int not null,
@@ -204,32 +204,32 @@ CREATE TABLE `hotel`.`invoice_detail` (
 
 );
 
-ALTER TABLE `hotel`.`invoice_detail` ADD CONSTRAINT `fk_invoice_detail_invoice_id` FOREIGN KEY (`invoice_id`) REFERENCES `invoice` (`id`);
+ALTER TABLE `invoice_detail` ADD CONSTRAINT `fk_invoice_detail_invoice_id` FOREIGN KEY (`invoice_id`) REFERENCES `invoice` (`id`);
 
 
 
-ALTER TABLE `hotel`.`bookings` ADD CONSTRAINT `fk_bookings_hotel_room_id` FOREIGN KEY (`hotel_room_id`) REFERENCES `hotel_room` (`id`);
+ALTER TABLE `bookings` ADD CONSTRAINT `fk_bookings_hotel_room_id` FOREIGN KEY (`hotel_room_id`) REFERENCES `hotel_room` (`id`);
 
-ALTER TABLE `hotel`.`users` ADD CONSTRAINT `user_posts` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
+ALTER TABLE `users` ADD CONSTRAINT `user_posts` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
 
-ALTER TABLE `hotel`.`users_role` ADD CONSTRAINT `user_roles_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+ALTER TABLE `users_role` ADD CONSTRAINT `user_roles_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
-ALTER TABLE `hotel`.`users_role` ADD CONSTRAINT `user_roles_rol` FOREIGN KEY (`rol_id`) REFERENCES `rol` (`id`);
+ALTER TABLE `users_role` ADD CONSTRAINT `user_roles_rol` FOREIGN KEY (`rol_id`) REFERENCES `rol` (`id`);
 
-ALTER TABLE `hotel`.`hotel` ADD FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
+ALTER TABLE `hotel` ADD FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
 
-ALTER TABLE `hotel`.`hotel_room` ADD FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
+ALTER TABLE `hotel_room` ADD FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
 
-ALTER TABLE `hotel`.`hotel_room` ADD FOREIGN KEY (`hotel_id`) REFERENCES `hotel` (`id`);
+ALTER TABLE `hotel_room` ADD FOREIGN KEY (`hotel_id`) REFERENCES `hotel` (`id`);
 
-ALTER TABLE `hotel`.`hotel_room` ADD FOREIGN KEY (`room_type_id`) REFERENCES `room_type` (`id`);
+ALTER TABLE `hotel_room` ADD FOREIGN KEY (`room_type_id`) REFERENCES `room_type` (`id`);
 
 
-INSERT  INTO `hotel`.`status` (`id`, `uuid`, `description`, `active`, `created_by`, `created_at`)
+INSERT  INTO `status` (`id`, `uuid`, `description`, `active`, `created_by`, `created_at`)
 VALUES (1, '55a744e6-49f5-4b24-9bb8-96379274cdbd', 'Activo', 1, 'admin', CURRENT_TIMESTAMP),
        (2, '77d2623c-8bb0-418a-bc09-5c277f80aa93', 'Inactivo', 0, 'admin', CURRENT_TIMESTAMP);
 
-INSERT  INTO `hotel`.`room_type` (`id`, `uuid`, `description`, `active`, `created_by`, `created_at`)
+INSERT  INTO `room_type` (`id`, `uuid`, `description`, `active`, `created_by`, `created_at`)
 VALUES (1, 'cc96e3cb-ebf6-4fa7-8496-47764590679c', 'Habitación individual', 1, 'admin', CURRENT_TIMESTAMP),
        (2, 'f02be042-95f5-4ce3-b7cd-efa0406e2545', 'Habitación doble estándar (una cama doble)', 1, 'admin', CURRENT_TIMESTAMP),
        (3, '26f2bf93-5f23-4380-a96e-b680fae07ba4', 'Habitación doble estándar (dos camas separadas)', 1, 'admin', CURRENT_TIMESTAMP),
@@ -240,7 +240,7 @@ VALUES (1, 'cc96e3cb-ebf6-4fa7-8496-47764590679c', 'Habitación individual', 1, 
 
 
 
-INSERT  INTO `hotel`.`rol` (`id`, `uuid`,`code`, `description`, `active`, `created_by`, `created_at`)
+INSERT  INTO `rol` (`id`, `uuid`,`code`, `description`, `active`, `created_by`, `created_at`)
 VALUES (1, '6bb31ba7-7ee3-41ca-be1f-662baad66c49','ROOT', 'Super Administrador', 1, 'admin', CURRENT_TIMESTAMP),
        (2, '55354268-ccb2-466c-9e91-6e9a4709d6d5','ADMIN', 'Administrador', 1, 'admin', CURRENT_TIMESTAMP),
        (3, 'e1b7ecb0-0854-4dd0-9482-8cce27757e23','RECEPCIONISTA', 'Recepcionista', 1, 'admin', CURRENT_TIMESTAMP),
@@ -248,21 +248,21 @@ VALUES (1, '6bb31ba7-7ee3-41ca-be1f-662baad66c49','ROOT', 'Super Administrador',
 
 
 
-INSERT  INTO `hotel`.`users` (`id`, `uuid`, `document_number`, `full_name`, `phone`, `email`, `password`, `status_id`, `active`, `created_by`, `created_at`)
+INSERT  INTO `users` (`id`, `uuid`, `document_number`, `full_name`, `phone`, `email`, `password`, `status_id`, `active`, `created_by`, `created_at`)
 VALUES (1,'b0f3a3d4-5c8e-4b7c-9f6d-5a2e0f3b8c1e','admin','Super Administrador','99999999','99999999@gmail.com','$2a$12$Fi3f.vLMBKM0YsUzy8npU.KQzFsqUogsl.y6eoYUP68YTTkm/wGE.',1,1,'ADMIN',CURRENT_TIMESTAMP),
 (2,'995b2f58-3185-4b1f-b389-7ea4515a203a','72854591','Bryan Vislao Chavez','99999999','99999999@gmail.com','$2a$12$Fi3f.vLMBKM0YsUzy8npU.KQzFsqUogsl.y6eoYUP68YTTkm/wGE.',1,1,'ADMIN',CURRENT_TIMESTAMP);
 
 
-INSERT  INTO `hotel`.`users_role` (`id`, `uuid`, `user_id`, `rol_id`, `active`, `created_by`, `created_at`)
+INSERT  INTO `users_role` (`id`, `uuid`, `user_id`, `rol_id`, `active`, `created_by`, `created_at`)
 VALUES (1, 'b0f2a3d4-5c8e-4b7c-9f6d-5a2e0f3b8c1e', 1, 1, 1, 'admin', CURRENT_TIMESTAMP),
  (2, '6c8faba2-1935-458e-ac8c-53557f89e50d', 2, 3, 1, 'admin', CURRENT_TIMESTAMP);
 
 
-INSERT  INTO `hotel`.`hotel` (`id`, `uuid`, `category`, `address`, `location`, `status_id`, `active`, `created_by`, `created_at`)
+INSERT  INTO `hotel` (`id`, `uuid`, `category`, `address`, `location`, `status_id`, `active`, `created_by`, `created_at`)
 VALUES (1, 'a2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 5, 'Lima Centro', '-12.066188148973394, -77.03696239441621', 1, 1, 'admin', CURRENT_TIMESTAMP);
 
 
-INSERT  INTO `hotel`.`hotel_room` (`id`, `uuid`, `hotel_id`, `room_type_id`, `room_number`, `price_per_hour`, `price_per_night`, `is_reserved`,`capacity`, `status_id`, `active`, `created_by`, `created_at`)
+INSERT  INTO `hotel_room` (`id`, `uuid`, `hotel_id`, `room_type_id`, `room_number`, `price_per_hour`, `price_per_night`, `is_reserved`,`capacity`, `status_id`, `active`, `created_by`, `created_at`)
 VALUES (1, 'a2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 1, 101, 50.00, 200.00, 0, 2,1, 1, 'admin', CURRENT_TIMESTAMP),
        (2, 'b2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 2, 102, 75.00, 300.00, 0, 2,1, 1, 'admin', CURRENT_TIMESTAMP),
        (3, 'c2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 1, 103, 60.00, 220.00, 0, 2, 1, 1, 'admin', CURRENT_TIMESTAMP),
@@ -411,7 +411,7 @@ CREATE PROCEDURE spInsertUser(
 )
 BEGIN
     -- Insertar en tabla de usuarios
-    INSERT INTO hotel.users (
+    INSERT INTO users (
         uuid, document_number, full_name, phone, email, password,
         status_id, active, created_by, created_at
     )
@@ -424,7 +424,7 @@ BEGIN
     SET @last_id = LAST_INSERT_ID();
 
     -- Insertar en tabla users_role
-    INSERT INTO hotel.users_role (
+    INSERT INTO users_role (
         uuid, user_id, rol_id, active, created_by, created_at
     )
     VALUES (
@@ -444,7 +444,7 @@ BEGIN
     select hr.id,hr.uuid,hr.hotel_id,b.id as booking_id,
        hr.room_type_id,hr.room_number,hr.capacity,hr.price_per_hour,hr.price_per_night,hr.is_reserved,hr.status_id
 from hotel_room hr
-left join hotel.bookings b on hr.id = b.hotel_room_id and b.is_released = 0
+left join bookings b on hr.id = b.hotel_room_id and b.is_released = 0
 where hr.hotel_id = 1 and hr.status_id = 1;
 END$$
 DELIMITER ;
@@ -595,6 +595,33 @@ DELIMITER ;
 
 /******************************************************************************************
 *
+* Descripción        :    Lista las facturas creadas
+* Autor              :    Bryan Vislao
+* Fecha de creación  :    2025-06-21
+* Base de datos      :    hotel
+* Entorno            :    Dev
+* Versión            :    1.0
+*
+* Historial de cambios:
+* ----------------------------------------------------------------------------------------
+* Fecha       | Autor            | Descripción
+* ------------|------------------|-------------------------------------------------------
+* 2025-06-18  | Bryan Vislao | Versión inicial
+*
+******************************************************************************************/
+
+DELIMITER $$
+
+CREATE PROCEDURE spListInvoices()
+BEGIN
+    SELECT uuid,document_invoice,booking_id,amount_total,created_by FROM invoice WHERE active = 1;
+END$$
+
+DELIMITER ;
+
+
+/******************************************************************************************
+*
 * Descripción        :    Busca las reservas de una persona que esten pendientes de hacer check-out.
 * Autor              :    Fernando
 * Fecha de creación  :    2025-06-18
@@ -611,6 +638,7 @@ DELIMITER ;
 ******************************************************************************************/
 
 DELIMITER $$
+
 CREATE PROCEDURE spRegisterBookingServiceType(
     IN p_name varchar(200),
     IN p_price decimal(15, 4),

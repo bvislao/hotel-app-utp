@@ -352,7 +352,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jmCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmCheckoutActionPerformed
         // TODO add your handling code here:
-         Reservas_Checkout form = new Reservas_Checkout();
+         Reservas_Checkout form = new Reservas_Checkout(userLoguin);
         form.setClosable(true);
         form.setVisible(true);
         panelMain.add(form);

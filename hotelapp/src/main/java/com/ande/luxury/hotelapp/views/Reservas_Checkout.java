@@ -4,17 +4,15 @@
  */
 package com.ande.luxury.hotelapp.views;
 
-import com.ande.luxury.hotelapp.entities.Usuario;
 import com.ande.luxury.hotelapp.entities.models.SearchBookings;
 import com.ande.luxury.hotelapp.services.BookingService;
-import com.ande.luxury.hotelapp.services.UsuarioService;
-import com.ande.luxury.hotelapp.utilsdb.ButtonEditor;
-import com.ande.luxury.hotelapp.utilsdb.ButtonRenderer;
 import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JCheckBox;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -23,12 +21,18 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Reservas_Checkout extends javax.swing.JInternalFrame {
 
+    private String userLogin;
     /**
      * Creates new form Reservas_Checkout
      */
-    public Reservas_Checkout() {
+    public Reservas_Checkout(String userLogin) {
         initComponents();
-        
+        this.userLogin = userLogin;
+        // Permitir selección de filas completas
+        jTableBookings.setRowSelectionAllowed(true);
+        jTableBookings.setColumnSelectionAllowed(false);
+        jTableBookings.setCellSelectionEnabled(false);
+        jTableBookings.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     /**
@@ -85,7 +89,7 @@ public class Reservas_Checkout extends javax.swing.JInternalFrame {
             }
         ));
         jTableBookings.setAutoscrolls(false);
-        jTableBookings.setColumnSelectionAllowed(true);
+        jTableBookings.setCellSelectionEnabled(false);
         jTableBookings.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTableBookings);
         jTableBookings.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -161,7 +165,7 @@ public class Reservas_Checkout extends javax.swing.JInternalFrame {
     public void searchBookings() throws Exception {
         BookingService bookingService = new BookingService();
         List<SearchBookings> list = bookingService.listBookingsByDocumentNumber(txtNumDoc.getText());
-        String[] columns = {"UUID", "Habitación", "SubTotal", "SubTotal Servicios", "Total a Pagar", "Checkout"};
+        String[] columns = {"UUID", "Habitación", "SubTotal", "SubTotal Servicios", "Total a Pagar"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
 
         for (SearchBookings item : list) {
@@ -170,20 +174,63 @@ public class Reservas_Checkout extends javax.swing.JInternalFrame {
                 item.getRoomNumber(),
                 item.getSubtotalRoom(),
                 item.getSubTotalServices(),
-                item.getTotal(),
-                "-"
+                item.getTotal()
             };
             model.addRow(row);
         }
         jTableBookings.setModel(model);
 
-        jTableBookings.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer("Checkout"));
-    jTableBookings.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox(), jTableBookings, "Checkout", this));
+        // Mouse Listener para detectar doble clic en jTableBookings
+        jTableBookings.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Detecta doble clic
+                e.consume();
+
+                int row = jTableBookings.rowAtPoint(e.getPoint()); // Obtener la fila clickeada
+                int columnCount = jTableBookings.getColumnCount(); // Número total de columnas en la tabla
+
+                // Validar que la fila es válida y hay al menos 2 columnas (para uuid y name)
+                if (row >= 0 && columnCount >= 1) {
+                    Object uuidObj = jTableBookings.getValueAt(row, 0); // Columna 0: UUID
+                    Object nameObj = jTableBookings.getValueAt(row, 1); // Columna 1: Name
+
+                    // Asegurar que no sean nulos
+                    String uuid = uuidObj != null ? uuidObj.toString() : "N/A";
+                    String name = nameObj != null ? nameObj.toString() : "N/A";
+
+                    // Mostrar cuadro de confirmación
+                    if (DialogUtils.showConfirmation(
+                            null,
+                            "Confirmar",
+                            "Desea hacer checkout de la reserva  " + name + " (ID: " + uuid + ")?"
+                    )) {
+                        try {
+                            cerrarBooking(uuid);
+                        } catch (Exception ex) {
+                            Logger.getLogger(Reservas_Checkout.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+
+                } else {
+                    // Si no hay suficientes columnas o la fila no es válida
+                    System.err.println("Fila o columnas no válidas. Verifica el modelo de la tabla.");
+                }
+            }
+
+        });
 
         // Refrescar la vista
         jTableBookings.revalidate();
         jTableBookings.repaint();
 
+    }
+
+    private void cerrarBooking(String uuid) throws Exception {
+        
+        BookingService bookingService = new BookingService();
+        bookingService.checkOutBooking(uuid, userLogin);
+        searchBookings();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

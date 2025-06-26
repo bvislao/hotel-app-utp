@@ -28,7 +28,7 @@ public class UsuarioRolDAO extends BaseDAO<UsuarioRol> {
     private static final Logger logger = LoggerFactory.getLogger(UsuarioRolDAO.class);
 
     public UsuarioRolDAO() {
-        super("hotel.users_role", new RowMapper<UsuarioRol>() {
+        super("users_role", new RowMapper<UsuarioRol>() {
             @Override
             public UsuarioRol map(ResultSet rs) throws SQLException {
                 return new UsuarioRol(
@@ -60,8 +60,8 @@ public class UsuarioRolDAO extends BaseDAO<UsuarioRol> {
         String uuid = Constants.generateUuid();
         usuarioRol.setUuid(uuid); // Asigna el UUID generado al objeto
         usuarioRol.setActive(Constants.EntityActive.ACTIVO.getValue());
-
-        try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(queryInsert, Statement.RETURN_GENERATED_KEYS)) {
+Connection conn = databaseConnection.getInstancia().getConexion();
+        try (PreparedStatement stmt = conn.prepareStatement(queryInsert, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, uuid);
             stmt.setInt(2, usuarioRol.getUser_id()); // user_id
             stmt.setInt(3, usuarioRol.getRol_id()); // rol_id
@@ -69,7 +69,6 @@ public class UsuarioRolDAO extends BaseDAO<UsuarioRol> {
             stmt.setString(5, usuarioRol.getCreated_by()); // created_by
             stmt.setDate(6, java.sql.Date.valueOf(java.time.LocalDate.now()));
             stmt.execute();
-            conn.close();
             return usuarioRol;
         } catch (Exception ex) {
             logger.error("Error UsuarioRol -> save => " + ex.getMessage());
