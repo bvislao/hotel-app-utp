@@ -618,3 +618,36 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+/******************************************************************************************
+*
+* Descripción        :    Busca las reservas de una persona que esten pendientes de hacer check-out.
+* Autor              :    Fernando
+* Fecha de creación  :    2025-06-18
+* Base de datos      :    hotel
+* Entorno            :    Dev
+* Versión            :    1.0
+*
+* Historial de cambios:
+* ----------------------------------------------------------------------------------------
+* Fecha       | Autor            | Descripción
+* ------------|------------------|-------------------------------------------------------
+* 2025-06-18  | Fernando | Versión inicial
+*
+******************************************************************************************/
+
+DELIMITER $$
+
+CREATE PROCEDURE spRegisterBookingServiceType(
+    IN p_name varchar(200),
+    IN p_price decimal(15, 4),
+    IN p_user varchar(15)
+    )
+BEGIN
+    insert into bookings_service_type (uuid, name, price, active, created_by, created_at)
+    values (uuid_v4(),p_name,p_price,1,p_user,now());
+END$$
+
+DELIMITER ;
+
