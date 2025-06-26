@@ -27,7 +27,7 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
     private static final Logger logger = LoggerFactory.getLogger(UsuarioDAO.class);
 
     public UsuarioDAO() {
-        super("hotel.users", new RowMapper<Usuario>() {
+        super("users", new RowMapper<Usuario>() {
             @Override
             public Usuario map(ResultSet rs) throws SQLException {
                 return new Usuario(
@@ -45,6 +45,32 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
     }
 
     private String callSPInsert = "CALL spInsertUser(?,?,?,?,?,?,?,?,?,?,?);";
+
+    public Usuario findUserByUsername(String username) throws Exception {
+        String sql = "SELECT * FROM users WHERE document_number = ?";
+        Connection conn = databaseConnection.getInstancia().getConexion();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Usuario(
+                        rs.getInt("id"),
+                        rs.getString("uuid"),
+                        rs.getString("document_number"),
+                        rs.getString("full_name"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getInt("status_id"));
+            }
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public Usuario getDataUser(String username) throws Exception {
         Usuario user = this.findUserByUsername(username);
@@ -76,8 +102,8 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
         usuario.setPassword(encryptPassword);
         usuario.setStatus(Constants.EntityStatus.ACTIVO.getValue());
         usuario.setActive(Constants.EntityActive.ACTIVO.getValue());
-
-        try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(callSPInsert, Statement.RETURN_GENERATED_KEYS)) {
+        Connection conn = databaseConnection.getInstancia().getConexion();
+        try (PreparedStatement stmt = conn.prepareStatement(callSPInsert, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, usuario.getRoles().getFirst().getId());
             stmt.setString(2, uuid);
             stmt.setString(3, usuario.getDocumentNumber()); // document_number
@@ -90,8 +116,6 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
             stmt.setString(10, usuario.getCreated_by()); // created_by
             stmt.setDate(11, java.sql.Date.valueOf(java.time.LocalDate.now()));
             stmt.executeUpdate();
-            conn.close();
-            
             return usuario;
         } catch (Exception ex) {
             logger.error("Error saveUsuario => " + ex.getMessage());

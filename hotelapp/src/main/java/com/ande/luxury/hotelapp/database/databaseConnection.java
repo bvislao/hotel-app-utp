@@ -5,7 +5,6 @@
 package com.ande.luxury.hotelapp.database;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -22,23 +21,69 @@ import org.slf4j.LoggerFactory;
 public class databaseConnection {
 
     private static final Logger logger = LoggerFactory.getLogger(databaseConnection.class);
+    private static databaseConnection instancia;
+    private Connection conexion;
+    private String URL_DATABASE;
+    private String USER_DATABASE;
+    private String PASSWORD_DATABASE;
 
-    public static Connection getConnection() throws Exception,SQLException, FileNotFoundException {
+    public databaseConnection() throws Exception {
+        cargarPropiedades();
+        conectar();
+    }
+
+    private void cargarPropiedades() throws Exception {
         try {
             Properties props = new Properties();
             InputStream input = new FileInputStream("config.properties");
             props.load(input);
-            String URL_DATABASE = props.getProperty("db.url");
-            String USER_DATABASE = props.getProperty("db.user");
-            String PASSWORD_DATABASE = props.getProperty("db.password");
-            return DriverManager.getConnection(URL_DATABASE, USER_DATABASE, PASSWORD_DATABASE);
-        } catch (SQLException ex) {
-            logger.error("Ocurrio un error al conectar la base de datos" + " ==> " + ex.getMessage() + " -- " + ex.getSQLState());
-            throw new SQLException(ex);
+            URL_DATABASE = props.getProperty("db.url");
+            USER_DATABASE = props.getProperty("db.user");
+            PASSWORD_DATABASE = props.getProperty("db.password");
         } catch (IOException e) {
-            logger.error("No se encontro archivo de configuración");
-            throw new Exception(e.getMessage());
+            logger.error("No se encontró archivo de configuración", e);
+            throw new Exception("Error cargando archivo de configuración");
         }
+    }
 
+    // Método Singleton
+    public static databaseConnection getInstancia() throws Exception {
+        if (instancia == null) {
+            instancia = new databaseConnection();
+        }
+        return instancia;
+    }
+
+    private void conectar() {
+        try {
+            conexion = DriverManager.getConnection(URL_DATABASE, USER_DATABASE, PASSWORD_DATABASE);
+            logger.info("Conexión establecida con éxito");
+        } catch (SQLException e) {
+            logger.error("Error al conectar con la base de datos", e);
+        }
+    }
+    // Método que valida si la conexión sigue activa
+
+    public Connection getConexion() {
+        try {
+            if (conexion == null || conexion.isClosed()) {
+                logger.warn("Conexión cerrada. Reintentando...");
+                conectar();
+            }
+        } catch (SQLException e) {
+            logger.error("Error verificando conexión", e);
+        }
+        return conexion;
+    }
+
+    public void cerrarConexion() {
+        try {
+            if (conexion != null && !conexion.isClosed()) {
+                conexion.close();
+                logger.info("Conexión cerrada correctamente");
+            }
+        } catch (SQLException e) {
+            logger.error("Error al cerrar la conexión", e);
+        }
     }
 }

@@ -31,7 +31,7 @@ public class BookingDAO extends BaseDAO<Booking> {
     private static final Logger logger = LoggerFactory.getLogger(BookingDAO.class);
 
     public BookingDAO() {
-        super("hotel.bookings", (ResultSet rs) -> new Booking(
+        super("bookings", (ResultSet rs) -> new Booking(
                 rs.getInt("id"),
                 rs.getString("uuid"),
                 rs.getInt("hotel_room_id"),
@@ -62,11 +62,10 @@ public class BookingDAO extends BaseDAO<Booking> {
 
     @Transactional
     public void checkout(String uuid, String auditUser) throws Exception{
-        try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(checkOutBoking)) {
+        try (Connection conn = databaseConnection.getInstancia().getConexion(); PreparedStatement stmt = conn.prepareStatement(checkOutBoking)) {
               stmt.setString(1, uuid);
             stmt.setString(2, auditUser); 
             stmt.executeUpdate();
-            conn.close();
         }catch (Exception ex) {
             logger.error("Error checkout => " + ex.getMessage());
             throw new Exception("Ocurrio un error al querer hacer checkout.");
@@ -80,8 +79,8 @@ public class BookingDAO extends BaseDAO<Booking> {
           String uuid = Constants.generateUuid();
         booking.setUuid(uuid); // Asigna el UUID generado al objeto
         booking.setActive(Constants.EntityActive.ACTIVO.getValue());
-        
-          try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(queryInsert, Statement.RETURN_GENERATED_KEYS)) {
+        Connection conn = databaseConnection.getInstancia().getConexion();
+          try (PreparedStatement stmt = conn.prepareStatement(queryInsert, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, uuid);
             stmt.setInt(2, booking.getHotelRoom().getId()); // hotel_room_id
             stmt.setInt(3, booking.getPinCode()); // pin_code
@@ -101,7 +100,6 @@ public class BookingDAO extends BaseDAO<Booking> {
             stmt.setInt(17, booking.getTotalNights()); // total_nights
             stmt.setDouble(18, booking.getTotal()); // total
             stmt.executeUpdate();
-            conn.close();
             return booking.getUuid();
         } catch (Exception ex) {
             logger.error("Error saveBooking => " + ex.getMessage());
@@ -115,7 +113,7 @@ public class BookingDAO extends BaseDAO<Booking> {
     public List<SearchBookings> listBookingForCheckoutByDocument(String document) throws Exception{
          List<SearchBookings> result = new ArrayList<>();
         
-    try (Connection conn = databaseConnection.getConnection();
+    try (Connection conn = databaseConnection.getInstancia().getConexion();
          PreparedStatement stmt = conn.prepareStatement(searchBookingsByDocument)) {
 
         stmt.setString(1, document); // Setea el parámetro del procedimiento

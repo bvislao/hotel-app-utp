@@ -17,7 +17,7 @@ import java.sql.SQLException;
 public class RolDAO  extends BaseDAO<Rol>{
     
     public RolDAO() {
-        super("hotel.rol", new RowMapper<Rol>() {
+        super("rol", new RowMapper<Rol>() {
             @Override
             public Rol map(ResultSet rs) throws SQLException {
                 return new Rol(
