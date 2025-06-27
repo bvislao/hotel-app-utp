@@ -58,7 +58,7 @@ public class UsuarioService {
                 RolDAO rolDAO = new RolDAO();
                 List<Rol> listRolesByUser = new ArrayList<>();
                 for(UsuarioRol userRoles : listRoles){
-                    Rol rol = rolDAO.findById(userRoles.getId());
+                    Rol rol = rolDAO.findById(userRoles.getRol_id());
                     listRolesByUser.add(rol);
                 }
                 userData.setRoles(listRolesByUser);
@@ -79,7 +79,7 @@ public class UsuarioService {
                 RolDAO rolDAO = new RolDAO();
                 List<Rol> listRolesByUser = new ArrayList<>();
                 for(UsuarioRol userRoles : listRoles){
-                    Rol rol = rolDAO.findById(userRoles.getId());
+                    Rol rol = rolDAO.findById(userRoles.getRol_id());
                     listRolesByUser.add(rol);
                 }
                 user.setRoles(listRolesByUser);
