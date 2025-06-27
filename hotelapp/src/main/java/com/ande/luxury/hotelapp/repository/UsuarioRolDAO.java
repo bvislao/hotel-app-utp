@@ -52,7 +52,7 @@ public class UsuarioRolDAO extends BaseDAO<UsuarioRol> {
         return null;
     }
 
-    private String queryInsert = "INSERT INTO hotel.users_role (uuid, user_id, rol_id, active, created_by, created_at) "
+    private String queryInsert = "INSERT INTO users_role (uuid, user_id, rol_id, active, created_by, created_at) "
             + " values(?,?,?,?,?,?);";
 
     public UsuarioRol save(UsuarioRol usuarioRol) throws Exception {

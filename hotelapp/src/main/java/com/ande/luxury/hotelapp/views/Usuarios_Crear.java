@@ -190,17 +190,19 @@ public class Usuarios_Crear extends javax.swing.JFrame {
             String fullName = txtFullName.getText();
             String phone = txtTelefono.getText();
             String email = txtEmail.getText();
-            Integer rolId = 0;
-            rolId = switch (cboPerfiles.getSelectedIndex()) {
-                case 2 ->
-                    2; // Administrador
-                case 3 ->
-                    3; // Recepcionista
-                case 4 ->
-                    4; // Cliente
+            String selected = (String) cboPerfiles.getSelectedItem();
+
+            int rolId = switch (selected) {
+                case "Administrador" ->
+                    2;
+                case "Recepcionista" ->
+                    3;
+                case "Cliente" ->
+                    4;
                 default ->
-                    4; // Cliente
+                    4;
             };
+
             Usuario userNuevov = new Usuario();
             userNuevov.setDocumentNumber(documentNumber);
             userNuevov.setPassword(password);
@@ -316,8 +318,7 @@ public class Usuarios_Crear extends javax.swing.JFrame {
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 
-
-private void configurarComboBox() {
+    private void configurarComboBox() {
         // Definir los elementos y sus valores
         String[] roles = {"[ Seleccionar ]", "Administrador", "Recepcionista", "Cliente"};
         rolesValores = new HashMap<>();
