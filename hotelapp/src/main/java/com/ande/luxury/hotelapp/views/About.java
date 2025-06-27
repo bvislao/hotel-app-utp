@@ -37,8 +37,11 @@ public class About extends javax.swing.JInternalFrame {
         label4 = new java.awt.Label();
         jButton1 = new javax.swing.JButton();
 
-        setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        setClosable(true);
         setForeground(java.awt.Color.lightGray);
+        setIconifiable(true);
+        setMaximizable(true);
         setTitle("Acerca de");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -50,7 +53,6 @@ public class About extends javax.swing.JInternalFrame {
         label3.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         label3.setText("BRYAN VISLAO CHAVEZ");
         getContentPane().add(label3, new org.netbeans.lib.awtextra.AbsoluteConstraints(158, 81, 585, -1));
-        label3.getAccessibleContext().setAccessibleName("BRYAN VISLAO CHAVEZ");
 
         label1.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         label1.setText("ALEXIS GIANFRANCO BANCES ALCANTARA");

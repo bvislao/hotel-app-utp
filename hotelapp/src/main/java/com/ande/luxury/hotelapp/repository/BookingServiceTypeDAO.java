@@ -4,7 +4,7 @@
  */
 package com.ande.luxury.hotelapp.repository;
 
-import com.ande.luxury.hotelapp.entities.Rol;
+import com.ande.luxury.hotelapp.entities.BookingServiceType;
 import com.ande.luxury.hotelapp.utilsdb.BaseDAO;
 import com.ande.luxury.hotelapp.utilsdb.RowMapper;
 import java.sql.ResultSet;
@@ -12,21 +12,20 @@ import java.sql.SQLException;
 
 /**
  *
- * @author bryanvislaochavez
+ * @author ferfer
  */
-public class RolDAO  extends BaseDAO<Rol>{
-    
-    public RolDAO() {
-        super("rol", new RowMapper<Rol>() {
-            @Override
-            public Rol map(ResultSet rs) throws SQLException {
-                return new Rol(
+public class BookingServiceTypeDAO extends BaseDAO <BookingServiceType>{
+
+    public BookingServiceTypeDAO(){
+        super("bookings_service_type", new RowMapper<BookingServiceType>() {
+      @Override
+      
+    public BookingServiceType map(ResultSet rs) throws SQLException {
+             return new BookingServiceType(
                         rs.getInt("id"),
                         rs.getString("uuid"),
-                        rs.getString("code"),
-                        rs.getString("description"),
-                        rs.getInt("active")
-                );
+                        rs.getString("name"),
+                        rs.getInt("price")                );
             }
         });
     }

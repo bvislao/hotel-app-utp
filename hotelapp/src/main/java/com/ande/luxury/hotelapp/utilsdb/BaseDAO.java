@@ -30,15 +30,12 @@ public class BaseDAO<T> {
         this.tableName = tableName;
         this.rowMapper = rowMapper;
     }
-    
-    protected Connection getConnection() throws SQLException, Exception {
-        return databaseConnection.getConnection();
-    }
 
     public List<T> findAll() throws Exception {
         List<T> result = new ArrayList<>();
         String sql = "SELECT * FROM " + tableName + " WHERE active = 1";
-        try (Connection conn = databaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+        Connection conn = databaseConnection.getInstancia().getConexion();
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 result.add(rowMapper.map(rs));
@@ -51,26 +48,10 @@ public class BaseDAO<T> {
         return result;
     }
 
-    public T findUserByUsername(String username) throws Exception {
-        String sql = "SELECT * FROM " + tableName + " WHERE document_number = ?";
-        try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rowMapper.map(rs);  // Assuming you have a RowMapper<T>
-            }
-
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public T findById(int id) throws Exception {
         String sql = "SELECT * FROM " + tableName + " WHERE id = ?";
-        try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = databaseConnection.getInstancia().getConexion();
+        try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -87,7 +68,8 @@ public class BaseDAO<T> {
     
     public T findByUuid(String uuid) throws Exception {
         String sql = "SELECT * FROM " + tableName + " WHERE uuid = ?";
-        try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = databaseConnection.getInstancia().getConexion();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, uuid);
             ResultSet rs = stmt.executeQuery();
@@ -104,7 +86,8 @@ public class BaseDAO<T> {
 
     public void deleteById(int id) throws Exception {
         String sql = "DELETE FROM " + tableName + " WHERE id = ?";
-        try (Connection conn = databaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = databaseConnection.getInstancia().getConexion();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             stmt.executeUpdate();
@@ -113,9 +96,6 @@ public class BaseDAO<T> {
             logger.error(e.getMessage());
             e.printStackTrace();
         }
-    }
-    public void insert(T entity) {
-        throw new UnsupportedOperationException("El método insert debe ser implementado en la subclase DAO específica.");
     }
 
 }

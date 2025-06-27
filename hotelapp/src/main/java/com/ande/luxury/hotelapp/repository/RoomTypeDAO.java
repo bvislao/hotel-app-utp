@@ -4,6 +4,7 @@
  */
 package com.ande.luxury.hotelapp.repository;
 
+import com.ande.luxury.hotelapp.database.databaseConnection;
 import com.ande.luxury.hotelapp.entities.RoomType;
 import com.ande.luxury.hotelapp.utilsdb.BaseDAO;
 import com.ande.luxury.hotelapp.utilsdb.RowMapper;
@@ -35,11 +36,10 @@ public class RoomTypeDAO extends BaseDAO<RoomType> {
         });
     }
     
-    @Override
-    public void insert(RoomType roomType) {
+    public void insert(RoomType roomType) throws Exception {
         String sql = "INSERT INTO room_type (uuid, description, active) VALUES (?, ?, ?)";
-
-        try (Connection conn = getConnection(); // 
+        Connection conn = databaseConnection.getInstancia().getConexion();
+        try (
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, roomType.getUuid());
@@ -58,8 +58,8 @@ public class RoomTypeDAO extends BaseDAO<RoomType> {
     public List<RoomType> getAll() throws Exception {
         List<RoomType> list = new ArrayList<>();
         String sql = "SELECT * FROM room_type";
-
-        try (Connection conn = getConnection(); // ✅ Usar el método heredado de BaseDAO
+Connection conn = databaseConnection.getInstancia().getConexion();
+        try (
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 

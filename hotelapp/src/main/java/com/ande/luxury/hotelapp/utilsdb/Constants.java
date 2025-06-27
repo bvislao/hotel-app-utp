@@ -4,6 +4,7 @@
  */
 package com.ande.luxury.hotelapp.utilsdb;
 
+import java.text.DecimalFormat;
 import java.util.UUID;
 import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
@@ -64,6 +65,12 @@ public class Constants {
 
     public static int getRandomNumber() {
         return ThreadLocalRandom.current().nextInt(100000, 999999);
+    }
+    
+     // Método 3: Método personalizado más robusto (Recomendado)
+    public static String formatCurrency(double amount) {
+        DecimalFormat formatter = new DecimalFormat("#,##0.00");
+        return "S/ " + formatter.format(amount);
     }
 
 }

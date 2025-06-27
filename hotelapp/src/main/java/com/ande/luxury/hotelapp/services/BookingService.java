@@ -10,6 +10,7 @@ import com.ande.luxury.hotelapp.entities.HotelRoom;
 import com.ande.luxury.hotelapp.entities.RoomType;
 import com.ande.luxury.hotelapp.entities.models.SearchBookings;
 import com.ande.luxury.hotelapp.repository.BookingDAO;
+import com.ande.luxury.hotelapp.repository.BookingsServiceDAO;
 import com.ande.luxury.hotelapp.repository.HotelDAO;
 import com.ande.luxury.hotelapp.repository.HotelRoomDAO;
 import com.ande.luxury.hotelapp.repository.RoomTypeDAO;
@@ -43,6 +44,8 @@ public class BookingService {
             if(item.getBookingId() > 0){
                 Booking booking =     bookingDAO.findById(item.getBookingId());
                 item.setBookingReference(booking);
+                BookingsServiceDAO bookingsServiceDAO = new BookingsServiceDAO();
+                item.setBookingsServices(bookingsServiceDAO.listServicesByBookingId(item.getBookingId()));
             }
             
             
@@ -64,6 +67,17 @@ public class BookingService {
                 DialogUtils.showWarning(null, "Reserva", "No se pudo registrar la reserva");
             }
             
+        }catch(Exception ex){
+            logger.error(ex.getMessage());
+            throw new Exception("Ocurrio un error al registrar");
+        }
+    }
+    
+     public void checkOutBooking(String  uuid,String user) throws Exception{
+        try{
+            BookingDAO bookingDAO = new BookingDAO();
+            bookingDAO.checkout(uuid,user);
+            DialogUtils.showSuccess(null, "Reserva", "Se hizo el checkout correctamente");
         }catch(Exception ex){
             logger.error(ex.getMessage());
             throw new Exception("Ocurrio un error al registrar");

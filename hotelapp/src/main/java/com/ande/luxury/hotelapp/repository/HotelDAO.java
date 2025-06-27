@@ -17,7 +17,7 @@ import java.sql.SQLException;
 public class HotelDAO extends BaseDAO<Hotel>{
     
      public HotelDAO() {
-        super("hotel.hotel", new RowMapper<Hotel>() {
+        super("hotel", new RowMapper<Hotel>() {
             @Override
             public Hotel map(ResultSet rs) throws SQLException {
                 return new Hotel(
