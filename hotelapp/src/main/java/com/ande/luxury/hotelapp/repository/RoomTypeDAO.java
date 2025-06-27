@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 public class RoomTypeDAO extends BaseDAO<RoomType> {
 
     public RoomTypeDAO() {
-        super("hotel.room_type", new RowMapper<RoomType>() {
+        super("room_type", new RowMapper<RoomType>() {
             @Override
             public RoomType map(ResultSet rs) throws SQLException {
                 return new RoomType(
@@ -57,7 +57,7 @@ public class RoomTypeDAO extends BaseDAO<RoomType> {
     // ✅ Obtener todos los tipos de habitación
     public List<RoomType> getAll() throws Exception {
         List<RoomType> list = new ArrayList<>();
-        String sql = "SELECT * FROM hotel.room_type";
+        String sql = "SELECT * FROM room_type";
 
         try (Connection conn = getConnection(); // ✅ Usar el método heredado de BaseDAO
              PreparedStatement stmt = conn.prepareStatement(sql);
