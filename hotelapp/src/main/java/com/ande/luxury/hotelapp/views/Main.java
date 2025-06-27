@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.UIManager;
@@ -367,11 +368,15 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jmVerFacturasActionPerformed
 
     private void jmGenTipoHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmGenTipoHabitacionActionPerformed
-        // TODO add your handling code here:
-         TipoHabitacion_Gestion form = new TipoHabitacion_Gestion();
+    try {
+        TipoHabitacion_Gestion form = new TipoHabitacion_Gestion();
         form.setClosable(true);
         form.setVisible(true);
         panelMain.add(form);
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al cargar los tipos de habitación.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_jmGenTipoHabitacionActionPerformed
 
     private void jmGestHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmGestHabitacionesActionPerformed

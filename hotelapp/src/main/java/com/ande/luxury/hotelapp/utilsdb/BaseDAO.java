@@ -30,6 +30,10 @@ public class BaseDAO<T> {
         this.tableName = tableName;
         this.rowMapper = rowMapper;
     }
+    
+    protected Connection getConnection() throws SQLException, Exception {
+        return databaseConnection.getConnection();
+    }
 
     public List<T> findAll() throws Exception {
         List<T> result = new ArrayList<>();
@@ -109,6 +113,9 @@ public class BaseDAO<T> {
             logger.error(e.getMessage());
             e.printStackTrace();
         }
+    }
+    public void insert(T entity) {
+        throw new UnsupportedOperationException("El método insert debe ser implementado en la subclase DAO específica.");
     }
 
 }

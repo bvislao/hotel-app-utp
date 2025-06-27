@@ -9,25 +9,76 @@ import com.ande.luxury.hotelapp.utilsdb.BaseDAO;
 import com.ande.luxury.hotelapp.utilsdb.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author bryanvislaochavez
  */
 public class RoomTypeDAO extends BaseDAO<RoomType> {
-    
+
     public RoomTypeDAO() {
         super("hotel.room_type", new RowMapper<RoomType>() {
             @Override
             public RoomType map(ResultSet rs) throws SQLException {
                 return new RoomType(
-                        rs.getInt("id"),
-                        rs.getString("uuid"),
-                        rs.getString("description"),
-                        rs.getInt("active")
+                    rs.getInt("id"),
+                    rs.getString("uuid"),
+                    rs.getString("description"),
+                    rs.getInt("active")
                 );
             }
         });
     }
     
+    @Override
+    public void insert(RoomType roomType) {
+        String sql = "INSERT INTO room_type (uuid, description, active) VALUES (?, ?, ?)";
+
+        try (Connection conn = getConnection(); // 
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, roomType.getUuid());
+            stmt.setString(2, roomType.getDescription());
+            stmt.setInt(3, roomType.getActive());
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) {
+            Logger.getLogger(RoomTypeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    // ✅ Obtener todos los tipos de habitación
+    public List<RoomType> getAll() throws Exception {
+        List<RoomType> list = new ArrayList<>();
+        String sql = "SELECT * FROM hotel.room_type";
+
+        try (Connection conn = getConnection(); // ✅ Usar el método heredado de BaseDAO
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                RoomType tipo = new RoomType(
+                        rs.getInt("id"),
+                        rs.getString("uuid"),
+                        rs.getString("description"),
+                        rs.getInt("active")
+                );
+                list.add(tipo);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+    
 }
+
