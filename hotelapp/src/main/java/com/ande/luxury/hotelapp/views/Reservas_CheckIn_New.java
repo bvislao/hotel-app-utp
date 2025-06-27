@@ -10,6 +10,7 @@ import com.ande.luxury.hotelapp.entities.Usuario;
 import com.ande.luxury.hotelapp.services.BookingService;
 import com.ande.luxury.hotelapp.services.UsuarioService;
 import com.ande.luxury.hotelapp.utilsdb.Constants;
+import static com.ande.luxury.hotelapp.utilsdb.Constants.formatCurrency;
 import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -47,7 +48,7 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
         btnReservar.setEnabled(false);
         jCalendarStart.setEnabled(false);
         jCalendarEnd.setEnabled(false);
-        lblDias.setText("0");
+        lblDias.setText(formatCurrency(0D));
     }
 
     /**

@@ -333,6 +333,8 @@ DELIMITER ;
 ******************************************************************************************/
 
 
+DELIMITER $$
+
 CREATE FUNCTION uuid_v4()
 RETURNS CHAR(36)
 DETERMINISTIC
@@ -346,7 +348,9 @@ BEGIN
     LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
     LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0')
   ));
-END;
+END$$
+
+DELIMITER ;
 
 
 DELIMITER $$
@@ -615,6 +619,79 @@ DELIMITER $$
 CREATE PROCEDURE spListInvoices()
 BEGIN
     SELECT uuid,document_invoice,booking_id,amount_total,created_by FROM invoice WHERE active = 1;
+END$$
+
+DELIMITER ;
+
+
+/******************************************************************************************
+*
+* Descripción        :    Busca las reservas de una persona que esten pendientes de hacer check-out.
+* Autor              :    Fernando
+* Fecha de creación  :    2025-06-18
+* Base de datos      :    hotel
+* Entorno            :    Dev
+* Versión            :    1.0
+*
+* Historial de cambios:
+* ----------------------------------------------------------------------------------------
+* Fecha       | Autor            | Descripción
+* ------------|------------------|-------------------------------------------------------
+* 2025-06-18  | Fernando | Versión inicial
+*
+******************************************************************************************/
+
+DELIMITER $$
+
+CREATE PROCEDURE spRegisterBookingServiceType(
+    IN p_name varchar(200),
+    IN p_price decimal(15, 4),
+    IN p_user varchar(15)
+    )
+BEGIN
+    insert into bookings_service_type (uuid, name, price, active, created_by, created_at)
+    values (uuid_v4(),p_name,p_price,1,p_user,now());
+END$$
+
+DELIMITER ;
+
+
+
+
+DELIMITER $$
+CREATE PROCEDURE sp_add_service_to_booking(
+    IN p_booking_id INT,
+    IN p_bookings_service_type_id INT,
+    IN p_count INT,
+    IN p_price DECIMAL(10, 2),
+    IN p_user VARCHAR(255))
+BEGIN
+
+    insert into bookings_service (uuid,booking_id, bookings_service_type_id, count, price, price_total, active,
+                              created_by, created_at)
+    values (uuid_v4(),p_booking_id, p_bookings_service_type_id, p_count, p_price, p_count*p_price, 1,
+        p_user, now());
+
+END$$
+
+DELIMITER ;
+
+
+
+
+
+
+
+DELIMITER $$
+CREATE PROCEDURE sp_get_bookings_service_by_booking_id(
+    IN p_booking_id INT
+)
+BEGIN
+
+   SELECT 
+       ID, UUID, BOOKING_ID, BOOKINGS_SERVICE_TYPE_ID, COUNT, PRICE, PRICE_TOTAL, ACTIVE
+       FROM bookings_service
+            WHERE booking_id = p_booking_id;
 END$$
 
 DELIMITER ;

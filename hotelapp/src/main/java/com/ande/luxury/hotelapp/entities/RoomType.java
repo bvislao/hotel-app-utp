@@ -12,9 +12,10 @@ import lombok.Data;
  */
 @Data
 public class RoomType extends Auditable{
-        private Integer id;
+    private Integer id;
     private String uuid;
     private String description;
+    private Integer active;
     
     
         public RoomType(){
@@ -25,5 +26,26 @@ public class RoomType extends Auditable{
         this.id = id;
         this.uuid = uuid;
         this.description = description;
+        this.active = active;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }
