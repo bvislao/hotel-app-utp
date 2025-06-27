@@ -25,9 +25,7 @@ public class BookingServiceTypeDAO extends BaseDAO <BookingServiceType>{
                         rs.getInt("id"),
                         rs.getString("uuid"),
                         rs.getString("name"),
-                        rs.getInt("price"),
-                         rs.getInt("active")
-                );
+                        rs.getInt("price")                );
             }
         });
     }

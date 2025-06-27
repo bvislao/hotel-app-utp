@@ -100,14 +100,6 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmCheckInActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jmCheckInServicios">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Servicio - Habitaci&#xf3;n"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmCheckInServiciosActionPerformed"/>
-              </Events>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jmCheckout">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Check-out - Habitaci&#xf3;n"/>
