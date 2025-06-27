@@ -9,6 +9,8 @@ import com.ande.luxury.hotelapp.entities.RoomType;
 
 import javax.swing.*;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,7 +27,7 @@ public class TipoHabitacion_Crear extends javax.swing.JFrame {
         setTitle("Crear Tipo de Habitación");
     }
     
-    private void guardarTipoHabitacion() {
+    private void guardarTipoHabitacion() throws Exception {
         String descripcion = txtDescrip.getText().trim();
         int activo = cbAct.getSelectedIndex();
 
@@ -115,7 +117,11 @@ public class TipoHabitacion_Crear extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuarActionPerformed
-        guardarTipoHabitacion();
+        try {
+            guardarTipoHabitacion();
+        } catch (Exception ex) {
+            Logger.getLogger(TipoHabitacion_Crear.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnGuarActionPerformed
 
      public static void main(String[] args) {
