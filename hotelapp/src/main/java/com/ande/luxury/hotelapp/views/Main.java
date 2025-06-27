@@ -6,7 +6,6 @@ package com.ande.luxury.hotelapp.views;
 
 import com.ande.luxury.hotelapp.entities.Rol;
 import com.ande.luxury.hotelapp.entities.Usuario;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.Date;
@@ -16,7 +15,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 
@@ -96,7 +94,6 @@ public class Main extends javax.swing.JFrame {
         jmGestHabitaciones = new javax.swing.JMenuItem();
         jmReservas = new javax.swing.JMenu();
         jmCheckIn = new javax.swing.JMenuItem();
-        jmCheckInServicios = new javax.swing.JMenuItem();
         jmCheckout = new javax.swing.JMenuItem();
         jmClientes = new javax.swing.JMenu();
         jmClienteNuevo = new javax.swing.JMenuItem();
@@ -248,14 +245,6 @@ public class Main extends javax.swing.JFrame {
         });
         jmReservas.add(jmCheckIn);
 
-        jmCheckInServicios.setText("Servicio - Habitación");
-        jmCheckInServicios.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmCheckInServiciosActionPerformed(evt);
-            }
-        });
-        jmReservas.add(jmCheckInServicios);
-
         jmCheckout.setText("Check-out - Habitación");
         jmCheckout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -310,6 +299,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jmiInfoProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiInfoProjectActionPerformed
         // TODO add your handling code here:
+        limpiarPanel();
         About form = new About();
         form.setClosable(true);          // Botón cerrar
         form.setVisible(true);
@@ -319,6 +309,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jmiGestionarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiGestionarUsuariosActionPerformed
         // TODO add your handling code here:
+        limpiarPanel();
         Usuarios_Gestion form = new Usuarios_Gestion(userLoguin);
         form.setClosable(true);          // Botón cerrar
         // Configurar el comportamiento al cerrar
@@ -328,6 +319,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jmHabitacionServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmHabitacionServiciosActionPerformed
         // TODO add your handling code here:
+        limpiarPanel();
         Servicios_Gestion form = new Servicios_Gestion(userLoguin);
         form.setClosable(true);
         form.setVisible(true);
@@ -336,23 +328,16 @@ public class Main extends javax.swing.JFrame {
 
     private void jmClienteNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmClienteNuevoActionPerformed
         // TODO add your handling code here:
-         Clientes_Nuevo form = new Clientes_Nuevo();
+        limpiarPanel();
+        Clientes_Nuevo form = new Clientes_Nuevo();
         form.setVisible(true);
         panelMain.add(form);
     }//GEN-LAST:event_jmClienteNuevoActionPerformed
 
-    private void jmCheckInServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmCheckInServiciosActionPerformed
-
-  Reservas_ServiciosHabitacion form = new Reservas_ServiciosHabitacion();
-        form.setClosable(true);
-        form.setVisible(true);
-        panelMain.add(form);
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jmCheckInServiciosActionPerformed
-
     private void jmCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmCheckoutActionPerformed
         // TODO add your handling code here:
-         Reservas_Checkout form = new Reservas_Checkout(userLoguin);
+        limpiarPanel();
+        Reservas_Checkout form = new Reservas_Checkout(userLoguin);
         form.setClosable(true);
         form.setVisible(true);
         panelMain.add(form);
@@ -360,7 +345,8 @@ public class Main extends javax.swing.JFrame {
 
     private void jmVerFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmVerFacturasActionPerformed
         // TODO add your handling code here:
-          ComprobanteElec_Facturas form = new ComprobanteElec_Facturas();
+        limpiarPanel();
+        ComprobanteElec_Facturas form = new ComprobanteElec_Facturas();
         form.setClosable(true);
         form.setVisible(true);
         panelMain.add(form);
@@ -368,7 +354,8 @@ public class Main extends javax.swing.JFrame {
 
     private void jmGenTipoHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmGenTipoHabitacionActionPerformed
         // TODO add your handling code here:
-         TipoHabitacion_Gestion form = new TipoHabitacion_Gestion();
+        limpiarPanel();
+        TipoHabitacion_Gestion form = new TipoHabitacion_Gestion();
         form.setClosable(true);
         form.setVisible(true);
         panelMain.add(form);
@@ -376,7 +363,8 @@ public class Main extends javax.swing.JFrame {
 
     private void jmGestHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmGestHabitacionesActionPerformed
         // TODO add your handling code here:
-            Habitacion_Gestion form = new Habitacion_Gestion();
+        limpiarPanel();
+        Habitacion_Gestion form = new Habitacion_Gestion();
         form.setClosable(true);
         form.setVisible(true);
         panelMain.add(form);
@@ -384,14 +372,16 @@ public class Main extends javax.swing.JFrame {
 
     private void jmCheckInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmCheckInActionPerformed
         // TODO add your handling code here:
-          Reservas_CheckIn form = new Reservas_CheckIn(userLoguin);
+        limpiarPanel();
+        Reservas_CheckIn form = new Reservas_CheckIn(userLoguin);
         form.setClosable(true);
         form.setVisible(true);
         panelMain.add(form);
     }//GEN-LAST:event_jmCheckInActionPerformed
 
     private void jmClientesListadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmClientesListadoActionPerformed
-Clientes_Listado form = new Clientes_Listado();
+        limpiarPanel();
+        Clientes_Listado form = new Clientes_Listado();
         form.setClosable(true);
         form.setVisible(true);
         panelMain.add(form);        // TODO add your handling code here:
@@ -446,7 +436,6 @@ Clientes_Listado form = new Clientes_Listado();
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JMenuItem jmCheckIn;
-    private javax.swing.JMenuItem jmCheckInServicios;
     private javax.swing.JMenuItem jmCheckout;
     private javax.swing.JMenuItem jmClienteNuevo;
     private javax.swing.JMenu jmClientes;
@@ -504,7 +493,7 @@ Clientes_Listado form = new Clientes_Listado();
             // is admin
             // gestion de usuarios
             boolean isRecepcionista = roles.stream().filter(x -> x.getCode().equals("RECEPCIONISTA")).count() > 0;
-             if (isRecepcionista) {
+            if (isRecepcionista) {
                 jmClientes.setEnabled(true);
                 jmClientes.setVisible(true);
                 jmHabitaciones.setEnabled(true);
@@ -583,5 +572,11 @@ Clientes_Listado form = new Clientes_Listado();
                 }
             }
         });
+    }
+
+    public void limpiarPanel() {
+        panelMain.removeAll();         // Elimina todo lo que haya
+        panelMain.revalidate();        // Reorganiza el layout
+        panelMain.repaint();           // Vuelve a dibujar el panel
     }
 }
