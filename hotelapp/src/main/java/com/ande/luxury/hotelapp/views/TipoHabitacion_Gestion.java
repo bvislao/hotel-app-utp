@@ -4,6 +4,13 @@
  */
 package com.ande.luxury.hotelapp.views;
 
+import com.ande.luxury.hotelapp.repository.RoomTypeDAO;
+import com.ande.luxury.hotelapp.entities.RoomType;
+
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
+
 /**
  *
  * @author bryanvislaochavez
@@ -13,9 +20,33 @@ public class TipoHabitacion_Gestion extends javax.swing.JInternalFrame {
     /**
      * Creates new form TipoHabitacion_Gestion
      */
-    public TipoHabitacion_Gestion() {
+    public TipoHabitacion_Gestion() throws Exception {
         initComponents();
+        cargarTipos(); 
     }
+    
+    private void cargarTipos() throws Exception {
+        RoomTypeDAO dao = new RoomTypeDAO();
+        List<RoomType> lista = dao.getAll();
+
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("UUID");
+        modelo.addColumn("Descripción");
+        modelo.addColumn("Estado");
+
+        for (RoomType rt : lista) {
+            modelo.addRow(new Object[]{
+                rt.getId(),
+                rt.getUuid(),
+                rt.getDescription(),
+                rt.getActive() == 1 ? "Activo" : "Inactivo"
+            });
+        }
+        
+        tblTipos.setModel(modelo);
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -26,21 +57,72 @@ public class TipoHabitacion_Gestion extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblTipos = new javax.swing.JTable();
+        btnActualizar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+
+        tblTipos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tblTipos);
+
+        btnActualizar.setText("Actualizar");
+
+        jButton1.setText("Crear ");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
+                .addComponent(btnActualizar)
+                .addGap(19, 19, 19))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnActualizar)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    TipoHabitacion_Crear form = new TipoHabitacion_Crear(); 
+    form.setVisible(true);
+    // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tblTipos;
     // End of variables declaration//GEN-END:variables
 }
