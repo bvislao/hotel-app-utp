@@ -16,17 +16,15 @@ public class BookingServiceType extends Auditable {
     private String uuid;
     private String name;
     private Integer price;
-    private Integer active;
     
      public BookingServiceType(){
         
     }
      
-     public BookingServiceType (Integer id,String uuid, String name, Integer price, Integer active){
+     public BookingServiceType (Integer id,String uuid, String name, Integer price){
         this.id = id;
         this.uuid = uuid;
         this.name = name;
         this.price = price;
-        this.active = active;
     }
 }

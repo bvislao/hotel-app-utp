@@ -4,6 +4,7 @@
  */
 package com.ande.luxury.hotelapp.entities;
 
+import java.util.List;
 import lombok.Data;
 /**
  *
@@ -26,6 +27,7 @@ public class HotelRoom  extends Auditable {
     private boolean isReserved;
     private Integer statusId;
     private Booking bookingReference;
+    private List<BookingsService> bookingsServices;
    
     
     public HotelRoom(){

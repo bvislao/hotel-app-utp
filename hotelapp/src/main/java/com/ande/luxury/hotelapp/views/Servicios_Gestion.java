@@ -1,12 +1,13 @@
 package com.ande.luxury.hotelapp.views;
 
-import java.security.Timestamp;
+import com.ande.luxury.hotelapp.entities.BookingServiceType;
+import com.ande.luxury.hotelapp.services.BookingServiceTypeService;
+import static com.ande.luxury.hotelapp.utilsdb.Constants.formatCurrency;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,32 +27,20 @@ public class Servicios_Gestion extends javax.swing.JInternalFrame {
 private void cargarDatosServicios() {
     // Crear modelo de tabla
     DefaultTableModel modelo = new DefaultTableModel(
-        new String[]{"ID", "Nombre", "Precio","Habitación" }, 0
+        new String[]{"ID", "Nombre", "Precio"}, 0
     );
-
-    String url = "jdbc:mysql://localhost:3306/hotel"; 
-    String user = "root"; 
-    String password = "ECOdid/789"; 
-
-    String sql = "SELECT * FROM bookings_service_type";
-
-    try (Connection conn = DriverManager.getConnection(url, user, password);
-         Statement stmt = conn.createStatement();
-         ResultSet rs = stmt.executeQuery(sql)) {
-
-        while (rs.next()) {
-            int id = rs.getInt("id");
-            String name = rs.getString("name");
-            double price = rs.getDouble("price");
-
-            modelo.addRow(new Object[]{id, name, price});
+    
+    BookingServiceTypeService bookingServiceTypeService = new BookingServiceTypeService();
+    List<BookingServiceType> listBooking = bookingServiceTypeService.findAll();
+    if(!listBooking.isEmpty()){
+        for(BookingServiceType item : listBooking){
+            modelo.addRow(new Object[]{item.getUuid(), item.getName(), formatCurrency(item.getPrice())});    
         }
-
-        jTable1.setModel(modelo);
-
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
     }
+  
+    
+  jTable1.setModel(modelo);
+   
 }
 
 
