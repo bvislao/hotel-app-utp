@@ -97,6 +97,7 @@ public class Reservas_Checkout extends javax.swing.JInternalFrame {
             }
         ));
         jTableBookings.setAutoscrolls(false);
+        jTableBookings.setColumnSelectionAllowed(true);
         jTableBookings.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTableBookings);
         jTableBookings.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
