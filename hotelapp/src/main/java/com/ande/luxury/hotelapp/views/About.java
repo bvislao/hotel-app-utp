@@ -71,7 +71,7 @@ public class About extends javax.swing.JInternalFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(112, 189, 585, 41));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210, 585, 41));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
