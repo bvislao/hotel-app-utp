@@ -46,6 +46,7 @@ public class HotelRoomDAO extends BaseDAO<HotelRoom>{
     }
     
     String callFindAll = "call spListRooms();";
+    String spManagementHotelRoomsList = "call sp_management_hotel_rooms_list();";
     
     @Override
     public List<HotelRoom> findAll() throws Exception{
@@ -67,6 +68,30 @@ public class HotelRoomDAO extends BaseDAO<HotelRoom>{
                 hotelRoom.setPricePerNight(rs.getDouble("price_per_night"));
                 hotelRoom.setReserved(rs.getBoolean("is_reserved"));
                 hotelRoom.setStatusId(rs.getInt("status_id"));
+                result.add(hotelRoom);
+            }
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
+    public  List<HotelRoom>  getRoomsListForManagement() throws Exception{
+           List<HotelRoom> result = new ArrayList<>();
+           Connection conn = databaseConnection.getInstancia().getConexion();
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(spManagementHotelRoomsList)) {
+            while (rs.next()) {
+                HotelRoom hotelRoom = new HotelRoom();
+                hotelRoom.setUuid(rs.getString("uuid"));
+                hotelRoom.setRoomNumber(rs.getInt("room_number"));
+                hotelRoom.setRoomTypeDescription(rs.getString("room_type"));
+                hotelRoom.setCapacity(rs.getInt("capacity"));
+                hotelRoom.setPricePerHour(rs.getDouble("price_per_hour"));
+                hotelRoom.setPricePerNight(rs.getDouble("price_per_night"));
+                hotelRoom.setIsReservedStr(rs.getString("is_reserved"));
+                hotelRoom.setActiveStr(rs.getString("active"));
                 result.add(hotelRoom);
             }
 
