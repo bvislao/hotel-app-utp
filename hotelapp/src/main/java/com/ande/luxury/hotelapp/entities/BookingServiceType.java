@@ -34,7 +34,7 @@ public class BookingServiceType extends Auditable {
         int rows = stmt.executeUpdate();
         return rows > 0;
     } catch (SQLException e) {
-        e.printStackTrace();  // MUY IMPORTANTE para depurar
+        e.printStackTrace(); 
         return false;
     }
 }
