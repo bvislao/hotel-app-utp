@@ -22,6 +22,10 @@ public class databaseConnection {
 
     private static final Logger logger = LoggerFactory.getLogger(databaseConnection.class);
     private static databaseConnection instancia;
+
+    public static Connection getConnection() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     private Connection conexion;
     private String URL_DATABASE;
     private String USER_DATABASE;

@@ -2,14 +2,21 @@ package com.ande.luxury.hotelapp.views;
 
 import com.ande.luxury.hotelapp.entities.BookingServiceType;
 import com.ande.luxury.hotelapp.services.BookingServiceTypeService;
+import com.ande.luxury.hotelapp.utilsdb.ButtonEditor;
+import com.ande.luxury.hotelapp.utilsdb.ButtonRenderer;
 import static com.ande.luxury.hotelapp.utilsdb.Constants.formatCurrency;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.awt.Component;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.AbstractCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 
 
 /*
@@ -25,29 +32,121 @@ public class Servicios_Gestion extends javax.swing.JInternalFrame {
     private String userLoguin;
 
 private void cargarDatosServicios() {
-    // Crear modelo de tabla
-    DefaultTableModel modelo = new DefaultTableModel(
-        new String[]{"ID", "Nombre", "Precio"}, 0
-    );
-    
+       String[] columnas = {"ID", "Nombre", "Precio", "Editar", "Eliminar"};
+    DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
     BookingServiceTypeService bookingServiceTypeService = new BookingServiceTypeService();
     List<BookingServiceType> listBooking = bookingServiceTypeService.findAll();
-    if(!listBooking.isEmpty()){
-        for(BookingServiceType item : listBooking){
-            modelo.addRow(new Object[]{item.getUuid(), item.getName(), formatCurrency(item.getPrice())});    
+    
+    if (!listBooking.isEmpty()) {
+        for (BookingServiceType item : listBooking) {
+            modelo.addRow(new Object[]{
+                item.getId(),
+                item.getName(),
+                formatCurrency(item.getPrice()),
+                "Editar", "Eliminar"
+            });
         }
     }
+    
+    
   
     
   jTable1.setModel(modelo);
-   
-}
+
+    jTable1.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer("Editar"));
+    jTable1.getColumnModel().getColumn(3).setCellEditor(new ButtonEditor(new JCheckBox(), jTable1, "Editar", this));
+
+    jTable1.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer("Eliminar"));
+    jTable1.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor(new JCheckBox(), jTable1, "Eliminar", this));
+
+        }
+        
+
 
 
     public Servicios_Gestion() {
-        initComponents();
-        cargarDatosServicios();
+
+}
+
+    public void editarFilaEnFormularioPadre(int row) {
+    int id = (int) jTable1.getValueAt(row, 0);
+    JOptionPane.showMessageDialog(this, "Editar servicio ID: " + id);
+    // Servicios_Editar form = new Servicios_Editar(id);
+    // form.setVisible(true);
+}
+
+public void eliminarFilaEnFormularioPadre(int row) throws Exception {
+    int id = (int) jTable1.getValueAt(row, 0);
+    String nombre = (String) jTable1.getValueAt(row, 1);
+
+    int confirm = JOptionPane.showConfirmDialog(this,
+            "¿Eliminar el servicio: " + nombre + "?", "Confirmar",
+            JOptionPane.YES_NO_OPTION);
+
+    if (confirm == JOptionPane.YES_OPTION) {
+        BookingServiceType service = new BookingServiceType();
+        boolean eliminado = service.deleteById(id); // este método lo veremos abajo
+
+        if (eliminado) {
+            ((DefaultTableModel) jTable1.getModel()).removeRow(row);
+            JOptionPane.showMessageDialog(this, "Servicio eliminado correctamente.");
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo eliminar el servicio.");
+        }
     }
+}
+
+public class ButtonRenderer extends JButton implements TableCellRenderer {
+     public ButtonRenderer(String label) {
+        setText(label);
+    }
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value,
+            boolean isSelected, boolean hasFocus, int row, int column) {
+        return this;
+    }
+}
+public class ButtonEditor extends AbstractCellEditor implements TableCellEditor {
+
+    private final JButton button;
+    private final JTable table;
+    private final String action;
+    private final Servicios_Gestion parent;
+
+    public ButtonEditor(JCheckBox checkBox, JTable table, String action, Servicios_Gestion parent) {
+        this.table = table;
+        this.action = action;
+        this.parent = parent;
+        this.button = new JButton(action);
+
+        button.addActionListener(e -> {
+            fireEditingStopped();
+            int row = table.getSelectedRow();
+            if ("Editar".equals(action)) {
+                parent.editarFilaEnFormularioPadre(row);
+            } else if ("Eliminar".equals(action)) {
+                try {
+                    parent.eliminarFilaEnFormularioPadre(row);
+                } catch (Exception ex) {
+                    Logger.getLogger(Servicios_Gestion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
+
+    @Override
+    public Component getTableCellEditorComponent(JTable table, Object value,
+            boolean isSelected, int row, int column) {
+        return button;
+    }
+
+    @Override
+    public Object getCellEditorValue() {
+        return action;
+    }
+}
 
     public Servicios_Gestion(String usuario) {
         initComponents();
@@ -154,34 +253,11 @@ private void cargarDatosServicios() {
     private void btnCrear1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrear1ActionPerformed
         // TODO add your handling code here:
         
-        String url = "jdbc:mysql://localhost:3306/hotel";
-    String usuario = "root";
-    String clave = "ECOdid/789";
-
-    String[] columnas = {"ID", "Nombre", "Precio", "Fecha creación"};
-    DefaultTableModel modelo = new DefaultTableModel(null, columnas);
-
-    try {
-        Connection conn = DriverManager.getConnection(url, usuario, clave);
-        String sql = "SELECT id, name, price, created_at FROM bookings_service_type";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        ResultSet rs = stmt.executeQuery();
-
-        while (rs.next()) {
-            Object[] fila = new Object[4];
-            fila[0] = rs.getInt("id");
-            fila[1] = rs.getString("name");
-            fila[2] = rs.getDouble("price");
-            modelo.addRow(fila);
-        }
-
-        jTable1.setModel(modelo);
-
-        rs.close();
-        stmt.close();
-        conn.close();
+      try {
+        cargarDatosServicios(); // Reutiliza tu método que ya hace esto
+        JOptionPane.showMessageDialog(this, "Datos actualizados correctamente.");
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al cargar la tabla:\n" + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Error al actualizar datos:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_btnCrear1ActionPerformed
 

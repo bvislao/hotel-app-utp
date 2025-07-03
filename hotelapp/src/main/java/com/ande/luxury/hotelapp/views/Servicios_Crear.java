@@ -190,7 +190,7 @@ String nombre = (String) jComboBox3.getSelectedItem();
         int filas = stmt.executeUpdate();
 
         if (filas > 0) {
-            JOptionPane.showMessageDialog(this, "Servicio duplicado exitosamente.");
+            JOptionPane.showMessageDialog(this, "Servicio se agrego exitosamente.");
         } else {
             JOptionPane.showMessageDialog(this, "No se encontró un servicio con ese nombre.");
         }

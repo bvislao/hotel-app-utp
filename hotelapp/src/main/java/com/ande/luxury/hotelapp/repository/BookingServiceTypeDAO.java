@@ -4,9 +4,12 @@
  */
 package com.ande.luxury.hotelapp.repository;
 
+import com.ande.luxury.hotelapp.database.databaseConnection;
 import com.ande.luxury.hotelapp.entities.BookingServiceType;
 import com.ande.luxury.hotelapp.utilsdb.BaseDAO;
 import com.ande.luxury.hotelapp.utilsdb.RowMapper;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -29,5 +32,5 @@ public class BookingServiceTypeDAO extends BaseDAO <BookingServiceType>{
             }
         });
     }
-    
+
 }
