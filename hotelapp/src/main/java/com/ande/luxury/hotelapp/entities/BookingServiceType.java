@@ -38,15 +38,6 @@ public class BookingServiceType extends Auditable {
         return false;
     }
 }
-
-    
-    public List<BookingServiceType> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    private Connection getConnection() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     
 public class BookingServiceTypeService {
 
