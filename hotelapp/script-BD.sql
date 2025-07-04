@@ -673,3 +673,20 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+DELIMITER $$
+CREATE PROCEDURE sp_management_hotel_rooms_list()
+    BEGIN
+select
+    hr.uuid,
+    hr.room_number,
+    rt.description as room_type,
+    hr.capacity,
+    hr.price_per_hour,
+    hr.price_per_night,
+    IF(hr.is_reserved= 1, 'Si', 'No') as is_reserved,
+    IF(hr.active = 1, 'Activo', 'Desactivado') as active
+    from hotel_room hr
+    inner join room_type rt on hr.room_type_id = rt.id;
+END$$
