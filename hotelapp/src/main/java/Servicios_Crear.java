@@ -13,7 +13,10 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+
 
 /**
  *
@@ -170,36 +173,39 @@ String nombre = (String) jComboBox3.getSelectedItem();
         return;
     }
 
-    try {
-        String url = "jdbc:mysql://localhost:3306/hotel";
-        String usuario = "root";
-        String clave = "ECOdid/789";
+    // Obtener precio desde la etiqueta
+    String textoPrecio = lblPrecio.getText().replaceAll("[^\\d.]", ""); // Solo deja números y puntos
 
-        Connection conn = DriverManager.getConnection(url, usuario, clave);
+ double precio;
+try {
+    precio = Double.parseDouble(textoPrecio);
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(this, "Precio inválido.");
+    return;
+}
 
-        String sql = """
-            INSERT INTO bookings_service_type (name, price, uuid, active, created_by, created_at)
-            SELECT name, price, UUID(), 1, 'admin', NOW()
-            FROM bookings_service_type
-            WHERE name = ?;
-        """;
 
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setString(1, nombre);
+    try (Connection conn = com.ande.luxury.hotelapp.database.databaseConnection.getConnection()) {
 
-        int filas = stmt.executeUpdate();
+        String sql = "INSERT INTO bookings_service_type (name, price, uuid, active, created_by, created_at) " +
+                     "VALUES (?, ?, UUID(), 1, 'admin', NOW())";
 
-        if (filas > 0) {
-            JOptionPane.showMessageDialog(this, "Servicio se agrego exitosamente.");
-        } else {
-            JOptionPane.showMessageDialog(this, "No se encontró un servicio con ese nombre.");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, nombre);
+            stmt.setDouble(2, precio);
+
+            int filas = stmt.executeUpdate();
+
+            if (filas > 0) {
+                JOptionPane.showMessageDialog(this, "Servicio agregado exitosamente.");
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo agregar el servicio.");
+            }
         }
-
-        stmt.close();
-        conn.close();
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Error al insertar en la base de datos:\n" + e.getMessage());
     }
+
     }//GEN-LAST:event_btnCrearServicioActionPerformed
 
     private void Jcbhabitación(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Jcbhabitación
@@ -209,31 +215,32 @@ String nombre = (String) jComboBox3.getSelectedItem();
     }//GEN-LAST:event_Jcbhabitación
 
     private void jcbProducto(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbProducto
-        // TODO add your handling code here:
+                             
         String nombreSeleccionado = (String) jComboBox3.getSelectedItem();
 
-    if (nombreSeleccionado == null || nombreSeleccionado.isEmpty()) {
+    if (nombreSeleccionado == null || nombreSeleccionado.trim().isEmpty()) {
         lblPrecio.setText("S/ 0.00");
         return;
     }
 
-    String url = "jdbc:mysql://localhost:3306/hotel";
-    String usuario = "root";
-    String clave = "ECOdid/789";
-
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(url, usuario, clave);
+        Connection conn = com.ande.luxury.hotelapp.database.databaseConnection.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("No se pudo establecer conexión con la base de datos.");
+        }
+
+        System.out.println("Buscando precio para: '" + nombreSeleccionado.trim() + "'");
 
         String sql = "SELECT price FROM bookings_service_type WHERE name = ?";
         PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setString(1, nombreSeleccionado);
+        stmt.setString(1, nombreSeleccionado.trim());
         ResultSet rs = stmt.executeQuery();
 
         if (rs.next()) {
             double precio = rs.getDouble("price");
 
-            // Formatear como moneda peruana
             Locale localePeru = new Locale("es", "PE");
             NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(localePeru);
             lblPrecio.setText(formatoMoneda.format(precio));
@@ -246,9 +253,12 @@ String nombre = (String) jComboBox3.getSelectedItem();
         conn.close();
 
     } catch (Exception e) {
+        e.printStackTrace(); // Para ver detalles en consola
         JOptionPane.showMessageDialog(this, "Error al obtener el precio: " + e.getMessage());
         lblPrecio.setText("Error");
     }
+        
+
         
     }//GEN-LAST:event_jcbProducto
 
@@ -257,13 +267,11 @@ String nombre = (String) jComboBox3.getSelectedItem();
         
         jComboBox2.removeAllItems(); 
 
-    String url = "jdbc:mysql://localhost:3306/hotel";
-    String usuario = "root";
-    String clave = "ECOdid/789";
 
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(url, usuario, clave);
+Connection conn = com.ande.luxury.hotelapp.database.databaseConnection.getConnection();
+
 
         String sql = "SELECT room_number FROM hotel_room";
         PreparedStatement stmt = conn.prepareStatement(sql);
@@ -286,43 +294,39 @@ String nombre = (String) jComboBox3.getSelectedItem();
 
     } catch (ClassNotFoundException | SQLException ex) {
         JOptionPane.showMessageDialog(this, "Error al cargar habitaciones:\n" + ex.getMessage());
-    }
+    }   catch (Exception ex) {
+            Logger.getLogger(Servicios_Crear.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_jComboBox2PopupMenuWillBecomeVisible
 
     private void jComboBox3PopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_jComboBox3PopupMenuWillBecomeVisible
-        // TODO add your handling code here:
-                jComboBox3.removeAllItems(); 
+      // TODO add your handling code here:
+jComboBox3.removeAllItems();
 
     String url = "jdbc:mysql://localhost:3306/hotel";
     String usuario = "root";
     String clave = "ECOdid/789";
 
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
         Connection conn = DriverManager.getConnection(url, usuario, clave);
-
         String sql = "SELECT name FROM bookings_service_type";
         PreparedStatement stmt = conn.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
 
-        boolean haynombres= false;
         while (rs.next()) {
-            String numero = rs.getString("name");
-            jComboBox3.addItem("" + numero);
-            haynombres = true;
-        }
-
-        if (!haynombres) {
-            jComboBox3.addItem("No hay nombres disponibles");
+            jComboBox3.addItem(rs.getString("name"));
         }
 
         rs.close();
         stmt.close();
         conn.close();
 
-    } catch (ClassNotFoundException | SQLException ex) {
-        JOptionPane.showMessageDialog(this, "Error al cargar nombres:\n" + ex.getMessage());
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar servicios: " + e.getMessage());
     }
+
+
 
         
     }//GEN-LAST:event_jComboBox3PopupMenuWillBecomeVisible
