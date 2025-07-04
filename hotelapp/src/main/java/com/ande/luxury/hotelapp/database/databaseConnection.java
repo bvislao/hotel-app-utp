@@ -4,6 +4,8 @@
  */
 package com.ande.luxury.hotelapp.database;
 
+import com.ande.luxury.hotelapp.utilsdb.AESUtil;
+import static com.ande.luxury.hotelapp.utilsdb.Constants.key;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,9 +39,12 @@ public class databaseConnection {
             Properties props = new Properties();
             InputStream input = new FileInputStream("config.properties");
             props.load(input);
-            URL_DATABASE = props.getProperty("db.url");
-            USER_DATABASE = props.getProperty("db.user");
-            PASSWORD_DATABASE = props.getProperty("db.password");
+            String descryptUrl = AESUtil.decrypt(props.getProperty("db.url"), key);
+            String descryptUser = AESUtil.decrypt(props.getProperty("db.user"), key);
+            String descryptPwd = AESUtil.decrypt(props.getProperty("db.password"), key);
+            URL_DATABASE = descryptUrl;
+            USER_DATABASE = descryptUser;
+            PASSWORD_DATABASE = descryptPwd;
         } catch (IOException e) {
             logger.error("No se encontró archivo de configuración", e);
             throw new Exception("Error cargando archivo de configuración");

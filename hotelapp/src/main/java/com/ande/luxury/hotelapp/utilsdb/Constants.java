@@ -15,6 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class Constants {
 
+    public static String key = "h0t3l-utp-1nt3gr4d0r";
     public static String generateUuid() {
         UUID randomUUID = UUID.randomUUID();
         return randomUUID.toString();
