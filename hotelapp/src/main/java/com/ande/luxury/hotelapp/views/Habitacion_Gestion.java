@@ -4,6 +4,12 @@
  */
 package com.ande.luxury.hotelapp.views;
 
+import com.ande.luxury.hotelapp.entities.HotelRoom;
+import com.ande.luxury.hotelapp.services.HotelRoomService;
+import static com.ande.luxury.hotelapp.utilsdb.Constants.formatCurrency;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +33,22 @@ public class Habitacion_Gestion extends javax.swing.JInternalFrame {
         this.userLogin = userLogin;
          String[] columns = {"UUID", "#", "Tipo", "Aforo", "Precio x Hora","Precio x Noche","Ocupado","Estado"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
+        HotelRoomService service = new HotelRoomService();
+        List<HotelRoom> listRoom = service.findAll();
+        for(HotelRoom item : listRoom){
+            Object[] row = new Object[]{
+                    item.getUuid(),
+                    item.getRoomNumber().toString(),
+                    item.getRoomTypeDescription(),
+                    item.getCapacity(),
+                    formatCurrency(item.getPricePerHour()),
+                    formatCurrency(item.getPricePerNight()),
+                    item.getIsReservedStr(),
+                    item.getActiveStr()
+                };
+                model.addRow(row);
+        }
+        
         jTablaHabitaciones.setModel(model);
             // Refrescar la vista
         jTablaHabitaciones.revalidate();
@@ -107,7 +129,11 @@ public class Habitacion_Gestion extends javax.swing.JInternalFrame {
 
             }
         ));
+        jTablaHabitaciones.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         jTablaHabitaciones.setColumnSelectionAllowed(true);
+        jTablaHabitaciones.setRowSelectionAllowed(false);
+        jTablaHabitaciones.setShowGrid(true);
+        jTablaHabitaciones.setSurrendersFocusOnKeystroke(true);
         jScrollPane1.setViewportView(jTablaHabitaciones);
         jTablaHabitaciones.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
@@ -140,6 +166,14 @@ public class Habitacion_Gestion extends javax.swing.JInternalFrame {
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
         // TODO add your handling code here:
+        Habitacion_Mantenimiento form;
+        try {
+            form = new Habitacion_Mantenimiento(userLogin);
+            form.setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(Habitacion_Gestion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_btnCrearActionPerformed
 
 
