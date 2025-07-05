@@ -77,7 +77,7 @@ jobs:
           echo "No jDeploy configuration found!"
           exit 1
         fi
-      working-directory: hotelapp  # Specify the working directory
+      working-directory: hotelapp/jdeploy-bundle  # Specify the working directory
         
     - name: Deploy with jDeploy
       run: |
@@ -86,7 +86,7 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-      working-directory: hotelapp  # Specify the working directory
+      working-directory: hotelapp/jdeploy-bundle  # Specify the working directory
         
     - name: Upload deployment artifacts
       uses: actions/upload-artifact@v4
