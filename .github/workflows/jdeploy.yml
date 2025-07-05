@@ -49,7 +49,7 @@ jobs:
         else
           echo "No build script found, skipping build step"
         fi
-      working-directory: hotelapp  # Specify the working directory
+      working-directory: hotelapp/target  # Specify the working directory
         
     - name: Install jDeploy globally
       run: npm install -g jdeploy
