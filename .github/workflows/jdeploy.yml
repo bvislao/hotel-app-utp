@@ -1,4 +1,6 @@
-name: Deploy with jDeploy
+# If your package.json is in a subdirectory, use this version instead
+
+name: Deploy Hotel Management App with jDeploy
 
 on:
   push:
@@ -12,97 +14,46 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
+    - name: Debug repository structure
+      run: |
+        echo "=== Repository Root Contents ==="
+        ls -la
+        echo ""
+        echo "=== Looking for package.json ==="
+        find . -name "package.json" -type f
+        
+    - name: Change to project directory
+      run: |
+        # If package.json is in a subdirectory, uncomment and modify this:
+        # cd your-subdirectory-name
+        # Or use working-directory in subsequent steps
+        pwd
+        
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
         registry-url: 'https://registry.npmjs.org'
         
-    - name: Cache node modules
-      uses: actions/cache@v4
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json', '**/package.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-          
-    - name: Install dependencies
+    # Rest of the steps would need working-directory specified if in subdirectory
+    - name: Install Node.js dependencies
+      # working-directory: ./your-subdirectory-name  # Uncomment if needed
       run: |
-        if [ -f "package-lock.json" ]; then
-          echo "Found package-lock.json, using npm ci for faster, reliable installs..."
-          npm ci
-        elif [ -f "yarn.lock" ]; then
-          echo "Found yarn.lock, using yarn install..."
-          yarn install --frozen-lockfile
-        else
-          echo "No lockfile found, using npm install..."
-          npm install
-          echo "Consider committing the generated package-lock.json for faster CI builds"
-        fi
-      
-    - name: Build project
-      run: |
-        if [ -f "package.json" ] && grep -q '"build"' package.json; then
-          echo "Building project..."
-          npm run build
-        else
-          echo "No build script found, skipping build step"
-        fi
-        
-    - name: Install jDeploy globally
-      run: npm install -g jdeploy
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-        
-    - name: Configure jDeploy
-      run: |
-        # Initialize jDeploy if not already configured
-        if [ ! -f "jdeploy.js" ] && [ ! -f "jdeploy.json" ]; then
-          echo "Initializing jDeploy..."
-          jdeploy init --non-interactive
-        else
-          echo "jDeploy already configured"
-        fi
-        
-    - name: Verify jDeploy configuration
-      run: |
-        echo "Checking jDeploy configuration..."
-        if [ -f "jdeploy.js" ]; then
-          echo "Found jdeploy.js"
-        elif [ -f "jdeploy.json" ]; then
-          echo "Found jdeploy.json"
-        else
-          echo "No jDeploy configuration found!"
+        if [ ! -f "package.json" ]; then
+          echo "❌ ERROR: package.json not found"
           exit 1
         fi
+        npm install
         
     - name: Deploy with jDeploy
-      run: |
-        echo "Publishing with jDeploy..."
-        jdeploy publish
+      # working-directory: ./your-subdirectory-name  # Uncomment if needed
+      run: jdeploy publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-        
-    - name: Upload deployment artifacts
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: jdeploy-artifacts-${{ github.run_number }}
-        path: |
-          dist/
-          *.jar
-          jdeploy/
-          package.json
-          jdeploy.js
-          jdeploy.json
-        retention-days: 30
-        
-    - name: Create deployment summary
-      if: success()
-      run: |
-        echo "## 🚀 Deployment Successful" >> $GITHUB_STEP_SUMMARY
-        echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
-        echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
-        echo "- **Timestamp**: $(date)" >> $GITHUB_STEP_SUMMARY
-        echo "- **jDeploy Version**: $(jdeploy --version)" >> $GITHUB_STEP_SUMMARY
