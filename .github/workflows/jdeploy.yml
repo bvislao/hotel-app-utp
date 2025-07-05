@@ -7,15 +7,11 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set working directory
-      run: echo "Working from hotel-app-utp/hotelapp"
-      working-directory: hotel-app-utp/hotelapp
-      
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -25,24 +21,28 @@ jobs:
     - name: Cache node modules
       uses: actions/cache@v4
       with:
-        path: hotel-app-utp/hotelapp/node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('hotel-app-utp/hotelapp/package-lock.json') }}
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json', '**/package.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
 
     - name: Install dependencies
-      working-directory: hotel-app-utp/hotelapp
       run: |
         if [ -f "package-lock.json" ]; then
+          echo "Found package-lock.json, using npm ci..."
           npm ci
+        elif [ -f "yarn.lock" ]; then
+          echo "Found yarn.lock, using yarn..."
+          yarn install --frozen-lockfile
         else
+          echo "No lockfile found, using npm install..."
           npm install
         fi
 
     - name: Build project
-      working-directory: hotel-app-utp/hotelapp
       run: |
         if grep -q '"build"' package.json; then
+          echo "Running build script..."
           npm run build
         else
           echo "No build script, skipping"
@@ -53,15 +53,16 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
-    - name: Configure jDeploy
-      working-directory: hotel-app-utp/hotelapp
+    - name: Initialize jDeploy if needed
       run: |
         if [ ! -f "jdeploy.js" ] && [ ! -f "jdeploy.json" ]; then
+          echo "Initializing jDeploy..."
           jdeploy init --non-interactive
+        else
+          echo "jDeploy already configured"
         fi
 
-    - name: Verify jDeploy configuration
-      working-directory: hotel-app-utp/hotelapp
+    - name: Verify jDeploy config
       run: |
         if [ -f "jdeploy.js" ]; then
           echo "Found jdeploy.js"
@@ -73,7 +74,6 @@ jobs:
         fi
 
     - name: Deploy with jDeploy
-      working-directory: hotel-app-utp/hotelapp
       run: jdeploy publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
@@ -85,17 +85,16 @@ jobs:
       with:
         name: jdeploy-artifacts-${{ github.run_number }}
         path: |
-          hotel-app-utp/hotelapp/dist/
-          hotel-app-utp/hotelapp/*.jar
-          hotel-app-utp/hotelapp/jdeploy/
-          hotel-app-utp/hotelapp/package.json
-          hotel-app-utp/hotelapp/jdeploy.js
-          hotel-app-utp/hotelapp/jdeploy.json
+          dist/
+          *.jar
+          jdeploy/
+          jdeploy.js
+          jdeploy.json
+          package.json
         retention-days: 30
 
     - name: Create deployment summary
       if: success()
-      working-directory: hotel-app-utp/hotelapp
       run: |
         echo "## 🚀 Deployment Successful" >> $GITHUB_STEP_SUMMARY
         echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
