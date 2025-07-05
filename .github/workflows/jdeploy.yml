@@ -157,6 +157,7 @@ jobs:
             - Version: ${{ steps.version.outputs.version }}
             - Commit: ${{ github.sha }}
             - Build date: $(date -u)
+            - Download also in https://www.jdeploy.com/~hotel-management-utp
           draft: false
           prerelease: false
           files: |
