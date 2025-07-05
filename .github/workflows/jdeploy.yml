@@ -144,7 +144,11 @@ jobs:
           retention-days: 30
       - name: Create deployment summary
         if: success()
-        run: "echo \"## \U0001F680 Deployment Successful\" >> $GITHUB_STEP_SUMMARY\necho \"- **Branch**: ${{ github.ref_name }}\" >> $GITHUB_STEP_SUMMARY\necho \"- **Commit**: ${{ github.sha }}\" >> $GITHUB_STEP_SUMMARY\necho \"- **Timestamp**: $(date)\" >> $GITHUB_STEP_SUMMARY\necho \"- **jDeploy Version**: $(jdeploy --version)\" >> $GITHUB_STEP_SUMMARY\n"
+        run: |
+          echo "## 🚀 Deployment Successful" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Timestamp**: $(date)" >> $GITHUB_STEP_SUMMARY
       - name: Create Release Tag
         run: |
           VERSION=$(jq -r .version hotelapp/package.json)
