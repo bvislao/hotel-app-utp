@@ -14,7 +14,7 @@
             "url": ""
         }],
         "javaVersion": "21",
-        "jar": "target/hotelapp-1.0.0-final.jar",
+        "jar": "target/hotelapp-1.0.0-jar-with-dependencies.jar",
         "javafx": true,
         "title": "Hotel APP Gestion"
     },
