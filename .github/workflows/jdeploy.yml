@@ -82,7 +82,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: '${{ secrets.NPM_AUTH_TOKEN }}'
           NPM_TOKEN: '${{ secrets.NPM_AUTH_TOKEN }}'
-        working-directory: hotelapp/
+        working-directory: /
       - name: Upload deployment artifacts
         uses: actions/upload-artifact@v4
         if: always()
