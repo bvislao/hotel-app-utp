@@ -74,7 +74,7 @@ jobs:
             echo "No jDeploy configuration found!"
             exit 1
           fi
-        working-directory: hotelapp
+        working-directory: hotelapp/jdeploy-bundle
       - name: Deploy with jDeploy
         run: |
           echo "Publishing with jDeploy..."
