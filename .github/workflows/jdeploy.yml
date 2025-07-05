@@ -55,16 +55,29 @@ jobs:
       run: npm install -g jdeploy
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-        
+
     - name: Configure jDeploy
-      run: |
-        if [ ! -f "jdeploy.js" ] && [ ! -f "jdeploy.json" ]; then
-          echo "Initializing jDeploy..."
-          jdeploy init  # Removed --non-interactive
-        else
-          echo "jDeploy already configured"
-        fi
-      working-directory: hotelapp  # Specify the working directory
+  run: |
+    if [ ! -f "jdeploy.js" ] && [ ! -f "jdeploy.json" ]; then
+      echo "Initializing jDeploy..."
+      if ! grep -q '"name":' hotelapp/package.json || ! grep -q '"version":' hotelapp/package.json; then
+        jdeploy init  # Only initialize if required fields are missing
+      else
+        echo "jDeploy already configured with required fields"
+      fi
+    else
+      echo "jDeploy already configured"
+    fi
+  working-directory: hotelapp/deploy/publish/jdeploy-bundle  # Specify the working directory    
+    #- name: Configure jDeploy
+     # run: |
+      #  if [ ! -f "jdeploy.js" ] && [ ! -f "jdeploy.json" ]; then
+       #   echo "Initializing jDeploy..."
+        #  jdeploy init  # Removed --non-interactive
+        #else
+         # echo "jDeploy already configured"
+        #fi
+      #working-directory: hotelapp  # Specify the working directory
         
     - name: Verify jDeploy configuration
       run: |
