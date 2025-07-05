@@ -5,7 +5,7 @@
     "main": "index.js",
     "preferGlobal": true,
     "repository": "",
-    "version": "0.6.3",
+    "version": "0.6.4",
     "jdeploy": {
         "jdk": false,
         "publishTargets": [{
