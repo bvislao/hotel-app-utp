@@ -131,6 +131,38 @@ jobs:
           NODE_AUTH_TOKEN: '${{ secrets.NPM_AUTH_TOKEN }}'
           NPM_TOKEN: '${{ secrets.NPM_AUTH_TOKEN }}'
         working-directory: hotelapp
+      - name: Create Release Tag
+        run: |
+          VERSION=$(jq -r .version hotelapp/package.json)
+          echo "Creating tag v$VERSION"
+          git tag "v$VERSION"
+          git push origin "v$VERSION"
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+      - name: Get version from package.json
+        id: version
+        run: |
+          echo "Extracting version from package.json"
+          VERSION=$(jq -r .version package.json)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+        working-directory: hotelapp
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: Release v${{ steps.version.outputs.version }}
+          body: |
+            Automatic release created by GitHub Actions
+            - Version: ${{ steps.version.outputs.version }}
+            - Commit: ${{ github.sha }}
+            - Build date: $(date -u)
+            - Download also in https://www.jdeploy.com/~hotel-management-utp
+          draft: false
+          prerelease: false
+          files: |
+            hotelapp/target/hotelapp-1.0.0-jar-with-dependencies.jar
+      
       - name: Upload deployment artifacts
         uses: actions/upload-artifact@v4
         if: always()
@@ -144,18 +176,13 @@ jobs:
             hotelapp/jdeploy.js
             hotelapp/jdeploy.json
           retention-days: 30
+      
       - name: Create deployment summary
         if: success()
         run: |
           echo "## 🚀 Deployment Successful" >> $GITHUB_STEP_SUMMARY
           echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Timestamp**: $(date)" >> $GITHUB_STEP_SUMMARY
-      - name: Create Release Tag
-        run: |
-          VERSION=$(jq -r .version hotelapp/package.json)
-          echo "Creating tag v$VERSION"
-          git tag "v$VERSION"
-          git push origin "v$VERSION"
-        env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+          echo "- **Release**: [v${{ steps.version.outputs.version }}](https://github.com/${{ github.repository }}/releases/tag/v${{ steps.version.outputs.version }})" >> $GITHUB_STEP_SUMMARY
