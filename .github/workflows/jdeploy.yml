@@ -22,12 +22,23 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json', '**/package.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
           
     - name: Install dependencies
-      run: npm ci
+      run: |
+        if [ -f "package-lock.json" ]; then
+          echo "Found package-lock.json, using npm ci for faster, reliable installs..."
+          npm ci
+        elif [ -f "yarn.lock" ]; then
+          echo "Found yarn.lock, using yarn install..."
+          yarn install --frozen-lockfile
+        else
+          echo "No lockfile found, using npm install..."
+          npm install
+          echo "Consider committing the generated package-lock.json for faster CI builds"
+        fi
       
     - name: Build project
       run: |
