@@ -1,134 +1,109 @@
 name: Deploy with jDeploy
-
-on:
+'on':
   push:
-    branches: [ main ]
-
+    branches:
+      - main
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        registry-url: 'https://registry.npmjs.org'
-        
-    - name: Cache node modules
-      uses: actions/cache@v4
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('hotelapp/**/package-lock.json', 'hotelapp/**/package.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-          
-    - name: Install dependencies
-      run: |
-        if [ -f "package-lock.json" ]; then
-          echo "Found package-lock.json, using npm ci for faster, reliable installs..."
-          npm ci
-        elif [ -f "yarn.lock" ]; then
-          echo "Found yarn.lock, using yarn install..."
-          yarn install --frozen-lockfile
-        else
-          echo "No lockfile found, using npm install..."
-          npm install
-          echo "Consider committing the generated package-lock.json for faster CI builds"
-        fi
-      working-directory: hotelapp  # Specify the working directory
-
-    - name: Build project
-      run: |
-        if [ -f "package.json" ] && grep -q '"build"' package.json; then
-          echo "Building project..."
-          npm run build
-        else
-          echo "No build script found, skipping build step"
-        fi
-      working-directory: hotelapp  # Specify the working directory
-
-    - name: Install jDeploy globally
-      run: npm install -g jdeploy
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-
-    - name: Configure jDeploy
-  run: |
-    if [ ! -f "jdeploy.js" ] && [ ! -f "jdeploy.json" ]; then
-      echo "Initializing jDeploy..."
-      if ! grep -q '"name":' hotelapp/package.json || ! grep -q '"version":' hotelapp/package.json; then
-        jdeploy init  # Only initialize if required fields are missing
-      else
-        echo "jDeploy already configured with required fields"
-      fi
-    else
-      echo "jDeploy already configured"
-    fi
-  working-directory: hotelapp/deploy/publish/jdeploy-bundle  # Specify the working directory    
-    #- name: Configure jDeploy
-     # run: |
-      #  if [ ! -f "jdeploy.js" ] && [ ! -f "jdeploy.json" ]; then
-       #   echo "Initializing jDeploy..."
-        #  jdeploy init  # Removed --non-interactive
-        #else
-         # echo "jDeploy already configured"
-        #fi
-      #working-directory: hotelapp  # Specify the working directory
-        
-    - name: Verify jDeploy configuration
-      run: |
-        echo "Checking jDeploy configuration..."
-        if [ -f "jdeploy.js" ]; then
-          echo "Found jdeploy.js"
-        elif [ -f "jdeploy.json" ]; then
-          echo "Found jdeploy.json"
-        else
-          echo "No jDeploy configuration found!"
-          exit 1
-        fi
-      working-directory: hotelapp  # Specify the working directory
-        
-    - name: Deploy with jDeploy
-      run: |
-        echo "Publishing with jDeploy..."
-        jdeploy publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-        NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-      working-directory: hotelapp/  # Specify the working directory
-        
-    - name: Upload deployment artifacts
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: jdeploy-artifacts-${{ github.run_number }}
-        path: |
-          hotelapp/dist/
-          hotelapp/*.jar
-          hotelapp/jdeploy/
-          hotelapp/package.json
-          hotelapp/jdeploy.js
-          hotelapp/jdeploy.json
-        retention-days: 30
-        
-    - name: Create deployment summary
-      if: success()
-      run: |
-        echo "## 🚀 Deployment Successful" >> $GITHUB_STEP_SUMMARY
-        echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
-        echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
-        echo "- **Timestamp**: $(date)" >> $GITHUB_STEP_SUMMARY
-        echo "- **jDeploy Version**: $(jdeploy --version)" >> $GITHUB_STEP_SUMMARY
-
-    - name: Create Release Tag
-      run: |
-        VERSION=$(jq -r .version hotelapp/package.json)
-        echo "Creating tag v$VERSION"
-        git tag "v$VERSION"
-        git push origin "v$VERSION"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub token for authentication
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: >-
+            ${{ runner.os }}-node-${{ hashFiles('hotelapp/**/package-lock.json',
+            'hotelapp/**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install dependencies
+        run: |
+          if [ -f "package-lock.json" ]; then
+            echo "Found package-lock.json, using npm ci for faster, reliable installs..."
+            npm ci
+          elif [ -f "yarn.lock" ]; then
+            echo "Found yarn.lock, using yarn install..."
+            yarn install --frozen-lockfile
+          else
+            echo "No lockfile found, using npm install..."
+            npm install
+            echo "Consider committing the generated package-lock.json for faster CI builds"
+          fi
+        working-directory: hotelapp
+      - name: Build project
+        run: |
+          if [ -f "package.json" ] && grep -q '"build"' package.json; then
+            echo "Building project..."
+            npm run build
+          else
+            echo "No build script found, skipping build step"
+          fi
+        working-directory: hotelapp
+      - name: Install jDeploy globally
+        run: npm install -g jdeploy
+        env:
+          NODE_AUTH_TOKEN: '${{ secrets.NPM_AUTH_TOKEN }}'
+      - name: Configure jDeploy
+        run: |
+          if [ ! -f "jdeploy.js" ] && [ ! -f "jdeploy.json" ]; then
+            echo "Initializing jDeploy..."
+            if ! grep -q '"name":' hotelapp/package.json || ! grep -q '"version":' hotelapp/package.json; then
+              jdeploy init  # Only initialize if required fields are missing
+            else
+              echo "jDeploy already configured with required fields"
+            fi
+          else
+            echo "jDeploy already configured"
+          fi
+        working-directory: hotelapp/deploy/publish/jdeploy-bundle
+      - name: Verify jDeploy configuration
+        run: |
+          echo "Checking jDeploy configuration..."
+          if [ -f "jdeploy.js" ]; then
+            echo "Found jdeploy.js"
+          elif [ -f "jdeploy.json" ]; then
+            echo "Found jdeploy.json"
+          else
+            echo "No jDeploy configuration found!"
+            exit 1
+          fi
+        working-directory: hotelapp
+      - name: Deploy with jDeploy
+        run: |
+          echo "Publishing with jDeploy..."
+          jdeploy publish
+        env:
+          NODE_AUTH_TOKEN: '${{ secrets.NPM_AUTH_TOKEN }}'
+          NPM_TOKEN: '${{ secrets.NPM_AUTH_TOKEN }}'
+        working-directory: hotelapp/
+      - name: Upload deployment artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 'jdeploy-artifacts-${{ github.run_number }}'
+          path: |
+            hotelapp/dist/
+            hotelapp/*.jar
+            hotelapp/jdeploy/
+            hotelapp/package.json
+            hotelapp/jdeploy.js
+            hotelapp/jdeploy.json
+          retention-days: 30
+      - name: Create deployment summary
+        if: success()
+        run: "echo \"## \U0001F680 Deployment Successful\" >> $GITHUB_STEP_SUMMARY\necho \"- **Branch**: ${{ github.ref_name }}\" >> $GITHUB_STEP_SUMMARY\necho \"- **Commit**: ${{ github.sha }}\" >> $GITHUB_STEP_SUMMARY\necho \"- **Timestamp**: $(date)\" >> $GITHUB_STEP_SUMMARY\necho \"- **jDeploy Version**: $(jdeploy --version)\" >> $GITHUB_STEP_SUMMARY\n"
+      - name: Create Release Tag
+        run: |
+          VERSION=$(jq -r .version hotelapp/package.json)
+          echo "Creating tag v$VERSION"
+          git tag "v$VERSION"
+          git push origin "v$VERSION"
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
