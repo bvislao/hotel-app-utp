@@ -84,13 +84,13 @@ jobs:
             if [ ! -f "jdeploy.js" ] && [ ! -f "jdeploy.json" ]; then
               echo "Creating basic jDeploy configuration..."
               cat > jdeploy.js << 'EOF'
-module.exports = {
-  "jar": "target/hotelapp-1.0.0-final.jar",
-  "mainClass": "com.example.hotelapp.Main",
-  "javaVersion": "21",
-  "javafx": false
-};
-EOF
+              module.exports = {
+                "jar": "target/hotelapp-1.0.0-final.jar",
+                "mainClass": "com.ande.luxury.hotelapp.Main",
+                "javaVersion": "21",
+              "javafx": false
+                };
+              EOF
             fi
           else
             echo "JAR file not found!"
