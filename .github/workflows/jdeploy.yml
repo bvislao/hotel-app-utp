@@ -26,14 +26,14 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: temurin
           java-version: '21'
       - name: Cache Maven dependencies
         uses: actions/cache@v4
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+          key: '${{ runner.os }}-m2-${{ hashFiles(''**/pom.xml'') }}'
+          restore-keys: '${{ runner.os }}-m2'
       - name: Build Java project
         run: |
           echo "Building Java project with Maven..."
@@ -68,7 +68,7 @@ jobs:
         run: npm install -g jdeploy
         env:
           NODE_AUTH_TOKEN: '${{ secrets.NPM_AUTH_TOKEN }}'
-     - name: Configure jDeploy
+      - name: Configure jDeploy
   run: |
     if [ -f "target/hotelapp-1.0.0-final.jar" ]; then
       echo "JAR found."
@@ -78,18 +78,18 @@ jobs:
         cat << EOF > jdeploy.js
             module.exports = {
                 jar: "target/hotelapp-1.0.0-final.jar",
-                mainClass: "com.example.hotelapp.Main",
+                mainClass: "com.ande.luxury.hotelapp.Main",
                 javaVersion: "21",
                 javafx: false
-            };
-            EOF
-      fi
-    else
-      echo "JAR not found"
-      ls -la target/
-      exit 1
-    fi
-  working-directory: hotelapp
+                            };
+                            EOF
+                      fi
+                    else
+                      echo "JAR not found"
+                      ls -la target/
+                      exit 1
+                    fi
+        working-directory: hotelapp
       - name: Verify jDeploy configuration
         run: |
           echo "Checking jDeploy configuration..."
