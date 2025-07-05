@@ -4,17 +4,59 @@
  */
 package com.ande.luxury.hotelapp.views;
 
+import com.ande.luxury.hotelapp.entities.RoomType;
+import com.ande.luxury.hotelapp.repository.RoomTypeDAO;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.swing.DefaultComboBoxModel;
+import org.slf4j.LoggerFactory;
+
 /**
  *
  * @author bryanvislaochavez
  */
 public class Habitacion_Mantenimiento extends javax.swing.JFrame {
 
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Habitacion_Mantenimiento.class);
+    private static String userLogin;
+    private Map<String, Integer> valoresComboBox;
+
     /**
      * Creates new form Habitacion_Mantenimiento
      */
     public Habitacion_Mantenimiento() {
         initComponents();
+    }
+
+    public Habitacion_Mantenimiento(String userLogin) throws Exception {
+        initComponents();
+        this.userLogin = userLogin;
+        configurarComboBox();
+    }
+
+    private void configurarComboBox() throws Exception {
+        // Definir los elementos y sus valores
+        RoomTypeDAO roomTypeDAO = new RoomTypeDAO();
+        List<RoomType> roomTypeList = roomTypeDAO.findAll();
+        valoresComboBox = new HashMap<>();
+        valoresComboBox.put("[ Seleccionar ]", 0);
+        List<String> roomTypesList = new ArrayList<>();
+        roomTypesList.add("[ Seleccionar ]");
+        for (RoomType item : roomTypeList) {
+            valoresComboBox.put(item.getDescription(), item.getId());
+            roomTypesList.add(item.getDescription());
+        }
+
+// Convertir a String[] solo al final si realmente lo necesitas
+        String[] roomTypes = roomTypesList.toArray(new String[0]);
+
+        // Crear el JComboBox
+        cboRoomType.setModel(new DefaultComboBoxModel<>(roomTypes));
+        cboRoomType.setBounds(50, 50, 200, 30); // Posición y tamaño
+
+        // Listener para manejar la selección
     }
 
     /**
@@ -26,22 +68,109 @@ public class Habitacion_Mantenimiento extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        btnCrear = new javax.swing.JButton();
+        cboRoomType = new javax.swing.JComboBox<>();
+        txtNroHabitacion = new javax.swing.JTextField();
+        txtPriceNight = new javax.swing.JTextField();
+        txtPriceXHour = new javax.swing.JTextField();
+        txtAforo = new javax.swing.JTextField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Ande Luxury :: Crear Mantenimiento Habitación");
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        jPanel1.setBackground(new java.awt.Color(51, 102, 255));
+
+        jLabel12.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel12.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("CREAR HABITACIÓN");
+
+        jLabel13.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel13.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setText("Hotel Ande Luxury");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(110, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addGap(177, 177, 177))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50))))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(26, Short.MAX_VALUE))
         );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 480, 100));
+
+        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel1.setText("Tipo de Habitación");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel2.setText("Numero de Habitación");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel3.setText("Aforo");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel4.setText("Precio/Hora");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel5.setText("Precio/Noche");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, -1, -1));
+
+        btnCrear.setBackground(new java.awt.Color(102, 255, 102));
+        btnCrear.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        btnCrear.setForeground(new java.awt.Color(0, 102, 102));
+        btnCrear.setText("+ Crear");
+        btnCrear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 310, -1, -1));
+
+        cboRoomType.setToolTipText("");
+        getContentPane().add(cboRoomType, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, 210, -1));
+        getContentPane().add(txtNroHabitacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 210, -1));
+        getContentPane().add(txtPriceNight, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 210, 210, -1));
+        getContentPane().add(txtPriceXHour, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 180, 210, -1));
+        getContentPane().add(txtAforo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, 210, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_btnCrearActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +208,19 @@ public class Habitacion_Mantenimiento extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCrear;
+    private javax.swing.JComboBox<String> cboRoomType;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField txtAforo;
+    private javax.swing.JTextField txtNroHabitacion;
+    private javax.swing.JTextField txtPriceNight;
+    private javax.swing.JTextField txtPriceXHour;
     // End of variables declaration//GEN-END:variables
 }

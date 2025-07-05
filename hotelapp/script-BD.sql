@@ -276,83 +276,6 @@ VALUES (1, 'a2f3b4c5-6d7e-8f9a-b0c1-d2e3f4g5h6i7', 1, 1, 101, 50.00, 200.00, 0, 
 
 
 
-/******************************************************************************************
-*
-* Descripción        :    Función que retorna codigo de la factura o boleta
-* Autor              :    Bryan Vislao
-* Fecha de creación  :    2025-06-18
-* Base de datos      :    hotel
-* Entorno            :    Dev
-* Versión            :    1.0
-*
-* Historial de cambios:
-* ----------------------------------------------------------------------------------------
-* Fecha       | Autor            | Descripción
-* ------------|------------------|-------------------------------------------------------
-* 2025-06-18  | Bryan Vislao | Versión inicial
-*
-******************************************************************************************/
-
-DELIMITER $$
-
-CREATE FUNCTION generate_invoice_name(booking_id INT)
-RETURNS VARCHAR(50)
-DETERMINISTIC
-BEGIN
-    DECLARE result VARCHAR(50);
-    
-    SET result = CONCAT(
-        'INV_',
-        DATE_FORMAT(NOW(), '%Y_%m_%d_'),
-        booking_id,
-        '_',
-        DATE_FORMAT(NOW(), '%H%i%s')
-    );
-
-    RETURN result;
-END$$
-
-DELIMITER ;
-
-
-/******************************************************************************************
-*
-* Descripción        :    Función que retorna codigo UUID
-* Autor              :    Bryan Vislao
-* Fecha de creación  :    2025-06-18
-* Base de datos      :    hotel
-* Entorno            :    Dev
-* Versión            :    1.0
-*
-* Historial de cambios:
-* ----------------------------------------------------------------------------------------
-* Fecha       | Autor            | Descripción
-* ------------|------------------|-------------------------------------------------------
-* 2025-06-18  | Bryan Vislao | Versión inicial
-*
-******************************************************************************************/
-
-
-DELIMITER $$
-
-CREATE FUNCTION uuid_v4()
-RETURNS CHAR(36)
-DETERMINISTIC
-BEGIN
-  RETURN LOWER(CONCAT(
-    LPAD(HEX(FLOOR(RAND() * 0xffffffff)), 8, '0'), '-',
-    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'), '-',
-    '4', LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- versión 4
-    SUBSTRING('89ab', FLOOR(1 + (RAND() * 4)), 1), LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- variante
-    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
-    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
-    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0')
-  ));
-END$$
-
-DELIMITER ;
-
-
 DELIMITER $$
 
 CREATE PROCEDURE spBookingCreated(
@@ -432,7 +355,15 @@ BEGIN
         uuid, user_id, rol_id, active, created_by, created_at
     )
     VALUES (
-        uuid_v4(), @last_id, p_role_id, p_active, p_created_by, p_created_at
+        LOWER(CONCAT(
+    LPAD(HEX(FLOOR(RAND() * 0xffffffff)), 8, '0'), '-',
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'), '-',
+    '4', LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- versión 4
+    SUBSTRING('89ab', FLOOR(1 + (RAND() * 4)), 1), LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- variante
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0')
+  )), @last_id, p_role_id, p_active, p_created_by, p_created_at
     );
 END$$
 
@@ -512,7 +443,7 @@ BEGIN
     SELECT
         bk.id,
         bk.uuid,
-        CONCAT(CAST(hr.room_number AS CHAR),"-",UPPER(rt.description)) AS room_number,
+        CONCAT(CAST(hr.room_number AS CHAR),'-',UPPER(rt.description)) AS room_number,
         hr.uuid AS room_uuid,
         bk.total as sub_total,
         IFNULL(bks.total_services, 0) AS sub_total_services,
@@ -576,17 +507,48 @@ BEGIN
    WHERE id = @room_id;
 
     INSERT INTO invoice (uuid, document_invoice, booking_id, amount_total, active, created_by, created_at)
-    VALUES (uuid_v4(), generate_invoice_name(@booking_id), @booking_id, @total_amount, 1, p_user_name, NOW());
+    VALUES (LOWER(CONCAT(
+    LPAD(HEX(FLOOR(RAND() * 0xffffffff)), 8, '0'), '-',
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'), '-',
+    '4', LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- versión 4
+    SUBSTRING('89ab', FLOOR(1 + (RAND() * 4)), 1), LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- variante
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0')
+  )),
+            CONCAT(
+        'INV_',
+        DATE_FORMAT(NOW(), '%Y_%m_%d_'),
+        @booking_id,
+        '_',
+        DATE_FORMAT(NOW(), '%H%i%s')
+    ), @booking_id, @total_amount, 1, p_user_name, NOW());
     -- GENERO LA FACTURA
     SET @invoice_id = LAST_INSERT_ID();
 
     -- INSERTO EL DETALLE DE LA FACTURA
     INSERT INTO invoice_detail (uuid, invoice_id, description, unit, amount_total, active, created_by, created_at)
-    SELECT uuid_v4(), @invoice_id,'HABITACION POR NOCHE', total_nights, total, 1, p_user_name, NOW()
+    SELECT LOWER(CONCAT(
+    LPAD(HEX(FLOOR(RAND() * 0xffffffff)), 8, '0'), '-',
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'), '-',
+    '4', LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- versión 4
+    SUBSTRING('89ab', FLOOR(1 + (RAND() * 4)), 1), LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- variante
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0')
+  )), @invoice_id,'HABITACION POR NOCHE', total_nights, total, 1, p_user_name, NOW()
     FROM bookings WHERE id= @booking_id;
 
     INSERT INTO invoice_detail (uuid, invoice_id, description, unit, amount_total, active, created_by, created_at)
-    SELECT uuid_v4(), @invoice_id, bookings_service_type.name, bookings_service.count, bookings_service.price, 1, p_user_name, NOW()
+    SELECT LOWER(CONCAT(
+    LPAD(HEX(FLOOR(RAND() * 0xffffffff)), 8, '0'), '-',
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'), '-',
+    '4', LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- versión 4
+    SUBSTRING('89ab', FLOOR(1 + (RAND() * 4)), 1), LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- variante
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0')
+  )), @invoice_id, bookings_service_type.name, bookings_service.count, bookings_service.price, 1, p_user_name, NOW()
     FROM bookings_service
     INNER JOIN bookings_service_type ON bookings_service.bookings_service_type_id = bookings_service_type.id
     WHERE booking_id = @booking_id;
@@ -650,7 +612,15 @@ CREATE PROCEDURE spRegisterBookingServiceType(
     )
 BEGIN
     insert into bookings_service_type (uuid, name, price, active, created_by, created_at)
-    values (uuid_v4(),p_name,p_price,1,p_user,now());
+    values (LOWER(CONCAT(
+    LPAD(HEX(FLOOR(RAND() * 0xffffffff)), 8, '0'), '-',
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'), '-',
+    '4', LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- versión 4
+    SUBSTRING('89ab', FLOOR(1 + (RAND() * 4)), 1), LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- variante
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0')
+  )),p_name,p_price,1,p_user,now());
 END$$
 
 DELIMITER ;
@@ -669,7 +639,15 @@ BEGIN
 
     insert into bookings_service (uuid,booking_id, bookings_service_type_id, count, price, price_total, active,
                               created_by, created_at)
-    values (uuid_v4(),p_booking_id, p_bookings_service_type_id, p_count, p_price, p_count*p_price, 1,
+    values (LOWER(CONCAT(
+    LPAD(HEX(FLOOR(RAND() * 0xffffffff)), 8, '0'), '-',
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'), '-',
+    '4', LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- versión 4
+    SUBSTRING('89ab', FLOOR(1 + (RAND() * 4)), 1), LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- variante
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0')
+  )),p_booking_id, p_bookings_service_type_id, p_count, p_price, p_count*p_price, 1,
         p_user, now());
 
 END$$
@@ -688,10 +666,27 @@ CREATE PROCEDURE sp_get_bookings_service_by_booking_id(
 )
 BEGIN
 
-   SELECT 
+   SELECT
        ID, UUID, BOOKING_ID, BOOKINGS_SERVICE_TYPE_ID, COUNT, PRICE, PRICE_TOTAL, ACTIVE
        FROM bookings_service
             WHERE booking_id = p_booking_id;
 END$$
 
 DELIMITER ;
+
+
+DELIMITER $$
+CREATE PROCEDURE sp_management_hotel_rooms_list()
+    BEGIN
+select
+    hr.uuid,
+    hr.room_number,
+    rt.description as room_type,
+    hr.capacity,
+    hr.price_per_hour,
+    hr.price_per_night,
+    IF(hr.is_reserved= 1, 'Si', 'No') as is_reserved,
+    IF(hr.active = 1, 'Activo', 'Desactivado') as active
+    from hotel_room hr
+    inner join room_type rt on hr.room_type_id = rt.id;
+END$$

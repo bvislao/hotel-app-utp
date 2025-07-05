@@ -1,0 +1,161 @@
+name: Deploy with jDeploy
+'on':
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: >-
+            ${{ runner.os }}-node-${{ hashFiles('hotelapp/**/package-lock.json',
+            'hotelapp/**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: '${{ runner.os }}-m2-${{ hashFiles(''**/pom.xml'') }}'
+          restore-keys: '${{ runner.os }}-m2'
+      - name: Build Java project
+        run: |
+          echo "Building Java project with Maven..."
+          mvn clean compile package -DskipTests
+          echo "Listing target directory:"
+          ls -la target/
+        working-directory: hotelapp
+      - name: Install dependencies
+        run: |
+          if [ -f "package-lock.json" ]; then
+            echo "Found package-lock.json, using npm ci for faster, reliable installs..."
+            npm ci
+          elif [ -f "yarn.lock" ]; then
+            echo "Found yarn.lock, using yarn install..."
+            yarn install --frozen-lockfile
+          else
+            echo "No lockfile found, using npm install..."
+            npm install
+            echo "Consider committing the generated package-lock.json for faster CI builds"
+          fi
+        working-directory: hotelapp
+      - name: Build project
+        run: |
+          if [ -f "package.json" ] && grep -q '"build"' package.json; then
+            echo "Building project..."
+            npm run build
+          else
+            echo "No build script found, skipping build step"
+          fi
+        working-directory: hotelapp
+      - name: Install jDeploy globally
+        run: npm install -g jdeploy
+        env:
+          NODE_AUTH_TOKEN: '${{ secrets.NPM_AUTH_TOKEN }}'
+      - name: Configure jDeploy
+        run: |
+          if [ -f "target/hotelapp-1.0.0-jar-with-dependencies.jar" ]; then
+            echo "JAR found."
+            if [ ! -f "jdeploy.js" ] && [ ! -f "jdeploy.json" ]; then
+              echo "Creating jdeploy.js configuration..."
+              echo 'module.exports = {
+              jar: "target/hotelapp-1.0.0-jar-with-dependencies.jar",
+              mainClass: "com.ande.luxury.hotelapp.Main",
+              javaVersion: "21",
+              javafx: true
+            };' > jdeploy.js
+                        fi
+                      else
+                        echo "JAR not found"
+                        ls -la target/
+                        exit 1
+                      fi
+        working-directory: hotelapp
+      - name: Verify jDeploy configuration
+        run: |
+          echo "Checking jDeploy configuration..."
+          if [ -f "jdeploy.js" ]; then
+            echo "Found jdeploy.js"
+            echo "Content of jdeploy.js:"
+            cat jdeploy.js
+          elif [ -f "jdeploy.json" ]; then
+            echo "Found jdeploy.json"
+            echo "Content of jdeploy.json:"
+            cat jdeploy.json
+          else
+            echo "No jDeploy configuration found!"
+            echo "Available files:"
+            ls -la
+            exit 1
+          fi
+
+          echo "Checking for JAR file..."
+          if [ -f "target/hotelapp-1.0.0-jar-with-dependencies.jar" ]; then
+            echo "✓ Found JAR file: target/hotelapp-1.0.0-jar-with-dependencies.jar"
+            ls -la target/hotelapp-1.0.0-jar-with-dependencies.jar
+          else
+            echo "✗ JAR file not found in target directory!"
+            echo "Contents of target directory:"
+            ls -la target/ || echo "Target directory does not exist"
+            echo "Looking for JAR files anywhere:"
+            find . -name "*.jar" -type f
+            exit 1
+          fi
+        working-directory: hotelapp
+      - name: Deploy with jDeploy
+        run: |
+          echo "Publishing with jDeploy..."
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory:"
+          ls -la
+          jdeploy publish
+        env:
+          NODE_AUTH_TOKEN: '${{ secrets.NPM_AUTH_TOKEN }}'
+          NPM_TOKEN: '${{ secrets.NPM_AUTH_TOKEN }}'
+        working-directory: hotelapp
+      - name: Upload deployment artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 'jdeploy-artifacts-${{ github.run_number }}'
+          path: |
+            hotelapp/dist/
+            hotelapp/*.jar
+            hotelapp/jdeploy/
+            hotelapp/package.json
+            hotelapp/jdeploy.js
+            hotelapp/jdeploy.json
+          retention-days: 30
+      - name: Create deployment summary
+        if: success()
+        run: |
+          echo "## 🚀 Deployment Successful" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Timestamp**: $(date)" >> $GITHUB_STEP_SUMMARY
+      - name: Create Release Tag
+        run: |
+          VERSION=$(jq -r .version hotelapp/package.json)
+          echo "Creating tag v$VERSION"
+          git tag "v$VERSION"
+          git push origin "v$VERSION"
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
