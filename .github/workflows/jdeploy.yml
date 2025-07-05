@@ -62,7 +62,7 @@ jobs:
           else
             echo "jDeploy already configured"
           fi
-        working-directory: hotelapp/deploy/publish/jdeploy-bundle
+        working-directory: hotelapp/jdeploy-bundle
       - name: Verify jDeploy configuration
         run: |
           echo "Checking jDeploy configuration..."
