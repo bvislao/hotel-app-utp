@@ -50,7 +50,7 @@ jobs:
           echo "No build script found, skipping build step"
         fi
       working-directory: hotelapp  # Specify the working directory
-        
+
     - name: Install jDeploy globally
       run: npm install -g jdeploy
       env:
@@ -60,11 +60,11 @@ jobs:
       run: |
         if [ ! -f "jdeploy.js" ] && [ ! -f "jdeploy.json" ]; then
           echo "Initializing jDeploy..."
-          jdeploy init --non-interactive
+          jdeploy init  # Removed --non-interactive
         else
           echo "jDeploy already configured"
         fi
-      working-directory: hotelapp/jdeploy-bundle  # Specify the working directory
+      working-directory: hotelapp  # Specify the working directory
         
     - name: Verify jDeploy configuration
       run: |
@@ -77,7 +77,7 @@ jobs:
           echo "No jDeploy configuration found!"
           exit 1
         fi
-      working-directory: hotelapp/jdeploy-bundle  # Specify the working directory
+      working-directory: hotelapp  # Specify the working directory
         
     - name: Deploy with jDeploy
       run: |
@@ -86,7 +86,7 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-      working-directory: hotelapp  # Specify the working directory
+      working-directory: hotelapp/  # Specify the working directory
         
     - name: Upload deployment artifacts
       uses: actions/upload-artifact@v4
@@ -110,3 +110,12 @@ jobs:
         echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
         echo "- **Timestamp**: $(date)" >> $GITHUB_STEP_SUMMARY
         echo "- **jDeploy Version**: $(jdeploy --version)" >> $GITHUB_STEP_SUMMARY
+
+    - name: Create Release Tag
+      run: |
+        VERSION=$(jq -r .version hotelapp/package.json)
+        echo "Creating tag v$VERSION"
+        git tag "v$VERSION"
+        git push origin "v$VERSION"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub token for authentication
