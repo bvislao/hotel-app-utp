@@ -75,7 +75,7 @@ jobs:
             if [ ! -f "jdeploy.js" ] && [ ! -f "jdeploy.json" ]; then
               echo "Creating jdeploy.js configuration..."
               echo 'module.exports = {
-              jar: "target/hotelapp-1.0.0-final.jar",
+              jar: "target/hotelapp-1.0.0-jar-with-dependencies.jar",
               mainClass: "com.ande.luxury.hotelapp.Main",
               javaVersion: "21",
               javafx: true
