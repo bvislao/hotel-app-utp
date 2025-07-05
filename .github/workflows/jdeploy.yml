@@ -52,37 +52,46 @@ jobs:
           NODE_AUTH_TOKEN: '${{ secrets.NPM_AUTH_TOKEN }}'
       - name: Configure jDeploy
         run: |
+          # Crear un enlace simbólico al jdeploy.js en la raíz si no existe
+          if [ ! -f "jdeploy.js" ] && [ -f "jdeploy-bundle/jdeploy.js" ]; then
+            echo "Creating symlink to jdeploy.js..."
+            ln -s jdeploy-bundle/jdeploy.js jdeploy.js
+          fi
+          
           if [ ! -f "jdeploy.js" ] && [ ! -f "jdeploy.json" ]; then
             echo "Initializing jDeploy..."
-            if ! grep -q '"name":' ../package.json || ! grep -q '"version":' ../package.json; then
-              jdeploy init  # Only initialize if required fields are missing
-            else
-              echo "jDeploy already configured with required fields"
-            fi
+            jdeploy init
           else
             echo "jDeploy already configured"
           fi
-        working-directory: hotelapp/jdeploy-bundle
+        working-directory: hotelapp
       - name: Verify jDeploy configuration
         run: |
           echo "Checking jDeploy configuration..."
           if [ -f "jdeploy.js" ]; then
             echo "Found jdeploy.js"
+            ls -la jdeploy.js
           elif [ -f "jdeploy.json" ]; then
             echo "Found jdeploy.json"
+            ls -la jdeploy.json
           else
             echo "No jDeploy configuration found!"
+            echo "Available files:"
+            ls -la
             exit 1
           fi
-        working-directory: hotelapp/jdeploy-bundle
+        working-directory: hotelapp
       - name: Deploy with jDeploy
         run: |
           echo "Publishing with jDeploy..."
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory:"
+          ls -la
           jdeploy publish
         env:
           NODE_AUTH_TOKEN: '${{ secrets.NPM_AUTH_TOKEN }}'
           NPM_TOKEN: '${{ secrets.NPM_AUTH_TOKEN }}'
-        working-directory: hotelapp/jdeploy-bundle
+        working-directory: hotelapp
       - name: Upload deployment artifacts
         uses: actions/upload-artifact@v4
         if: always()
