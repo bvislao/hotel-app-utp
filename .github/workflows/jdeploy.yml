@@ -7,53 +7,56 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-
+      
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
         registry-url: 'https://registry.npmjs.org'
-
+        
     - name: Cache node modules
       uses: actions/cache@v4
       with:
         path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json', '**/package.json') }}
+        key: ${{ runner.os }}-node-${{ hashFiles('hotelapp/**/package-lock.json', 'hotelapp/**/package.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
-
+          
     - name: Install dependencies
       run: |
         if [ -f "package-lock.json" ]; then
-          echo "Found package-lock.json, using npm ci..."
+          echo "Found package-lock.json, using npm ci for faster, reliable installs..."
           npm ci
         elif [ -f "yarn.lock" ]; then
-          echo "Found yarn.lock, using yarn..."
+          echo "Found yarn.lock, using yarn install..."
           yarn install --frozen-lockfile
         else
           echo "No lockfile found, using npm install..."
           npm install
+          echo "Consider committing the generated package-lock.json for faster CI builds"
         fi
+      working-directory: hotelapp  # Specify the working directory
 
     - name: Build project
       run: |
-        if grep -q '"build"' package.json; then
-          echo "Running build script..."
+        if [ -f "package.json" ] && grep -q '"build"' package.json; then
+          echo "Building project..."
           npm run build
         else
-          echo "No build script, skipping"
+          echo "No build script found, skipping build step"
         fi
-
+      working-directory: hotelapp  # Specify the working directory
+        
     - name: Install jDeploy globally
       run: npm install -g jdeploy
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-
-    - name: Initialize jDeploy if needed
+        
+    - name: Configure jDeploy
       run: |
         if [ ! -f "jdeploy.js" ] && [ ! -f "jdeploy.json" ]; then
           echo "Initializing jDeploy..."
@@ -61,9 +64,11 @@ jobs:
         else
           echo "jDeploy already configured"
         fi
-
-    - name: Verify jDeploy config
+      working-directory: hotelapp  # Specify the working directory
+        
+    - name: Verify jDeploy configuration
       run: |
+        echo "Checking jDeploy configuration..."
         if [ -f "jdeploy.js" ]; then
           echo "Found jdeploy.js"
         elif [ -f "jdeploy.json" ]; then
@@ -72,27 +77,31 @@ jobs:
           echo "No jDeploy configuration found!"
           exit 1
         fi
-
+      working-directory: hotelapp  # Specify the working directory
+        
     - name: Deploy with jDeploy
-      run: jdeploy publish
+      run: |
+        echo "Publishing with jDeploy..."
+        jdeploy publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-
+      working-directory: hotelapp  # Specify the working directory
+        
     - name: Upload deployment artifacts
       uses: actions/upload-artifact@v4
       if: always()
       with:
         name: jdeploy-artifacts-${{ github.run_number }}
         path: |
-          dist/
-          *.jar
-          jdeploy/
-          jdeploy.js
-          jdeploy.json
-          package.json
+          hotelapp/dist/
+          hotelapp/*.jar
+          hotelapp/jdeploy/
+          hotelapp/package.json
+          hotelapp/jdeploy.js
+          hotelapp/jdeploy.json
         retention-days: 30
-
+        
     - name: Create deployment summary
       if: success()
       run: |
