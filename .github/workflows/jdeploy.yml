@@ -106,7 +106,7 @@ jobs:
             ls -la
             exit 1
           fi
-          
+
           echo "Checking for JAR file..."
           if [ -f "target/hotelapp-1.0.0-final.jar" ]; then
             echo "✓ Found JAR file: target/hotelapp-1.0.0-final.jar"
