@@ -70,7 +70,7 @@ jobs:
           NODE_AUTH_TOKEN: '${{ secrets.NPM_AUTH_TOKEN }}'
       - name: Configure jDeploy
         run: |
-          if [ -f "target/hotelapp-1.0.0-final.jar" ]; then
+          if [ -f "target/hotelapp-1.0.0-jar-with-dependencies.jar" ]; then
             echo "JAR found."
             if [ ! -f "jdeploy.js" ] && [ ! -f "jdeploy.json" ]; then
               echo "Creating jdeploy.js configuration..."
