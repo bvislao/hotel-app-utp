@@ -106,9 +106,9 @@ jobs:
           fi
 
           echo "Checking for JAR file..."
-          if [ -f "target/hotelapp-1.0.0-final.jar" ]; then
-            echo "✓ Found JAR file: target/hotelapp-1.0.0-final.jar"
-            ls -la target/hotelapp-1.0.0-final.jar
+          if [ -f "target/hotelapp-1.0.0-jar-with-dependencies.jar" ]; then
+            echo "✓ Found JAR file: target/hotelapp-1.0.0-jar-with-dependencies.jar"
+            ls -la target/hotelapp-1.0.0-jar-with-dependencies.jar
           else
             echo "✗ JAR file not found in target directory!"
             echo "Contents of target directory:"
