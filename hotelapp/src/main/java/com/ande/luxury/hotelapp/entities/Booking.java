@@ -38,6 +38,28 @@ public class Booking  extends Auditable {
     public Booking(){
         
     }
+    
+    public Booking(Integer id,String uuid,Integer pinCode,Date checkIn,Date checkOut,Integer userId,Integer childrens, Integer adults,String documentNumber,String fullName,String email,String countryCode,String phone,String comments,Integer totalNights,double total,Integer isReleased){
+        this.id=id;
+        this.uuid=uuid;
+        this.hotelRoomId=hotelRoomId;
+        this.pinCode=pinCode;
+        this.checkIn=checkIn;
+        this.checkOut=checkOut;
+        this.userId=userId;
+        this.childrens=childrens;
+        this.adults=adults;
+        this.documentNumber=documentNumber;
+        this.fullName=fullName;
+        this.email=email;
+        this.countryCode=countryCode;
+        this.phone=phone;
+        this.comments=comments;
+        this.total = total;
+        this.totalNights = totalNights;
+        this.isReleased= isReleased;
+        
+    }
 
     /**
      *

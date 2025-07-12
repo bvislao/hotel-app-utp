@@ -32,6 +32,12 @@ public class Hotel  extends Auditable {
         this.location = location;
         this.statusId = statusId;
     }
+       
+        public Hotel(String address,Integer category,String location){
+        this.category = category;
+        this.address = address;
+        this.location = location;
+    }
     
     
 }
