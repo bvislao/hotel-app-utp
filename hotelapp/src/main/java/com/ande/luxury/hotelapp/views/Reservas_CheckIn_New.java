@@ -12,6 +12,7 @@ import com.ande.luxury.hotelapp.services.UsuarioService;
 import com.ande.luxury.hotelapp.utilsdb.Constants;
 import static com.ande.luxury.hotelapp.utilsdb.Constants.formatCurrency;
 import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
+import static com.ande.luxury.hotelapp.views.Main.userLoguin;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import java.util.Date;
@@ -145,6 +146,11 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
         btnNewClient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/new.png"))); // NOI18N
         btnNewClient.setToolTipText("Nuevo Cliente");
         btnNewClient.setDisabledIcon(null);
+        btnNewClient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewClientActionPerformed(evt);
+            }
+        });
 
         btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/search.png"))); // NOI18N
         btnSearch.setToolTipText("Buscar");
@@ -256,7 +262,7 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
                                 .addComponent(btnNewClient)
                                 .addGap(12, 12, 12))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(22, 22, 22)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -269,7 +275,7 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
                                             .addComponent(jCalendarEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel4)))
                                     .addComponent(jLabel10)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jScrollPane1))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -539,6 +545,12 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
             evt.consume(); // Ignora el carácter
         }
     }//GEN-LAST:event_txtNumDocKeyTyped
+
+    private void btnNewClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewClientActionPerformed
+        // TODO add your handling code here:
+            Clientes_Nuevo form = new Clientes_Nuevo(userLoguin);
+        form.setVisible(true);
+    }//GEN-LAST:event_btnNewClientActionPerformed
 
     /**
      * @param args the command line arguments

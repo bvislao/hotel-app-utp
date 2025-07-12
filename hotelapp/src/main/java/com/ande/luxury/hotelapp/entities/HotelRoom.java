@@ -28,6 +28,9 @@ public class HotelRoom  extends Auditable {
     private Integer statusId;
     private Booking bookingReference;
     private List<BookingsService> bookingsServices;
+    private String activeStr;
+    private String isReservedStr;
+    private String roomTypeDescription;
    
     
     public HotelRoom(){

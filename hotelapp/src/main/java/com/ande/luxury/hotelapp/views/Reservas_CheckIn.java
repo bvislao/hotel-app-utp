@@ -10,10 +10,16 @@ import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +32,9 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
     private static final Logger logger = LoggerFactory.getLogger(Reservas_CheckIn.class);
     private String userLogin;
     private List<HotelRoom> rooms;
+    private Map<Integer, JButton> roomButtonMap = new HashMap<>();
+    private Reservas_CheckIn_New reservaForm = null;
+    private Reservas_CheckIn_Detail detailForm = null;
 
     /**
      * Creates new form Reservas_CheckIn
@@ -57,23 +66,36 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
         // Inicializar panel y lista de habitaciones
         initializeRooms();
         createRoomButtons();
-        // Agregar panel a un JScrollPane por si hay muchas habitaciones
 
-        // Forzar revalidación y repintado
-        roomPanelView.revalidate();
-        roomPanelView.repaint();
     }
 
+    private void showLoadingIndicator() {
+    roomPanelView.removeAll();
+    roomPanelView.add(new JLabel("Cargando.", SwingConstants.CENTER));
+    roomPanelView.revalidate();
+    roomPanelView.repaint();
+}
+    
     public void refresh() {
 
-        roomPanelView.removeAll();
-        // Inicializar panel y lista de habitaciones
-        initializeRooms();
-        createRoomButtons();
-
-        // Forzar revalidación y repintado
-        roomPanelView.revalidate();
-        roomPanelView.repaint();
+        BookingService bookingService = new BookingService();
+    List<HotelRoom> updatedRooms = bookingService.findAll();
+    for (HotelRoom updatedRoom : updatedRooms) {
+        for (HotelRoom currentRoom : rooms) {
+            if (currentRoom.getRoomNumber().equals(updatedRoom.getRoomNumber())) {
+                if (currentRoom.isReserved() != updatedRoom.isReserved()) {
+                    JButton button = roomButtonMap.get(updatedRoom.getRoomNumber());
+                    if (button != null) {
+                        button.setBackground(updatedRoom.isReserved() ? Color.RED : Color.GREEN);
+                    }
+                }
+                break;
+            }
+        }
+    }
+    rooms = updatedRooms; // Update the room list
+    roomPanelView.revalidate();
+    roomPanelView.repaint();
     }
 
     /**
@@ -98,47 +120,82 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
 
     //TEST
     private void initializeRooms() {
-        BookingService bookingService = new BookingService();
-        rooms = bookingService.findAll();
+        showLoadingIndicator();
+        SwingWorker<List<HotelRoom>, Void> worker = new SwingWorker<>() {
+            @Override
+            protected List<HotelRoom> doInBackground() {
+                BookingService bookingService = new BookingService();
+                return bookingService.findAll();
+            }
 
+            @Override
+            protected void done() {
+                try {
+                    rooms = get();
+                    createRoomButtons();
+                } catch (Exception e) {
+                    logger.error("Error loading rooms", e);
+                    DialogUtils.showError(roomPanelView, "Error", "Failed to load rooms");
+                }
+            }
+        };
+        worker.execute();
+    }
+
+    private JButton createRoomButton(HotelRoom room) {
+        JButton button = new JButton(room.getRoomNumber().toString());
+        button.setPreferredSize(new Dimension(80, 80));
+        button.setBackground(room.isReserved() ? Color.RED : Color.GREEN);
+        button.setOpaque(true);
+        button.setBorderPainted(false);
+
+        button.addActionListener(e -> {
+            if (!room.isReserved()) {
+                if (reservaForm == null || !reservaForm.isVisible()) {
+                    reservaForm = new Reservas_CheckIn_New(userLogin,
+                            room.getRoomNumber() + " - " + room.getRoomType().getDescription().toUpperCase(),
+                            room, this);
+                    reservaForm.setVisible(true);
+                } else {
+                    //reservaForm.updateRoom(room); // Assume updateRoom method exists
+                    reservaForm.toFront();
+                }
+            } else {
+                if (DialogUtils.showConfirmation(roomPanelView, "Alerta", "Habitación ocupada ¿Desea ver el detalle?")) {
+                    if (detailForm == null || !detailForm.isVisible()) {
+                        detailForm = new Reservas_CheckIn_Detail(room);
+                        detailForm.setVisible(true);
+                    } else {
+                        //detailForm.updateRoom(room); // Assume updateRoom method exists
+                        detailForm.toFront();
+                    }
+                }
+            }
+        });
+
+        return button;
     }
 
     private void createRoomButtons() {
-        for (HotelRoom room : rooms) {
-            JButton button = new JButton();
-            button.setPreferredSize(new Dimension(80, 80));
-            button.setBackground(room.isReserved() ? Color.RED : Color.GREEN);
-            button.setOpaque(true);
-            button.setBorderPainted(false);
-            StringBuilder strText = new StringBuilder();
-            strText.append(room.getRoomNumber().toString());
-            button.setText(
-                    strText.toString());
+        roomPanelView.removeAll();
+        roomPanelView.setVisible(false);
+        // Set a layout to optimize rendering
+        roomPanelView.setLayout(new GridLayout(0, 5, 5, 5)); // 5 columns, adjustable gaps
 
-            // Acción del botón
-            // Acción del botón con lambda
-            button.addActionListener(e -> {
-                if (!room.isReserved()) {
-                    Reservas_CheckIn_New newReserva = new Reservas_CheckIn_New(
-                            userLogin,
-                            room.getRoomNumber().toString() + " - " + room.getRoomType().getDescription().toUpperCase(),
-                            room,
-                            this // Aquí sí funciona "this"
-                    );
-                    newReserva.setVisible(true);
-                } else {
-                    // Confirmación
-                    if (DialogUtils.showConfirmation(roomPanelView, "Alerta", "Habitación ocupada ¿Desea ver el detalle?")) {
-                        //confirmó
-                        Reservas_CheckIn_Detail detailBooking = new Reservas_CheckIn_Detail(room);
-                        detailBooking.setVisible(true);
-
-                    }
-
+        if (rooms != null) {
+            for (HotelRoom room : rooms) {
+                JButton button = roomButtonMap.getOrDefault(room.getRoomNumber(), createRoomButton(room));
+                button.setBackground(room.isReserved() ? Color.RED : Color.GREEN);
+                roomButtonMap.put(room.getRoomNumber(), button);
+                if (button.getParent() == null) {
+                    roomPanelView.add(button);
                 }
-            });
-            roomPanelView.add(button);
+            }
         }
+
+        roomPanelView.setVisible(true);
+        roomPanelView.revalidate();
+        roomPanelView.repaint();
     }
 
     private void showReservationForm(String roomNumber) {

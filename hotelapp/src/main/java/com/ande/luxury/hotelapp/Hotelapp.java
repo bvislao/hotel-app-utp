@@ -4,6 +4,7 @@
 
 package com.ande.luxury.hotelapp;
 
+import com.ande.luxury.hotelapp.utilsdb.ConfigGenerator;
 import com.ande.luxury.hotelapp.views.Login;
 import javax.swing.UIManager;
 
@@ -17,6 +18,7 @@ public class Hotelapp {
     // Option 1: Using a resource URL
         // Configura el Look and Feel Nimbus
         try {
+            ConfigGenerator.generateIfNotExists();
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception e) {
             e.printStackTrace();

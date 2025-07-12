@@ -331,7 +331,7 @@ public class Main extends javax.swing.JFrame {
     private void jmClienteNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmClienteNuevoActionPerformed
         // TODO add your handling code here:
         limpiarPanel();
-        Clientes_Nuevo form = new Clientes_Nuevo();
+        Clientes_Nuevo form = new Clientes_Nuevo(userLoguin);
         form.setVisible(true);
         panelMain.add(form);
     }//GEN-LAST:event_jmClienteNuevoActionPerformed
@@ -371,7 +371,7 @@ public class Main extends javax.swing.JFrame {
     private void jmGestHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmGestHabitacionesActionPerformed
         // TODO add your handling code here:
         limpiarPanel();
-        Habitacion_Gestion form = new Habitacion_Gestion();
+        Habitacion_Gestion form = new Habitacion_Gestion(userLoguin);
         form.setClosable(true);
         form.setVisible(true);
         panelMain.add(form);
