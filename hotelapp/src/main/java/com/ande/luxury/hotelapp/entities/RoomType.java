@@ -18,8 +18,13 @@ public class RoomType extends Auditable{
     private Integer active;
     
     
-        public RoomType(){
+       public RoomType(){
         
+    }
+       
+     public RoomType(String uuid,String description){
+        this.uuid = uuid;
+        this.description = description;
     }
        
     public RoomType(Integer id,String uuid,String description,Integer active){

@@ -33,25 +33,9 @@ public class BookingService {
         try{
         HotelRoomDAO hotelRoomDAO = new HotelRoomDAO();
         listReturn = hotelRoomDAO.findAll();
-        for(HotelRoom item : listReturn){
-            HotelDAO hotelDAO = new HotelDAO();
-            RoomTypeDAO roomTypeDAO = new RoomTypeDAO();
-            BookingDAO bookingDAO = new BookingDAO();
-            Hotel hotel = hotelDAO.findById(item.getHotelId());
-            item.setHotel(hotel);
-            RoomType roomType = roomTypeDAO.findById(item.getRoomTypeId());
-            item.setRoomType(roomType);
-            if(item.getBookingId() > 0){
-                Booking booking =     bookingDAO.findById(item.getBookingId());
-                item.setBookingReference(booking);
-                BookingsServiceDAO bookingsServiceDAO = new BookingsServiceDAO();
-                item.setBookingsServices(bookingsServiceDAO.listServicesByBookingId(item.getBookingId()));
-            }
-            
-            
-        }
         }catch(Exception ex){
             listReturn = null;
+            DialogUtils.showError(null, "Error", "Ocurrio un error al listar la información");
             logger.error(ex.getMessage());
         }
         return listReturn;

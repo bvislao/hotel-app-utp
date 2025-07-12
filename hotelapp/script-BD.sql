@@ -376,10 +376,41 @@ DELIMITER $$
 
 CREATE PROCEDURE spListRooms()
 BEGIN
-    select hr.id,hr.uuid,hr.hotel_id,b.id as booking_id,
-       hr.room_type_id,hr.room_number,hr.capacity,hr.price_per_hour,hr.price_per_night,hr.is_reserved,hr.status_id
+   select hr.id,
+           hr.uuid,
+           h.address as hotel_address,
+           h.category as hotel_category,
+           h.location as hotel_location,
+hr.pin_code,
+           hr.room_number,
+           hr.capacity,
+           hr.price_per_night,
+           hr.price_per_hour,
+           hr.is_reserved ,
+           rt.id as room_type_id,
+           rt.uuid as room_type_uuid,
+           rt.description as room_type_description,
+           b.id as booking_id,
+              b.uuid as booking_uuid,
+              b.check_in as booking_check_in,
+                b.check_out as booking_check_out,
+                b.is_released as booking_is_released,
+                b.pin_code as booking_pin_code,
+                b.total_nights as booking_total_nights,
+                b.user_id as booking_user_id,
+                b.childrens as booking_childrens,
+                b.adults as booking_adults,
+                b.document_number_guest as booking_document_number_guest,
+                b.full_name_guest as booking_full_name_guest,
+                b.email_guest as booking_email_guest,
+                b.country_code as booking_country_code,
+                b.phone_number as booking_phone_number,
+                b.comments as booking_comments,
+                b.total as booking_total
 from hotel_room hr
-left join bookings b on hr.id = b.hotel_room_id and b.is_released = 0
+          inner join hotel h on hr.hotel_id = h.id
+          inner join room_type rt on hr.room_type_id = rt.id
+          left join bookings b on hr.id = b.hotel_room_id and b.is_released = 0
 where hr.hotel_id = 1 and hr.status_id = 1;
 END$$
 DELIMITER ;
