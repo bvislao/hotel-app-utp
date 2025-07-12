@@ -76,6 +76,11 @@ public class TipoHabitacion_Gestion extends javax.swing.JInternalFrame {
         jScrollPane2.setViewportView(tblTipos);
 
         btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Crear ");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -117,6 +122,14 @@ public class TipoHabitacion_Gestion extends javax.swing.JInternalFrame {
     form.setVisible(true);
     // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        try {
+            cargarTipos();
+        } catch (Exception ex ){
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
