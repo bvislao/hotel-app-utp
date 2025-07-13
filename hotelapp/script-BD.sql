@@ -721,3 +721,28 @@ select
     from hotel_room hr
     inner join room_type rt on hr.room_type_id = rt.id;
 END$$
+
+
+DELIMITER $$
+CREATE PROCEDURE sp_create_hotel_room(
+    IN p_room_type_id INT,
+    IN p_room_number INT,
+    IN p_capacity INT,
+    IN p_price_per_hour DECIMAL(10, 2),
+    IN p_price_per_night DECIMAL(10, 2),
+    IN p_created_by VARCHAR(50)
+)
+    BEGIN
+insert into hotel_room (uuid, hotel_id, room_type_id, room_number, capacity, price_per_hour, price_per_night,
+                        is_reserved, status_id, active, created_by, created_at)
+    values (LOWER(CONCAT(
+    LPAD(HEX(FLOOR(RAND() * 0xffffffff)), 8, '0'), '-',
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'), '-',
+    '4', LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- versión 4
+    SUBSTRING('89ab', FLOOR(1 + (RAND() * 4)), 1), LPAD(HEX(FLOOR(RAND() * 0x0fff)), 3, '0'), '-', -- variante
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0'),
+    LPAD(HEX(FLOOR(RAND() * 0xffff)), 4, '0')
+  )), 1, p_room_type_id, p_room_number, p_capacity, p_price_per_hour, p_price_per_night, false, 1, 1, p_created_by, now());
+
+END$$

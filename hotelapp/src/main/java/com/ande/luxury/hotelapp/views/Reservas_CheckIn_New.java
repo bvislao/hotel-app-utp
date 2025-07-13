@@ -42,14 +42,16 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
         this.userLogin = userLogin;
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         lblTextHabitacion.setText(text);
-        jCalendarStart.setMinSelectableDate(new Date());
-        jCalendarEnd.setMinSelectableDate(jCalendarStart.getDate());
         this.dataRoom = dataRoom;
         this.formularioPadre = formularioPadre;
         btnReservar.setEnabled(false);
+        jCalendarStart.setMinSelectableDate(new Date());
         jCalendarStart.setEnabled(false);
+        jCalendarEnd.setMinSelectableDate(new Date());
         jCalendarEnd.setEnabled(false);
         lblDias.setText(formatCurrency(0D));
+        lblDias.setText("0");
+        lblTotal.setText("S/ 0.00");
     }
 
     /**
@@ -97,7 +99,7 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel1.setText("Reservar Habitación");
 
-        jCalendarStart.setDate(new java.util.Date(1749932835000L));
+        jCalendarStart.setDate(new Date());
         jCalendarStart.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         jCalendarStart.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
@@ -115,6 +117,7 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel2.setText("Fecha de Inicio");
 
+        jCalendarEnd.setDate(new Date());
         jCalendarEnd.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 jCalendarEndPropertyChange(evt);
@@ -548,7 +551,7 @@ public class Reservas_CheckIn_New extends javax.swing.JFrame {
 
     private void btnNewClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewClientActionPerformed
         // TODO add your handling code here:
-            Clientes_Nuevo form = new Clientes_Nuevo(userLoguin);
+        Clientes_Nuevo form = new Clientes_Nuevo(userLoguin);
         form.setVisible(true);
     }//GEN-LAST:event_btnNewClientActionPerformed
 

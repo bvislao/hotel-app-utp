@@ -208,7 +208,6 @@ public class Login extends javax.swing.JFrame {
             usuario = usuarioService.validateCredentials(txtUsuario.getText().trim(), password.trim());
             if (usuario != null) {
                 logger.info("Autenticación exitosa " + usuario.getDocumentNumber().toString() + " - " + usuario.getFullName());
-                DialogUtils.showSuccess(this, "Éxito", "Autenticado correctamente!");
                 this.setVisible(false);
                 Main mainForm = new Main(usuario);
                 mainForm.setVisible(true);
