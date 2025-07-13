@@ -129,11 +129,12 @@ public class Habitacion_Gestion extends javax.swing.JInternalFrame {
 
             }
         ));
-        jTablaHabitaciones.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jTablaHabitaciones.setAutoscrolls(false);
         jTablaHabitaciones.setColumnSelectionAllowed(true);
         jTablaHabitaciones.setRowSelectionAllowed(false);
         jTablaHabitaciones.setShowGrid(true);
-        jTablaHabitaciones.setSurrendersFocusOnKeystroke(true);
+        jTablaHabitaciones.getTableHeader().setResizingAllowed(false);
+        jTablaHabitaciones.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTablaHabitaciones);
         jTablaHabitaciones.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 

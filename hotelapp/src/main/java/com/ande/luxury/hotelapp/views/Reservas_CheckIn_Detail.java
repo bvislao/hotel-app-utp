@@ -4,14 +4,16 @@
  */
 package com.ande.luxury.hotelapp.views;
 
-import com.ande.luxury.hotelapp.entities.Booking;
 import com.ande.luxury.hotelapp.entities.BookingsService;
 import com.ande.luxury.hotelapp.entities.HotelRoom;
+import com.ande.luxury.hotelapp.repository.BookingsServiceDAO;
+import com.ande.luxury.hotelapp.services.BookingService;
 import static com.ande.luxury.hotelapp.utilsdb.Constants.formatCurrency;
-import java.awt.Dialog;
+import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.JDialog;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,12 +23,17 @@ import javax.swing.table.DefaultTableModel;
 public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
 
     private static HotelRoom room;
+    private static String userLogin;
+    private Reservas_CheckIn formularioPadre;
+
     /**
      * Creates new form Reservas_CheckIn_Detail
      */
-    public Reservas_CheckIn_Detail(HotelRoom room) {
+    public Reservas_CheckIn_Detail(HotelRoom room, String userLogin, Reservas_CheckIn formularioPadre) throws Exception {
         initComponents();
         this.room = room;
+        this.userLogin = userLogin;
+        this.formularioPadre = formularioPadre;
         lblReserva.setText(room.getBookingReference().getUuid());
         lblTotal.setText(formatCurrency(room.getBookingReference().getTotal()));
         lblDias.setText(String.valueOf(room.getBookingReference().getTotalNights()));
@@ -44,22 +51,27 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
             Date checkOut = room.getBookingReference().getCheckOut();
             lblCheckout.setText(sdf.format(checkOut));
         }
-        
-         String[] columns = {"UUID", "Servicio", "Cantidad", "Precio"};
+
+        String[] columns = {"UUID", "Servicio", "Cantidad", "Precio"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
-        if(!room.getBookingsServices().isEmpty())
-        {
-            for(BookingsService service :  room.getBookingsServices()){
-                  Object[] row = new Object[]{
-                    service.getUuid(),
-                    "",
-                    1,
-                    22
-                };
-                model.addRow(row);
+        BookingsServiceDAO bookingServicesDAO = new BookingsServiceDAO();
+        if (room.getBookingReference() != null) {
+            room.setBookingsServices(bookingServicesDAO.listServicesByBookingId(room.getBookingReference().getId()));
+            if (room.getBookingsServices() != null) {
+                if (!room.getBookingsServices().isEmpty()) {
+                    for (BookingsService service : room.getBookingsServices()) {
+                        Object[] row = new Object[]{
+                            service.getUuid(),
+                            "",
+                            1,
+                            22
+                        };
+                        model.addRow(row);
+                    }
+                }
             }
-        }        
-        
+        }
+
         jTableBookingServices.setModel(model);
         // Refrescar la vista
         jTableBookingServices.revalidate();
@@ -117,6 +129,7 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         lblTotalApagar = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
+        btnCheckout = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -573,14 +586,44 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
 
         getContentPane().add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 840, 680, 120));
 
+        btnCheckout.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        btnCheckout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/user-interface.png"))); // NOI18N
+        btnCheckout.setText("Checkout");
+        btnCheckout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckoutActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnCheckout, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 210, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAnadirServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirServicioActionPerformed
         // TODO add your handling code here:
-        Reservas_ServiciosHabitacion form = new Reservas_ServiciosHabitacion("",room);
+        Reservas_ServiciosHabitacion form = new Reservas_ServiciosHabitacion("", room);
         form.setVisible(true);
     }//GEN-LAST:event_btnAnadirServicioActionPerformed
+
+    private void btnCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckoutActionPerformed
+
+        if (DialogUtils.showConfirmation(this, "Confirmar", "¿Desea liberar la reserva?")) {
+            try {
+                cerrarBooking(room.getBookingReference().getUuid());
+            } catch (Exception ex) {
+                Logger.getLogger(Reservas_CheckIn_Detail.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnCheckoutActionPerformed
+
+    private void cerrarBooking(String uuid) throws Exception {
+
+        BookingService bookingService = new BookingService();
+        bookingService.checkOutBooking(uuid, userLogin);
+        this.dispose();
+        //TODO Refresh
+        formularioPadre.refresh();
+    }
 
     /**
      * @param args the command line arguments
@@ -612,13 +655,18 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Reservas_CheckIn_Detail(null).setVisible(true);
+                try {
+                    new Reservas_CheckIn_Detail(null, "", null).setVisible(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(Reservas_CheckIn_Detail.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnadirServicio;
+    private javax.swing.JButton btnCheckout;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;

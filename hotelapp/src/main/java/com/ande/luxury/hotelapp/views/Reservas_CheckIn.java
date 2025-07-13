@@ -9,12 +9,14 @@ import com.ande.luxury.hotelapp.services.BookingService;
 import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -42,7 +44,6 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
     public Reservas_CheckIn() {
 
         initComponents();
-
         setTitle("CheckIn - Habitaciones");
         setSize(500, 300);
 
@@ -52,13 +53,12 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
         initializeRooms();
         createRoomButtons();
 
-        // Agregar panel a un JScrollPane por si hay muchas habitaciones
-        JScrollPane scrollPane = new JScrollPane(roomPanelView);
-        add(scrollPane, BorderLayout.CENTER);
     }
 
     public Reservas_CheckIn(String userLogin) {
         initComponents();
+        // JScrollPane scrollPane = new JScrollPane(roomPanelView);
+        // roomPanelView.add(scrollPane);
         setSize(500, 500);
         this.userLogin = userLogin;
         setTitle("Gestión de Habitaciones Check-In Habitaciones");
@@ -70,32 +70,32 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
     }
 
     private void showLoadingIndicator() {
-    roomPanelView.removeAll();
-    roomPanelView.add(new JLabel("Cargando.", SwingConstants.CENTER));
-    roomPanelView.revalidate();
-    roomPanelView.repaint();
-}
-    
+        roomPanelView.removeAll();
+        roomPanelView.add(new JLabel("Cargando.", SwingConstants.CENTER));
+        roomPanelView.revalidate();
+        roomPanelView.repaint();
+    }
+
     public void refresh() {
 
         BookingService bookingService = new BookingService();
-    List<HotelRoom> updatedRooms = bookingService.findAll();
-    for (HotelRoom updatedRoom : updatedRooms) {
-        for (HotelRoom currentRoom : rooms) {
-            if (currentRoom.getRoomNumber().equals(updatedRoom.getRoomNumber())) {
-                if (currentRoom.isReserved() != updatedRoom.isReserved()) {
-                    JButton button = roomButtonMap.get(updatedRoom.getRoomNumber());
-                    if (button != null) {
-                        button.setBackground(updatedRoom.isReserved() ? Color.RED : Color.GREEN);
+        List<HotelRoom> updatedRooms = bookingService.findAll();
+        for (HotelRoom updatedRoom : updatedRooms) {
+            for (HotelRoom currentRoom : rooms) {
+                if (currentRoom.getRoomNumber().equals(updatedRoom.getRoomNumber())) {
+                    if (currentRoom.isReserved() != updatedRoom.isReserved()) {
+                        JButton button = roomButtonMap.get(updatedRoom.getRoomNumber());
+                        if (button != null) {
+                            button.setBackground(updatedRoom.isReserved() ? Color.RED : Color.GREEN);
+                        }
                     }
+                    break;
                 }
-                break;
             }
         }
-    }
-    rooms = updatedRooms; // Update the room list
-    roomPanelView.revalidate();
-    roomPanelView.repaint();
+        rooms = updatedRooms; // Update the room list
+        roomPanelView.revalidate();
+        roomPanelView.repaint();
     }
 
     /**
@@ -108,12 +108,106 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         roomPanelView = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
 
         setTitle("Ande Luxury :: CheckIn");
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        setSize(new java.awt.Dimension(56, 56));
 
         roomPanelView.setBackground(new java.awt.Color(102, 102, 102));
-        getContentPane().add(roomPanelView, new org.netbeans.lib.awtextra.AbsoluteConstraints(26, 16, 480, 470));
+        roomPanelView.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
+        roomPanelView.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        roomPanelView.setName(""); // NOI18N
+        roomPanelView.setRequestFocusEnabled(false);
+
+        javax.swing.GroupLayout roomPanelViewLayout = new javax.swing.GroupLayout(roomPanelView);
+        roomPanelView.setLayout(roomPanelViewLayout);
+        roomPanelViewLayout.setHorizontalGroup(
+            roomPanelViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        roomPanelViewLayout.setVerticalGroup(
+            roomPanelViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 607, Short.MAX_VALUE)
+        );
+
+        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        jLabel1.setText("Ocupado");
+
+        jPanel2.setBackground(new java.awt.Color(255, 51, 51));
+        jPanel2.setVerifyInputWhenFocusTarget(false);
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel3.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        jLabel3.setText("Disponible");
+
+        jPanel1.setBackground(new java.awt.Color(51, 255, 51));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        jLabel2.setText("Leyenda");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3)
+                        .addGap(26, 26, 26)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1))
+                    .addComponent(jLabel2))
+                .addContainerGap(467, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(50, 50, 50))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(roomPanelView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(9, 9, 9))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(roomPanelView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
+        );
+
+        roomPanelView.getAccessibleContext().setAccessibleParent(roomPanelView);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -157,16 +251,18 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
                             room, this);
                     reservaForm.setVisible(true);
                 } else {
-                    //reservaForm.updateRoom(room); // Assume updateRoom method exists
                     reservaForm.toFront();
                 }
             } else {
                 if (DialogUtils.showConfirmation(roomPanelView, "Alerta", "Habitación ocupada ¿Desea ver el detalle?")) {
                     if (detailForm == null || !detailForm.isVisible()) {
-                        detailForm = new Reservas_CheckIn_Detail(room);
+                        try {
+                            detailForm = new Reservas_CheckIn_Detail(room,userLogin,this);
+                        } catch (Exception ex) {
+                            java.util.logging.Logger.getLogger(Reservas_CheckIn.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         detailForm.setVisible(true);
                     } else {
-                        //detailForm.updateRoom(room); // Assume updateRoom method exists
                         detailForm.toFront();
                     }
                 }
@@ -179,8 +275,9 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
     private void createRoomButtons() {
         roomPanelView.removeAll();
         roomPanelView.setVisible(false);
+        roomPanelView.setSize(new Dimension(500,500));
         // Set a layout to optimize rendering
-        roomPanelView.setLayout(new GridLayout(0, 5, 5, 5)); // 5 columns, adjustable gaps
+        roomPanelView.setLayout(new GridLayout(3, 4, 0, 0)); // 5 columns, adjustable gaps
 
         if (rooms != null) {
             for (HotelRoom room : rooms) {
@@ -193,9 +290,11 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
             }
         }
 
-        roomPanelView.setVisible(true);
-        roomPanelView.revalidate();
-        roomPanelView.repaint();
+        // Check if roomPanelView is already wrapped in a JScrollPane
+
+    roomPanelView.setVisible(true);
+    roomPanelView.revalidate();
+    roomPanelView.repaint();
     }
 
     private void showReservationForm(String roomNumber) {
@@ -204,6 +303,12 @@ public class Reservas_CheckIn extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel roomPanelView;
     // End of variables declaration//GEN-END:variables
 }
