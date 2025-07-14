@@ -1,9 +1,8 @@
 
 
 <h1 align="center" style="font-weight: bold;">Hotel App - Project UTP Integrador</h1>
+<h6 align="center"><a href="https://deepwiki.com/bvislao/hotel-app-utp"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a></h6>
 
-
-<p align="center">Aplicación para gestionar las reservas de un hotel</p>
 
 
 <p align="center">
