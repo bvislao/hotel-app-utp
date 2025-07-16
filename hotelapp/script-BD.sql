@@ -381,7 +381,6 @@ BEGIN
            h.address as hotel_address,
            h.category as hotel_category,
            h.location as hotel_location,
-hr.pin_code,
            hr.room_number,
            hr.capacity,
            hr.price_per_night,
@@ -411,7 +410,7 @@ from hotel_room hr
           inner join hotel h on hr.hotel_id = h.id
           inner join room_type rt on hr.room_type_id = rt.id
           left join bookings b on hr.id = b.hotel_room_id and b.is_released = 0
-where hr.hotel_id = 1 and hr.status_id = 1;
+where hr.hotel_id = 1 and hr.status_id = 1 and hr.active=1;
 END$$
 DELIMITER ;
 

@@ -4,8 +4,11 @@
  */
 package com.ande.luxury.hotelapp.views;
 
+import com.ande.luxury.hotelapp.entities.HotelRoom;
 import com.ande.luxury.hotelapp.entities.RoomType;
 import com.ande.luxury.hotelapp.repository.RoomTypeDAO;
+import com.ande.luxury.hotelapp.services.HotelRoomService;
+import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +25,7 @@ public class Habitacion_Mantenimiento extends javax.swing.JFrame {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Habitacion_Mantenimiento.class);
     private static String userLogin;
     private Map<String, Integer> valoresComboBox;
+    private Habitacion_Gestion formularioPadre;
 
     /**
      * Creates new form Habitacion_Mantenimiento
@@ -30,9 +34,10 @@ public class Habitacion_Mantenimiento extends javax.swing.JFrame {
         initComponents();
     }
 
-    public Habitacion_Mantenimiento(String userLogin) throws Exception {
+    public Habitacion_Mantenimiento(String userLogin,Habitacion_Gestion formularioPadre) throws Exception {
         initComponents();
         this.userLogin = userLogin;
+        this.formularioPadre = formularioPadre;
         configurarComboBox();
     }
 
@@ -158,9 +163,33 @@ public class Habitacion_Mantenimiento extends javax.swing.JFrame {
 
         cboRoomType.setToolTipText("");
         getContentPane().add(cboRoomType, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, 210, -1));
+
+        txtNroHabitacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNroHabitacionKeyTyped(evt);
+            }
+        });
         getContentPane().add(txtNroHabitacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 210, -1));
+
+        txtPriceNight.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPriceNightKeyTyped(evt);
+            }
+        });
         getContentPane().add(txtPriceNight, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 210, 210, -1));
+
+        txtPriceXHour.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPriceXHourKeyTyped(evt);
+            }
+        });
         getContentPane().add(txtPriceXHour, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 180, 210, -1));
+
+        txtAforo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtAforoKeyTyped(evt);
+            }
+        });
         getContentPane().add(txtAforo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, 210, -1));
 
         pack();
@@ -168,9 +197,59 @@ public class Habitacion_Mantenimiento extends javax.swing.JFrame {
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
         // TODO add your handling code here:
-
-
+        if (!validateCampos()) {
+            return;
+        }
+        HotelRoom hotelRoom = new HotelRoom();
+        hotelRoom.setRoomTypeId(cboRoomType.getSelectedIndex());
+        hotelRoom.setRoomNumber(Integer.valueOf(txtNroHabitacion.getText()));
+        hotelRoom.setCapacity(Integer.valueOf(txtAforo.getText()));
+        hotelRoom.setPricePerHour(Double.parseDouble(txtPriceXHour.getText()));
+        hotelRoom.setPricePerNight(Double.parseDouble(txtPriceNight.getText()));
+        hotelRoom.setCreated_by(userLogin);
+        HotelRoomService hotelRoomService = new HotelRoomService();
+        try {
+            hotelRoomService.save(hotelRoom);
+            DialogUtils.showSuccess(null, "Aviso", "Registrado correctamente");
+            formularioPadre.refresh();
+            this.dispose();
+            
+        } catch (Exception ex) {
+            DialogUtils.showError(null, "Error", "Ocurrio un error");
+        }
     }//GEN-LAST:event_btnCrearActionPerformed
+
+    private void txtNroHabitacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNroHabitacionKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            evt.consume(); // Ignora el carácter
+        }
+    }//GEN-LAST:event_txtNroHabitacionKeyTyped
+
+    private void txtAforoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAforoKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            evt.consume(); // Ignora el carácter
+        }
+    }//GEN-LAST:event_txtAforoKeyTyped
+
+    private void txtPriceXHourKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPriceXHourKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            evt.consume(); // Ignora el carácter
+        }
+    }//GEN-LAST:event_txtPriceXHourKeyTyped
+
+    private void txtPriceNightKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPriceNightKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            evt.consume(); // Ignora el carácter
+        }
+    }//GEN-LAST:event_txtPriceNightKeyTyped
 
     /**
      * @param args the command line arguments
@@ -223,4 +302,30 @@ public class Habitacion_Mantenimiento extends javax.swing.JFrame {
     private javax.swing.JTextField txtPriceNight;
     private javax.swing.JTextField txtPriceXHour;
     // End of variables declaration//GEN-END:variables
+
+    private boolean validateCampos() {
+        if (txtNroHabitacion.getText().isEmpty()) {
+            DialogUtils.showWarning(null, "Validaciones", "Nro de Habitación obligatoria");
+            return false;
+        }
+        if (txtAforo.getText().isEmpty()) {
+            DialogUtils.showWarning(null, "Validaciones", "Aforo obligatoria");
+            return false;
+        }
+        if (txtPriceNight.getText().isEmpty()) {
+            DialogUtils.showWarning(null, "Validaciones", "Precio por noche obligatoria");
+            return false;
+        }
+        if (txtPriceXHour.getText().isEmpty()) {
+            DialogUtils.showWarning(null, "Validaciones", "Precio por hora obligatoria");
+            return false;
+        }
+
+        if (cboRoomType.getSelectedIndex() == 0) {
+            DialogUtils.showWarning(null, "Validaciones", "Debe seleccionar el tipo de habitación");
+            return false;
+        }
+        return true;
+
+    }
 }

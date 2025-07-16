@@ -84,12 +84,12 @@ public class BaseDAO<T> {
         return null;
     }
 
-    public void deleteById(int id) throws Exception {
-        String sql = "DELETE FROM " + tableName + " WHERE id = ?";
+    public void deleteByUuid(String uuid) throws Exception {
+        String sql = " UPDATE " + tableName + " SET active = 0 WHERE uuid = ?";
         Connection conn = databaseConnection.getInstancia().getConexion();
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, id);
+            stmt.setString(1, uuid);
             stmt.executeUpdate();
 
         } catch (SQLException e) {

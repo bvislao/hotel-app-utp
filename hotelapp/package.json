@@ -5,7 +5,7 @@
     "main": "index.js",
     "preferGlobal": true,
     "repository": "https://github.com/bvislao/hotel-app-utp",
-    "version": "0.6.9",
+    "version": "0.7.0",
     "jdeploy": {
         "jdk": false,
         "publishTargets": [{

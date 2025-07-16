@@ -136,7 +136,7 @@ public class Usuarios_Gestion extends javax.swing.JInternalFrame {
         try {
             UsuarioService usuarioService = new UsuarioService();
             List<Usuario> listUsuarios = usuarioService.listUsers();
-            String[] columns = {"ID", "Numero Documento", "Nombre Completo", "Rol", "Password", "Telefono", "Email", "Editar", "Eliminar"};
+            String[] columns = {"ID", "Numero Documento", "Nombre Completo", "Rol", "Password", "Telefono", "Email"};
             DefaultTableModel model = new DefaultTableModel(columns, 0);
 
             for (Usuario user : listUsuarios) {
@@ -153,20 +153,11 @@ public class Usuarios_Gestion extends javax.swing.JInternalFrame {
                     roles,
                     user.getPassword(),
                     user.getPhone(),
-                    user.getEmail(),
-                    "Editar", "Eliminar"
+                    user.getEmail()
                 };
                 model.addRow(row);
             }
             jTableUsuarios.setModel(model);
-
-            jTableUsuarios.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer("Editar"));
-            jTableUsuarios.getColumnModel().getColumn(7).setCellEditor(new ButtonEditor(new JCheckBox(), jTableUsuarios, "Editar", this));
-
-            jTableUsuarios.getColumnModel().getColumn(8).setCellRenderer(new ButtonRenderer("Eliminar"));
-            jTableUsuarios.getColumnModel().getColumn(8).setCellEditor(
-                    new ButtonEditor(
-                            new JCheckBox(), jTableUsuarios, "Eliminar", this));
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ocurrio un error inesperado");
             logger.error(ex.getMessage());
@@ -174,18 +165,6 @@ public class Usuarios_Gestion extends javax.swing.JInternalFrame {
 
     }
 
-    public void editarFilaEnFormularioPadre(int row) {
-        String uuid = (String) jTableUsuarios.getValueAt(row, 0);
-        JOptionPane.showMessageDialog(this, "Editar: " + uuid);
-    }
-
-    public void eliminarFilaEnFormularioPadre(int row) {
-        String uuid = (String) jTableUsuarios.getValueAt(row, 0);
-        int confirm = JOptionPane.showConfirmDialog(this, "¿Eliminar a " + (String) jTableUsuarios.getValueAt(row, 2) + "?", "Confirmar", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) {
-            ((DefaultTableModel) jTableUsuarios.getModel()).removeRow(row);
-        }
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrearUsuario;
