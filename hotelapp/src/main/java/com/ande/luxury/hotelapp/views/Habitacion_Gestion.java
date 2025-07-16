@@ -7,6 +7,7 @@ package com.ande.luxury.hotelapp.views;
 import com.ande.luxury.hotelapp.entities.HotelRoom;
 import com.ande.luxury.hotelapp.services.HotelRoomService;
 import static com.ande.luxury.hotelapp.utilsdb.Constants.formatCurrency;
+import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,6 +55,31 @@ public class Habitacion_Gestion extends javax.swing.JInternalFrame {
         jTablaHabitaciones.revalidate();
         jTablaHabitaciones.repaint();
     }
+    
+    public void refresh(){
+          String[] columns = {"UUID", "#", "Tipo", "Aforo", "Precio x Hora","Precio x Noche","Ocupado","Estado"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
+        HotelRoomService service = new HotelRoomService();
+        List<HotelRoom> listRoom = service.findAll();
+        for(HotelRoom item : listRoom){
+            Object[] row = new Object[]{
+                    item.getUuid(),
+                    item.getRoomNumber().toString(),
+                    item.getRoomTypeDescription(),
+                    item.getCapacity(),
+                    formatCurrency(item.getPricePerHour()),
+                    formatCurrency(item.getPricePerNight()),
+                    item.getIsReservedStr(),
+                    item.getActiveStr()
+                };
+                model.addRow(row);
+        }
+        
+        jTablaHabitaciones.setModel(model);
+            // Refrescar la vista
+        jTablaHabitaciones.revalidate();
+        jTablaHabitaciones.repaint();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -70,6 +96,8 @@ public class Habitacion_Gestion extends javax.swing.JInternalFrame {
         btnCrear = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTablaHabitaciones = new javax.swing.JTable();
+        btnEditar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
 
         setTitle("Ande Luxury :: Gestion Habitación");
         setToolTipText("");
@@ -129,37 +157,63 @@ public class Habitacion_Gestion extends javax.swing.JInternalFrame {
 
             }
         ));
-        jTablaHabitaciones.setAutoscrolls(false);
-        jTablaHabitaciones.setColumnSelectionAllowed(true);
-        jTablaHabitaciones.setRowSelectionAllowed(false);
         jTablaHabitaciones.setShowGrid(true);
         jTablaHabitaciones.getTableHeader().setResizingAllowed(false);
         jTablaHabitaciones.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTablaHabitaciones);
         jTablaHabitaciones.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
+        btnEditar.setBackground(new java.awt.Color(0, 255, 51));
+        btnEditar.setForeground(new java.awt.Color(0, 0, 0));
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/search.png"))); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.setToolTipText("Nuevo Cliente");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnEliminar.setBackground(new java.awt.Color(0, 255, 51));
+        btnEliminar.setForeground(new java.awt.Color(0, 0, 0));
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/search.png"))); // NOI18N
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setToolTipText("Nuevo Cliente");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(672, Short.MAX_VALUE)
-                .addComponent(btnCrear)
-                .addGap(40, 40, 40))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 803, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnCrear)
+                .addGap(26, 26, 26)
+                .addComponent(btnEditar)
+                .addGap(18, 18, 18)
+                .addComponent(btnEliminar)
+                .addGap(9, 9, 9))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnCrear)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCrear)
+                    .addComponent(btnEditar)
+                    .addComponent(btnEliminar))
                 .addGap(33, 33, 33)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -169,7 +223,7 @@ public class Habitacion_Gestion extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         Habitacion_Mantenimiento form;
         try {
-            form = new Habitacion_Mantenimiento(userLogin);
+            form = new Habitacion_Mantenimiento(userLogin,this);
             form.setVisible(true);
         } catch (Exception ex) {
             Logger.getLogger(Habitacion_Gestion.class.getName()).log(Level.SEVERE, null, ex);
@@ -177,9 +231,46 @@ public class Habitacion_Gestion extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_btnCrearActionPerformed
 
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        int filaSeleccionada = jTablaHabitaciones.getSelectedRow();
+        if (filaSeleccionada != -1) { // Verifica que haya una fila seleccionada
+              Object valorColumna0 = jTablaHabitaciones.getValueAt(filaSeleccionada, 0);
+              HotelRoomService hotelRoomService = new HotelRoomService();
+              HotelRoom dataRoom = hotelRoomService.findByUuid(valorColumna0.toString());
+
+
+        }else{
+            DialogUtils.showWarning(null, "Aviso", "No tiene seleccionado ningun registro");
+        }
+        
+
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+         int filaSeleccionada = jTablaHabitaciones.getSelectedRow();
+        if (filaSeleccionada != -1) { // Verifica que haya una fila seleccionada
+            Object valorColumna6 = jTablaHabitaciones.getValueAt(filaSeleccionada, 6);
+            if(valorColumna6.equals("Si")){
+                DialogUtils.showWarning(null, "Aviso", "No puede eliminar el cuarto ya que se encuentra ocupada");
+                return;
+            }
+            Object valorColumna0 = jTablaHabitaciones.getValueAt(filaSeleccionada, 0);
+            HotelRoomService hotelRoomService = new HotelRoomService();
+            hotelRoomService.delete(valorColumna0.toString());
+            DialogUtils.showSuccess(null, "Aviso", "Habitación eliminada correctamente.");
+            refresh();
+        }else{
+            DialogUtils.showWarning(null, "Aviso", "No tiene seleccionado ningun registro");
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrear;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JPanel jPanel1;
