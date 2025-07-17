@@ -4,17 +4,15 @@
  */
 package com.ande.luxury.hotelapp.views;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 
@@ -52,10 +50,9 @@ public class Servicios_Crear extends javax.swing.JFrame {
         btnCrearServicio = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
         lblPrecio = new javax.swing.JLabel();
+        txtnombre = new javax.swing.JTextField();
+        txtprecio = new javax.swing.JTextField();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -81,39 +78,6 @@ public class Servicios_Crear extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel3.setText("Precio");
 
-        jLabel4.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
-        jLabel4.setText("Habitación");
-
-        jComboBox2.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
-            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
-            }
-            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
-            }
-            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
-                jComboBox2PopupMenuWillBecomeVisible(evt);
-            }
-        });
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Jcbhabitación(evt);
-            }
-        });
-
-        jComboBox3.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
-            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
-            }
-            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
-            }
-            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
-                jComboBox3PopupMenuWillBecomeVisible(evt);
-            }
-        });
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcbProducto(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -125,18 +89,22 @@ public class Servicios_Crear extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(28, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(95, 95, 95)
+                            .addComponent(lblPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(43, 43, 43))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel3))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtprecio, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(59, 59, 59)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4))
-                        .addGap(22, 22, 22)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox3, 0, 141, Short.MAX_VALUE)
-                            .addComponent(jComboBox2, 0, 141, Short.MAX_VALUE)
-                            .addComponent(lblPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(43, 43, 43))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
                         .addComponent(btnCrearServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(106, 106, 106))))
         );
@@ -145,19 +113,17 @@ public class Servicios_Crear extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(24, 24, 24)
+                .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
+                    .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblPrecio)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(lblPrecio))
-                .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                    .addComponent(txtprecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addComponent(btnCrearServicio)
                 .addGap(26, 26, 26))
         );
@@ -166,170 +132,50 @@ public class Servicios_Crear extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearServicioActionPerformed
-String nombre = (String) jComboBox3.getSelectedItem();
+    String nombre = txtnombre.getText();
+    String precioTexto = txtprecio.getText();
 
-    if (nombre == null || nombre.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Seleccione un servicio válido.");
-        return;
-    }
-
-    // Obtener precio desde la etiqueta
-    String textoPrecio = lblPrecio.getText().replaceAll("[^\\d.]", ""); // Solo deja números y puntos
-
- double precio;
-try {
-    precio = Double.parseDouble(textoPrecio);
-} catch (NumberFormatException e) {
-    JOptionPane.showMessageDialog(this, "Precio inválido.");
-    return;
-}
-
-
-    try (Connection conn = com.ande.luxury.hotelapp.database.databaseConnection.getConnection()) {
-
-        String sql = "INSERT INTO bookings_service_type (name, price, uuid, active, created_by, created_at) " +
-                     "VALUES (?, ?, UUID(), 1, 'admin', NOW())";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, nombre);
-            stmt.setDouble(2, precio);
-
-            int filas = stmt.executeUpdate();
-
-            if (filas > 0) {
-                JOptionPane.showMessageDialog(this, "Servicio agregado exitosamente.");
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo agregar el servicio.");
-            }
-        }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al insertar en la base de datos:\n" + e.getMessage());
-    }
-
-    }//GEN-LAST:event_btnCrearServicioActionPerformed
-
-    private void Jcbhabitación(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Jcbhabitación
-        // TODO add your handling code here:
-      
-        
-    }//GEN-LAST:event_Jcbhabitación
-
-    private void jcbProducto(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbProducto
-                             
-        String nombreSeleccionado = (String) jComboBox3.getSelectedItem();
-
-    if (nombreSeleccionado == null || nombreSeleccionado.trim().isEmpty()) {
-        lblPrecio.setText("S/ 0.00");
+    if (nombre.isEmpty() || precioTexto.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor complete todos los campos");
         return;
     }
 
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = com.ande.luxury.hotelapp.database.databaseConnection.getConnection();
+        double precio = Double.parseDouble(precioTexto);
 
-        if (conn == null) {
-            throw new SQLException("No se pudo establecer conexión con la base de datos.");
-        }
+        String url = "jdbc:mysql://localhost:3306/hotel";
+        String usuario = "root";
+        String clave = "ECOdid/789";
 
-        System.out.println("Buscando precio para: '" + nombreSeleccionado.trim() + "'");
-
-        String sql = "SELECT price FROM bookings_service_type WHERE name = ?";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setString(1, nombreSeleccionado.trim());
-        ResultSet rs = stmt.executeQuery();
-
-        if (rs.next()) {
-            double precio = rs.getDouble("price");
-
-            Locale localePeru = new Locale("es", "PE");
-            NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(localePeru);
-            lblPrecio.setText(formatoMoneda.format(precio));
-        } else {
-            lblPrecio.setText("No encontrado");
-        }
-
-        rs.close();
-        stmt.close();
-        conn.close();
-
-    } catch (Exception e) {
-        e.printStackTrace(); // Para ver detalles en consola
-        JOptionPane.showMessageDialog(this, "Error al obtener el precio: " + e.getMessage());
-        lblPrecio.setText("Error");
-    }
-        
-
-        
-    }//GEN-LAST:event_jcbProducto
-
-    private void jComboBox2PopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_jComboBox2PopupMenuWillBecomeVisible
-        // TODO add your handling code here:
-        
-        jComboBox2.removeAllItems(); 
-
-
-    try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-Connection conn = com.ande.luxury.hotelapp.database.databaseConnection.getConnection();
-
-
-        String sql = "SELECT room_number FROM hotel_room";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        ResultSet rs = stmt.executeQuery();
-
-        boolean hayHabitaciones = false;
-        while (rs.next()) {
-            String numero = rs.getString("room_number");
-            jComboBox2.addItem("Habitación " + numero);
-            hayHabitaciones = true;
-        }
-
-        if (!hayHabitaciones) {
-            jComboBox2.addItem("No hay habitaciones disponibles");
-        }
-
-        rs.close();
-        stmt.close();
-        conn.close();
-
-    } catch (ClassNotFoundException | SQLException ex) {
-        JOptionPane.showMessageDialog(this, "Error al cargar habitaciones:\n" + ex.getMessage());
-    }   catch (Exception ex) {
-            Logger.getLogger(Servicios_Crear.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }//GEN-LAST:event_jComboBox2PopupMenuWillBecomeVisible
-
-    private void jComboBox3PopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_jComboBox3PopupMenuWillBecomeVisible
-      // TODO add your handling code here:
-jComboBox3.removeAllItems();
-
-    String url = "jdbc:mysql://localhost:3306/hotel";
-    String usuario = "root";
-    String clave = "ECOdid/789";
-
-    try {
         Connection conn = DriverManager.getConnection(url, usuario, clave);
-        String sql = "SELECT name FROM bookings_service_type";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        ResultSet rs = stmt.executeQuery();
 
-        while (rs.next()) {
-            jComboBox3.addItem(rs.getString("name"));
+        String sql = """
+            INSERT INTO bookings_service_type (uuid, name, price, active, created_by, created_at)
+            VALUES (UUID(), ?, ?, 1, ?, NOW())
+        """;
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, nombre);
+        stmt.setDouble(2, precio);
+        stmt.setString(3, "admin"); // o usa tu variable userLogin
+
+        int filas = stmt.executeUpdate();
+
+        if (filas > 0) {
+            JOptionPane.showMessageDialog(this, "Servicio creado exitosamente");
+            this.dispose(); // o limpiar campos si prefieres
         }
 
-        rs.close();
         stmt.close();
         conn.close();
 
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El precio debe ser un número válido.");
     } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Error al cargar servicios: " + e.getMessage());
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al guardar en la base de datos:\n" + e.getMessage());
     }
-
-
-
-        
-    }//GEN-LAST:event_jComboBox3PopupMenuWillBecomeVisible
+    }//GEN-LAST:event_btnCrearServicioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -369,13 +215,12 @@ jComboBox3.removeAllItems();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrearServicio;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel lblPrecio;
+    private javax.swing.JTextField txtnombre;
+    private javax.swing.JTextField txtprecio;
     // End of variables declaration//GEN-END:variables
 private void configurarFormattedTextField() {
         // Configurar formato de moneda para Perú (S/ 10,000.33)
@@ -386,6 +231,10 @@ private void configurarFormattedTextField() {
         ((DecimalFormat) currencyFormat).setDecimalFormatSymbols(symbols);
 
  
+    }
+
+    void setModal(boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }
