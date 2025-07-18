@@ -745,3 +745,4 @@ insert into hotel_room (uuid, hotel_id, room_type_id, room_number, capacity, pri
   )), 1, p_room_type_id, p_room_number, p_capacity, p_price_per_hour, p_price_per_night, false, 1, 1, p_created_by, now());
 
 END$$
+-- UPDATE
