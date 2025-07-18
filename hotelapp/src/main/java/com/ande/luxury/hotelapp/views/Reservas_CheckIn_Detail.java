@@ -4,14 +4,18 @@
  */
 package com.ande.luxury.hotelapp.views;
 
+import com.ande.luxury.hotelapp.entities.BookingServiceType;
 import com.ande.luxury.hotelapp.entities.BookingsService;
 import com.ande.luxury.hotelapp.entities.HotelRoom;
+import com.ande.luxury.hotelapp.repository.BookingServiceTypeDAO;
 import com.ande.luxury.hotelapp.repository.BookingsServiceDAO;
 import com.ande.luxury.hotelapp.services.BookingService;
 import static com.ande.luxury.hotelapp.utilsdb.Constants.formatCurrency;
 import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -25,6 +29,7 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
     private static HotelRoom room;
     private static String userLogin;
     private Reservas_CheckIn formularioPadre;
+    private List<BookingServiceType> listBookingServiceTypeList; 
 
     /**
      * Creates new form Reservas_CheckIn_Detail
@@ -34,6 +39,8 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
         this.room = room;
         this.userLogin = userLogin;
         this.formularioPadre = formularioPadre;
+        BookingServiceTypeDAO bookingServiceTypeDAO = new BookingServiceTypeDAO();
+        listBookingServiceTypeList = bookingServiceTypeDAO.findAll();
         lblReserva.setText(room.getBookingReference().getUuid());
         lblTotal.setText(formatCurrency(room.getBookingReference().getTotal()));
         lblDias.setText(String.valueOf(room.getBookingReference().getTotalNights()));
@@ -51,26 +58,32 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
             Date checkOut = room.getBookingReference().getCheckOut();
             lblCheckout.setText(sdf.format(checkOut));
         }
-
+        
         String[] columns = {"UUID", "Servicio", "Cantidad", "Precio"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
         BookingsServiceDAO bookingServicesDAO = new BookingsServiceDAO();
+        double totalServices = 0;
         if (room.getBookingReference() != null) {
             room.setBookingsServices(bookingServicesDAO.listServicesByBookingId(room.getBookingReference().getId()));
             if (room.getBookingsServices() != null) {
                 if (!room.getBookingsServices().isEmpty()) {
                     for (BookingsService service : room.getBookingsServices()) {
+                      String name = listBookingServiceTypeList.stream().filter(x->x.getId().equals(service.getBookingServiceTypeId())).findFirst().get().getName();
                         Object[] row = new Object[]{
                             service.getUuid(),
-                            "",
-                            1,
-                            22
+                            name.toUpperCase(),
+                            service.getCount(),
+                            service.getPriceTotal()
                         };
+                        totalServices += service.getPriceTotal();
                         model.addRow(row);
                     }
                 }
             }
         }
+        lblServiciosTotal.setText(formatCurrency(totalServices));
+        double totalApagar = totalServices + room.getBookingReference().getTotal();
+        lblTotalAPagar.setText(formatCurrency(totalApagar));
 
         jTableBookingServices.setModel(model);
         // Refrescar la vista
@@ -127,8 +140,9 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
-        lblTotalApagar = new javax.swing.JLabel();
+        lblServiciosTotal = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
+        lblTotalAPagar = new javax.swing.JLabel();
         btnCheckout = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -530,13 +544,16 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
         jLabel20.setForeground(new java.awt.Color(0, 0, 0));
         jLabel20.setText("SUB TOTAL - S. ADICIONALES :");
 
-        lblTotalApagar.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
-        lblTotalApagar.setText("----------------");
+        lblServiciosTotal.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        lblServiciosTotal.setText("----------------");
 
         jLabel21.setBackground(new java.awt.Color(255, 255, 255));
         jLabel21.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(0, 0, 0));
         jLabel21.setText("TOTAL A PAGAR");
+
+        lblTotalAPagar.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        lblTotalAPagar.setText("----------------");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -545,6 +562,11 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                        .addComponent(jLabel21)
+                        .addGap(65, 65, 65))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -555,31 +577,33 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(jLabel20)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblTotalApagar)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
-                        .addComponent(jLabel21)
-                        .addGap(65, 65, 65))))
+                                .addComponent(lblServiciosTotal)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblTotalAPagar)
+                        .addGap(45, 45, 45))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel19)
-                    .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel19)
+                            .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(lblTotalAPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)))
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTotalApagar, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblServiciosTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel20))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
@@ -601,10 +625,50 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
 
     private void btnAnadirServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirServicioActionPerformed
         // TODO add your handling code here:
-        Reservas_ServiciosHabitacion form = new Reservas_ServiciosHabitacion("", room);
-        form.setVisible(true);
+        Reservas_ServiciosHabitacion form;
+        try {
+            form = new Reservas_ServiciosHabitacion(userLogin, room,this);
+            form.setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(Reservas_CheckIn_Detail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_btnAnadirServicioActionPerformed
 
+    
+    public void refreshServicios() throws Exception{
+         String[] columns = {"UUID", "Servicio", "Cantidad", "Precio"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
+        double totalServices = 0;
+        BookingsServiceDAO bookingServicesDAO = new BookingsServiceDAO();
+        if (room.getBookingReference() != null) {
+            room.setBookingsServices(bookingServicesDAO.listServicesByBookingId(room.getBookingReference().getId()));
+            if (room.getBookingsServices() != null) {
+                if (!room.getBookingsServices().isEmpty()) {
+                    for (BookingsService service : room.getBookingsServices()) {
+                      String name = listBookingServiceTypeList.stream().filter(x->x.getId().equals(service.getBookingServiceTypeId())).findFirst().get().getName();
+                        Object[] row = new Object[]{
+                            service.getUuid(),
+                            name.toUpperCase(),
+                            service.getCount(),
+                            service.getPriceTotal()
+                        };
+                        totalServices += service.getPriceTotal();
+                        model.addRow(row);
+                    }
+                }
+            }
+        }
+        
+           lblServiciosTotal.setText(formatCurrency(totalServices));
+        double totalApagar = totalServices + room.getBookingReference().getTotal();
+        lblTotalAPagar.setText(formatCurrency(totalApagar));
+
+        jTableBookingServices.setModel(model);
+        // Refrescar la vista
+        jTableBookingServices.revalidate();
+        jTableBookingServices.repaint();
+    }
     private void btnCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckoutActionPerformed
 
         if (DialogUtils.showConfirmation(this, "Confirmar", "¿Desea liberar la reserva?")) {
@@ -704,8 +768,9 @@ public class Reservas_CheckIn_Detail extends javax.swing.JFrame {
     private javax.swing.JLabel lblNinos;
     private javax.swing.JLabel lblReserva;
     private javax.swing.JLabel lblReserva1;
+    private javax.swing.JLabel lblServiciosTotal;
     private javax.swing.JLabel lblTelefono;
     private javax.swing.JLabel lblTotal;
-    private javax.swing.JLabel lblTotalApagar;
+    private javax.swing.JLabel lblTotalAPagar;
     // End of variables declaration//GEN-END:variables
 }
