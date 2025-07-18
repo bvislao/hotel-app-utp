@@ -169,7 +169,7 @@ CREATE TABLE `bookings_service`(
 );
 
 ALTER TABLE `bookings_service` ADD CONSTRAINT `fk_bookings_service_booking_id` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`);
-ALTER TABLE `bookings_service` ADD CONSTRAINT `fk_bookings_service_bookings_service_type_id` FOREIGN KEY (`booking_id`) REFERENCES `bookings_service_type` (`id`);
+ALTER TABLE `bookings_service` ADD CONSTRAINT `fk_bookings_service_bookings_service_type_id` FOREIGN KEY (`bookings_service_type_id`) REFERENCES `bookings_service_type` (`id`);
 
 
 

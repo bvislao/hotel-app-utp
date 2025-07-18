@@ -4,9 +4,24 @@
  */
 package com.ande.luxury.hotelapp.views;
 
+import com.ande.luxury.hotelapp.entities.BookingServiceType;
+import com.ande.luxury.hotelapp.entities.BookingsService;
 import com.ande.luxury.hotelapp.entities.HotelRoom;
+import com.ande.luxury.hotelapp.entities.RoomType;
+import com.ande.luxury.hotelapp.repository.BookingServiceTypeDAO;
+import com.ande.luxury.hotelapp.repository.BookingsServiceDAO;
+import com.ande.luxury.hotelapp.services.BookingService;
+import static com.ande.luxury.hotelapp.utilsdb.Constants.formatCurrency;
+import com.ande.luxury.hotelapp.utilsdb.DialogUtils;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -14,10 +29,13 @@ import javax.swing.JOptionPane;
  *
  * @author bryanvislaochavez
  */
-public class Reservas_ServiciosHabitacion extends JFrame{
+public class Reservas_ServiciosHabitacion extends JFrame {
 
     private static String userLogin;
     private static HotelRoom room;
+    private Map<String, Integer> valoresComboBox;
+    private List<BookingServiceType> bookingServiceTypeList;
+    private Reservas_CheckIn_Detail formularioPadre;
 
     /**
      * Creates new form Reservas_ServiciosHabitacion
@@ -26,11 +44,13 @@ public class Reservas_ServiciosHabitacion extends JFrame{
         initComponents();
     }
 
-    public Reservas_ServiciosHabitacion(String userLogin, HotelRoom room) {
+    public Reservas_ServiciosHabitacion(String userLogin, HotelRoom room,Reservas_CheckIn_Detail formularioPadre) throws Exception {
         initComponents();
         this.userLogin = userLogin;
         this.room = room;
+        this.formularioPadre = formularioPadre;
         lblReserva.setText(String.valueOf(room.getRoomNumber()) + " - " + room.getRoomType().getDescription().toUpperCase());
+        configurarComboBox();
 
         // IMPORTANTE: Evitar que se cierre con X sin validar
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -51,6 +71,25 @@ public class Reservas_ServiciosHabitacion extends JFrame{
         });
     }
 
+    private void configurarComboBox() throws Exception {
+        BookingServiceTypeDAO bookingServiceTypeDAO = new BookingServiceTypeDAO();
+        bookingServiceTypeList = bookingServiceTypeDAO.findAll();
+        valoresComboBox = new HashMap<>();
+        valoresComboBox.put("[ Seleccionar ]", 0);
+        List<String> bookingServiceTypeStrLst = new ArrayList<>();
+        bookingServiceTypeStrLst.add("[ Seleccionar ]");
+        for (BookingServiceType item : bookingServiceTypeList) {
+            valoresComboBox.put(item.getName(), item.getId());
+            bookingServiceTypeStrLst.add(item.getName());
+        }
+        String[] roomTypes = bookingServiceTypeStrLst.toArray(new String[0]);
+
+        // Crear el JComboBox
+        cboServicio.setModel(new DefaultComboBoxModel<>(roomTypes));
+        cboServicio.setBounds(50, 50, 200, 30); // Posición y tamaño
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -63,8 +102,15 @@ public class Reservas_ServiciosHabitacion extends JFrame{
         jPanel1 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         lblReserva = new javax.swing.JLabel();
+        cboServicio = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        lblPrecioServicio = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        txtCantidad = new javax.swing.JTextField();
+        btnAdicionar = new javax.swing.JButton();
 
         setTitle("Ande Luxury :: Añadir Servicios a Habitación");
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(51, 102, 255));
 
@@ -87,7 +133,7 @@ public class Reservas_ServiciosHabitacion extends JFrame{
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblReserva)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(345, Short.MAX_VALUE))
+                .addContainerGap(186, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,29 +145,136 @@ public class Reservas_ServiciosHabitacion extends JFrame{
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(184, Short.MAX_VALUE))
-        );
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 6, -1, -1));
+
+        cboServicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboServicioActionPerformed(evt);
+            }
+        });
+        cboServicio.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                cboServicioPropertyChange(evt);
+            }
+        });
+        getContentPane().add(cboServicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(102, 114, 148, -1));
+
+        jLabel1.setText("Servicio");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(38, 117, -1, -1));
+
+        lblPrecioServicio.setBackground(new java.awt.Color(255, 0, 0));
+        lblPrecioServicio.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        lblPrecioServicio.setForeground(new java.awt.Color(51, 153, 0));
+        lblPrecioServicio.setText("0.00");
+        getContentPane().add(lblPrecioServicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 114, -1, -1));
+
+        jLabel4.setText("Cantidad");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(38, 153, -1, -1));
+
+        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyTyped(evt);
+            }
+        });
+        getContentPane().add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(103, 150, 72, -1));
+
+        btnAdicionar.setBackground(new java.awt.Color(102, 255, 102));
+        btnAdicionar.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        btnAdicionar.setForeground(new java.awt.Color(0, 102, 102));
+        btnAdicionar.setText("+ Adicionar");
+        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdicionarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAdicionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cboServicioPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_cboServicioPropertyChange
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_cboServicioPropertyChange
+
+    private void cboServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboServicioActionPerformed
+        // TODO add your handling code here:
+        String selected = (String) cboServicio.getSelectedItem();
+        Integer id = valoresComboBox.get(selected);
+
+        if (id != null && id != 0) {
+            double amount = bookingServiceTypeList.stream().filter(x->x.getId().equals(id)).findFirst().get().getPrice();
+            lblPrecioServicio.setText(formatCurrency(amount));
+        } else {
+            lblPrecioServicio.setText(formatCurrency(0));
+        }
+    }//GEN-LAST:event_cboServicioActionPerformed
+
+    
+    private boolean validateCampos() {
+        
+         if (cboServicio.getSelectedIndex() == 0) {
+            DialogUtils.showWarning(null, "Validaciones", "Debe seleccionar el tipo de servicio");
+            return false;
+        }
+         
+         if(txtCantidad.getText().isEmpty()){
+              DialogUtils.showWarning(null, "Validaciones", "Debe ingresar la cantidad");
+            return false;
+         }
+         Integer cantidad = Integer.valueOf(txtCantidad.getText());
+         if(cantidad <= 0){
+             DialogUtils.showWarning(null, "Validaciones", "Debe ingresar la cantidad");
+            return false;
+         }
+         
+         
+        return true;
+    }
+    
+    private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
+        // TODO add your handling code here:
+        if (!validateCampos()) {
+            return;
+        }
+         String selected = (String) cboServicio.getSelectedItem();
+        Integer id = valoresComboBox.get(selected);
+        double amount = bookingServiceTypeList.stream().filter(x->x.getId().equals(id)).findFirst().get().getPrice();
+        BookingsService bookingsService = new BookingsService();
+        BookingsServiceDAO service = new BookingsServiceDAO();
+        bookingsService.setBookingId(room.getBookingReference().getId());
+        bookingsService.setBookingServiceTypeId(id);
+        bookingsService.setCount(Integer.valueOf(txtCantidad.getText()));
+        bookingsService.setPrice(amount);
+        bookingsService.setCreated_by(userLogin);    
+        try {
+            service.saveBookingsService(bookingsService);
+            DialogUtils.showSuccess(null, "Aviso", "Registrado correctamente");
+            formularioPadre.refreshServicios();
+            this.dispose();
+        } catch (Exception ex) {
+            Logger.getLogger(Reservas_ServiciosHabitacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAdicionarActionPerformed
+
+    private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyTyped
+        // TODO add your handling code here:
+         char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            evt.consume(); // Ignora el carácter
+        }
+    }//GEN-LAST:event_txtCantidadKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdicionar;
+    private javax.swing.JComboBox<String> cboServicio;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblPrecioServicio;
     private javax.swing.JLabel lblReserva;
+    private javax.swing.JTextField txtCantidad;
     // End of variables declaration//GEN-END:variables
 }
